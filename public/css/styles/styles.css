@@ -1,0 +1,361 @@
+smart-grid {
+  width: 50%;
+  height: 75%;
+} 
+main {
+  padding: 25px 25px;
+}
+header {
+  padding: 5px 50px;
+}
+body {
+  padding: 30px 50px 25px 200px;
+  background: var(--smart-background);
+  color: var(--smart-background-color);
+}
+#container {
+    padding: 35px 200px;
+}
+.tabla {
+  font-size: 10px !important;
+}
+.azulbaculo {
+  color: #23506e;
+  background-color: rgb(205, 227, 247);
+}
+.container, .container-lg, .container-md, .container-sm, .container-xl {
+  max-width: 1140px;
+  width: calc(100% - 10px);
+  margin: 0 auto;
+}
+
+.demos-holder {
+  padding: 30px 25px;
+}
+
+.demo {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+  border-bottom: 1px dashed silver;
+  padding-bottom: 20px;
+}
+
+.layout-sidebar {
+  display: grid;
+  background-color: rgb(3, 95, 67);
+  gap: 5px;
+}
+.demo h5 {
+  margin-bottom: 20px;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+/* Demo Card */
+.demo-card .card {
+  margin-bottom: 30px;
+}
+
+/* Demo Badge */
+.demo-badge {
+  padding-bottom: 30px;
+}
+
+/* Demo Button */
+.demo-button smart-button {
+  margin-bottom: 10px;
+}
+
+/* Demo Dropdown Button */
+.demo-dropdown-button {
+  padding-bottom: 0px;
+}
+
+/* Demo Toast */
+.demo-toast {
+  border: 0;
+  padding: 0;
+}
+
+.smart-toast-container:last-of-type {
+  margin-top: 100px;
+  top: 100px;
+}
+
+/* Demo Progressbar */
+.demo-progressbar smart-progress-bar {
+  margin-bottom: 10px;
+}
+
+.demo-progressbar smart-circular-progress-bar {
+  width: 250px;
+  height: 250px;
+}
+
+/* Demo Window */
+.demo-window {
+  min-height: 500px;
+}
+
+@media screen and (max-width: 700px) {
+  .demo-window .smart-window {
+      width: 90% !important;
+      left: 5% !important;
+      top: 5px !important;
+  }
+}
+
+.demo-window .smart-window #article {
+  overflow: auto;
+}
+
+.demo-window .smart-window > .smart-container > .smart-content {
+  flex-direction: column;
+  height: 500px;
+}
+
+.demo-window .smart-window {
+  --smart-window-default-width: 50%;
+  --smart-window-default-height: 75%;
+  --smart-window-footer-height: 50px;
+}
+
+.demo-window #modal {
+  --smart-window-default-width: 35%;
+  --smart-window-default-height: 35%;
+  --smart-window-footer-height: 50px;
+}
+
+.demo-window #modal > .smart-container > .smart-content {
+  justify-content: center;
+}
+
+.demo-window #formWindow #article {
+  overflow-y: auto;
+  width: 100%;
+}
+
+.demo-window #contentHolder {
+  width: 100%;
+  height: 100%;
+}
+
+/* Demo Carousel */
+.demo-carousel {
+  max-width: 100%;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+
+/* Demo List Box */
+.demo-list-box smart-list-box {
+  width: 100%;
+}
+
+/* Demo Tree */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialicons/v31/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
+}
+
+.demo-tree .material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: inherit;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.demo-tree smart-tree {
+  width: 60%;
+  height: auto;
+}
+
+.demo-tree smart-tree i {
+  margin-right: 8px;
+}
+
+@media only screen and (max-width: 700px) {
+  .demo-tree smart-tree {
+      width: 100%;
+      height: 100%;
+  }
+}
+
+/* Demo Gantt Chart */
+#gantt {
+  width: 100%;
+}
+
+/* Demo Chart */
+#chart {
+  margin: 0 auto;
+}
+
+/* Demo Docking Layout */
+.demo-docking-layout smart-docking-layout {
+  width: 100%;
+  height: 500px;
+  background-color: #EEEDF3;
+}
+
+.demo-docking-layout smart-docking-layout .smart-items-container smart-splitter-item.smart-element,
+.demo-docking-layout smart-docking-layout .smart-items-container > .smart-container > smart-splitter-item.smart-element {
+  width: 50%;
+  height: 50%;
+}
+
+.demo-docking-layout smart-docking-layout smart-tabs-window smart-slider.smart-element,
+.demo-docking-layout smart-docking-layout smart-tabs-window smart-multiline-text-box.smart-element {
+  height: 100%;
+  width: 100%;
+}
+
+.demo-docking-layout smart-docking-layout smart-tabs-window smart-multiline-text-box.smart-element {
+  display: block;
+}
+
+/* Demo Card View */
+
+
+.demo-card-view .firstName:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/user-filled.png");
+}
+
+.demo-card-view .lastName:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/signature-filled.png");
+}
+
+.demo-card-view .birthday:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/birthday-filled.png");
+}
+
+.demo-card-view .petName:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/pet-commands-follow-filled.png");
+}
+
+.demo-card-view .productName:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/box-filled.png");
+}
+
+.demo-card-view .price:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/price-tag-euro-filled.png");
+}
+
+.demo-card-view .quantity:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/negative-dynamic-filled.png");
+}
+
+.demo-card-view .country:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/country-filled.png");
+}
+
+.demo-card-view .timeOfPurchase:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/alarm-clock-filled.png");
+}
+
+.demo-card-view .expired:after {
+  background-image: url("https://img.icons8.com/ios/16/000000/expired-filled.png");
+}
+
+.demo-card-view .red, .demo-card-view .yellow, .demo-card-view .green {
+  display: inline-block;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.demo-card-view .red {
+  background-color: #E94F37;
+  color: white;
+}
+
+.demo-card-view .yellow {
+  background-color: #FFEE93;
+}
+
+.demo-card-view .green {
+  background-color: #63C7B2;
+  color: white;
+}
+
+/* Big Demos */
+.demo-card-view,
+.demo-kanban,
+.demo-docking-layout,
+.demo-chart,
+.demo-gantt,
+.demo-table,
+.demo-grid,
+.demo-scheduler {
+  max-width: 100%;
+}
+
+.demo-card-view .header,
+.demo-kanban .header,
+.demo-docking-layout .header,
+.demo-chart .header,
+.demo-gantt .header,
+.demo-table .header,
+.demo-grid .header,
+.demo-scheduler .header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+}
+
+/* Settings Panel - Start */
+#principal{
+  padding: 10px 50px;
+}
+#settingsPanel {
+  background-color: rgba(2, 83, 56, 0.219);
+  color: var(--smart-background-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: -2px 0px 5px 0px rgba(0, 0, 0, 0.575);
+  width: 165px;
+  height: 100vh;
+  padding: 5px;
+  transition: left 0.2s ease-in;
+  z-index: 9999;
+  box-sizing: content-box;
+}
+
+#settingsPanel * {
+  box-sizing: border-box;
+}
+
+#settingsPanel #settingsContent {
+  overflow: hidden;
+}
+
+#settingsPanel #settingsContent .colors button {
+  border: 0;
+  padding: 0;
+  margin-top: 5px;
+  margin-right: 5px;
+  display: inline-block;
+  position: relative;
+  outline: unset;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+/* Settings Panel - End */

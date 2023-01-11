@@ -1,0 +1,134 @@
+<style>
+  .smart-table {
+    width: 90%;
+    height: 600;
+  }
+
+  .file-drop-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: auto;
+    max-width: 100%;
+    padding: 25px;
+    border: 4px dashed rgb(32, 72, 95);
+    border-radius: 3px;
+    transition: 0.2s;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+  }
+
+  .choose-file-button {
+    flex-shrink: 0;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    padding: 8px 15px;
+    margin-right: 10px;
+    font-size: 15px;
+    text-transform: uppercase;
+  }
+
+  .file-message {
+    font-size: small;
+    font-weight: 300;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .file-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0;
+
+  }
+smart-sortable {
+    width: 300px;
+    height: 0px;
+}
+
+ol {
+    background-color: rgba(252, 247, 247, 0);
+    padding: 30px;
+}
+
+    ol li {
+        margin: 5px;
+        background-color: rgba(32, 72, 95, 0);
+        color: rgb(236, 235, 235);
+        font-family: var(--smart-font-family);
+        font-size: 16px;
+    }
+  .cell-class-1 {
+    background: #37C18B;
+    color: white;
+  }
+</style>
+
+<body>
+  <form id="configfile" action="/objetivos/confichero" method="post" enctype="multipart/form-data">
+    <div class="container-fluid">
+      <div class="col text-center">
+        <div class="file-drop-area">
+          <span class="choose-file-button">Elige un fichero</span>
+          <span class="file-message text-primary">o arrastralo aquí</span>
+          <input class="file-input" type="file" id="file01" name="file01" accept=".csv,.txt" aria-describedby="file01">
+        </div>
+      </div>
+      <br>
+      <h3>
+        <div class="row">
+          <div class="col-md-8">
+            <%=fich%>
+          </div>
+          <div class="col-md-1">
+            Jerarquia
+          </div>
+        </div>
+      </h3>
+      <div class="row">
+        <div class="col-md-8">
+          <smart-table id="Fgrid"></smart-table>
+        </div>
+        <div class="col-md-1">
+          <smart-sortable id="jerarquia" items="li">
+            <ol>
+                <li>Strawberries</li>
+                <li>Apples</li>
+               
+            </ol>
+        </smart-sortable>
+        </div>
+      </div>
+      <br>
+    </div>
+  </form>
+  </div>
+</body>
+
+<script type="module" src="../../javascripts/smart/smart.table.js"></script>
+<script type="module" src="../../javascripts/smart/smart.sortable.js"></script>
+<%- include('./partials/footer.ejs') %>
+
+<script>$(document).on('change', '.file-input', function() {
+  var filesCount = $(this)[0].files.length;
+  var textbox = $(this).prev();
+  if (filesCount === 1) {
+    var fileName = $(this).val().split('\\').pop();
+    textbox.text(fileName);
+  } else {
+    textbox.text(filesCount + ' files selected');
+  }
+  document.getElementById('configfile').submit();
+});
+</script>
+
+<script type="module" src="../../javascripts/source/configfilegrid.js"></script>

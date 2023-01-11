@@ -1,0 +1,275 @@
+<style>
+  .smart-grid {
+    width: auto;
+    height: 35%;
+    max-height: 300px;
+  }
+
+  .smart-table {
+    position: relative;
+    padding: 0px;
+    width: auto;
+    height: 100;
+  }
+
+  .file-drop-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: auto;
+    max-width: 100%;
+    padding: 15px;
+    border: 4px dashed rgb(32, 72, 95);
+    border-radius: 3px;
+    transition: 0.2s;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+  }
+
+  .choose-file-button {
+    flex-shrink: 0;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    padding: 8px 15px;
+    margin-right: 10px;
+    font-size: 15px;
+    text-transform: uppercase;
+  }
+
+  .file-message {
+    font-size: small;
+    font-weight: 300;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .file-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0;
+
+  }
+
+  smart-list-box {
+    width: 300px;
+    height: 450px;
+    border: 4px dashed rgb(32, 72, 95);
+  }
+
+  .smart-element {
+    outline: 0;
+    box-sizing: none !important;
+    font-family: var(--smart-font-family);
+    font-size: var(--smart-font-size);
+    font-weight: 400;
+    background: #f7f7f7;
+    color: #f01010;
+    /*color de arrastre*/
+  }
+</style>
+<div class="container-fluid">
+
+  <form id="configfile" action="/objetivos/confichero" method="post" enctype="multipart/form-data">
+    <div class="col text-center">
+      <div class="file-drop-area">
+        <span class="choose-file-button">Elige un fichero o arrástralo aquí</span>
+        <input class="form-control file-input" type="file" id="file01" name="file01" accept=".csv,.txt"
+          aria-describedby="file01">
+      </div>
+      <%=fich%>
+    </div>
+  </form>
+  <form class="row g-3 needs-validation" id="savedata" action="/objetivos/grabarfichero" method="post">
+    <div class="row">
+      <% if (cab.length> 0) {%>
+        <div class="col-md-12">
+          <div class="shadow p-3 mb-5 bg-body rounded">
+            <smart-table id="Ftable"></smart-table>
+          </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+          <input type="text" name="fichero" id="fichero" value="<%=fich%>" hidden>
+          <label for="idcabecera" class="control-label">
+            <h5>Campos del Fichero:
+            </h5>
+          </label>
+          <smart-list-box id="idcabecera" name="idcabecera" allow-drag allow-drop>
+          </smart-list-box>
+          <select class="custom-select border-left-primary" multiple id="cabecerasadhow" name="cabecerasadhow"
+            aria-label="" hidden>
+            <% for (var i=0; i < cab.length; i++) { %>
+              <option value="<%=cab[i] %>">
+                <%=cab[i] %>
+              </option>
+              <% } %>
+          </select>
+          <select class="custom-select border-left-primary" multiple id="valoressadhow" name="valoressadhow"
+            aria-label="" hidden>
+            <% for (var i=0; i < lin.length; i++) { %>
+              <option value="<%=lin[i] %>">
+                <%=lin[i] %>
+              </option>
+              <% } %>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="idfila" class="control-label">
+            <h5>Jerarquía de Campos </h5>
+          </label>
+          <a href="#" id="idlimpiar" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar todas las filas">
+            <i class="fas fa-trash-alt text-danger"></i> </a>
+          <smart-list-box id="idfila" name="idfila" allow-drag allow-drop
+            placeholder="Arrastra hasta 4 Campos de Fichero a los Campos de Jerarquia">
+          </smart-list-box>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select form-select-sm" multiple id="idestrategico" name="idestrategico"
+            aria-label="Campo Estrategico" hidden>
+            <% for (var i=0; i < estrategico.length; i++) { %>
+              <option value="<%=estrategico[i] %>">
+                <%=estrategico[i] %>
+              </option>
+              <% } %>
+          </select>
+          <label for="idestrategia" class="control-label">
+            <h5>Estratégico / Operación</h5>
+          </label>
+          <select class="form-select form-select-sm" id="idestrategia" name="idestrategia"
+            aria-label="Campo Estrategico">
+            <option value="E" selected> Estratégico </option>
+            <option value="O"> Operación </option>
+          </select>
+          <br />
+          <select class="form-select form-select-sm" multiple id="idtipos" name="idtipos" aria-label="Campos Tipo"
+            hidden>
+            <% for (var i=0; i < tipos.length; i++) { %>
+              <option value="<%=tipos[i] %>">
+                <%=tipos[i] %>
+              </option>
+              <% } %>
+          </select>
+          <br />
+          <label for="idtipo" class="control-label">
+            <h5>Tipo Dato </h5>
+          </label>
+          <select class="form-select form-select-sm" id="idtipo" name="idtipo" aria-label="Tipo de Campo">
+            <option value="" selected> Elegir tipo .... </option>
+            <% for (var i=0; i < tipo.length; i++) { %>
+              <option value="<%=tipo[i] %>">
+                <%=tipo[i] %>
+              </option>
+              <% } %>
+          </select>
+          <br /> <br />
+          <label for="idcol" class="control-label">
+            <h5>Campo de Columna (Mes)</h5>
+          </label>
+          <select class="form-select form-select-sm" id="idcol" name="idcol" aria-label="Campo de Columna">
+            <% for (var i=0; i < cab.length; i++) { %>
+              <% if (cab[i]==='Mes' ) { %>
+                <option value="<%=cab[i] %>" selected>
+                  <%=(i+1).toString().padStart(2, '0' ) %>. <%=cab[i] %>
+                </option>
+                <%}%>
+                  <% } %>
+          </select>
+          <br /><br />
+          <label for="idresumen" class="control-label">
+            <h5>Campo de Resúmen</h5>
+          </label>
+          <select class="form-select form-select-sm" id="idresumen" name="idresumen" aria-label="Campo de Columna"
+            required>
+            <option value="#NA" selected> Elegir un campo ...</option>
+            <% for (var i=0; i < cab.length; i++) { %>
+              <% if (tipos[i]==='Número' ) { %>
+                <option value="<%=i%>">
+                  <%=(i+1).toString().padStart(2, '0' ) %>. <%=cab[i] %>
+                </option>
+                <%}%>
+                  <% } %>
+          </select>
+          <br /> <br />
+          <div class="text-center">
+            <button class="btn bg-azulbaculo" id="idguardar" name="idguardar" type="button">
+              Continuar ... <i class="fas fa-angle-double-right    "></i></button>
+
+          </div>
+        </div>
+    </div>
+</div>
+<%}%>
+  <!-- Modal -->
+  <div class="modal fade" id="guardafileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="guardafileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content text-center">
+        <div class="modal-header">
+          <h4 class="modal-title" id="guardafileModalLabel"> <i class="fas fa-save "></i> Guardar Nuevo Layout</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="container">
+          <div class="col-md-12">
+            <label for="Lgrid" class="form-label"> Layouts Guardados en BBDD</label>
+            <smart-grid id="Lgrid"></smart-grid>
+          </div>
+        </div>
+        <div class="modal-body row col-md-12">
+          <div class="col-md-2">
+            <label for="flayout" class="form-label">Codigo del Layout</label>
+            <input type="text" class="form-control" id="flayout" name="flayout" required>
+          </div>
+          <div class="col-md-6">
+            <label for="namelayout" class="form-label">Nombre del Layout</label>
+            <input type="text" class="form-control" id="namelayout" name="namelayout" required>
+            <label for="comentarios" class="form-label">Comentarios</label>
+            <textarea class="form-control" id="comentarios" name="comentarios" rows="3" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+          <button type="button" id="registrar" name="registrar" class="btn btn-success"> Grabar
+            <div class="spinner-grow text-warning" role="status" id='spinguardar' name='spinguardar'>
+              <span class="visually-hidden"> Guardando ......</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin  Modal -->
+
+  </form>
+  <br>
+  </div>
+
+<script type="module" src="../../javascripts/smart/smart.grid.js"></script>
+<script type="module" src="../../javascripts/smart/smart.table.js"></script>
+<script type="module" src="../../javascripts/smart/smart.listbox.js"></script>
+<script type="module" src="../../javascripts/source/jutils.js"></script>
+<script type="module" src="../../javascripts/source/configfile.js"></script>
+
+<script type="module" >
+  $(document).on('change', '.file-input', function() {
+  var filesCount = $(this)[0].files.length;
+  var textbox = $(this).prev();
+  if (filesCount === 1) {
+    var fileName = $(this).val().split('\\').pop();
+    textbox.text(fileName);
+  } else {
+    textbox.text(filesCount + ' files selected');
+  }
+  document.getElementById('configfile').submit();
+});
+</script>
+<%- include('./partials/footer.ejs') %>

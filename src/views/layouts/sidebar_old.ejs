@@ -1,0 +1,209 @@
+<html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title><%- title %></title>
+    </head>
+    <style>
+        smart-menu  {
+            min-height: 1px;
+            height: 15px;
+            width: 20px;
+        }
+    </style>
+<%- include('../partials/header.ejs') %>
+<script type="module" src="../../javascripts/smart//smart.chart.js"></script>
+<script type="module" src="../../javascripts/smart/smart.input.js"></script>
+<script type="module" src="../../javascripts/smart/smart.colorinput.js"></script>
+<script type="module" src="../../javascripts/smart/smart.router.js"></script>
+<script type="module" src="../../javascripts/smart/smart.table.js"></script>
+<script type="module" src="../../javascripts/smart/smart.tree.js"></script>
+<script type="module" src="../../javascripts/smart/smart.tooltip.js"></script>
+<script type="module" src="../../javascripts/smart/smart.menu.js"></script>	
+
+<body class="" components-style="bootstrap">
+    <div id="contentContainer"  class="smart-visibility-hidden">
+        <div id="settingsPanel" class="main">
+        <aside id="sideBar" class="sidebar">
+            <div class="logo-holder">
+                <div class="spacer w-auto"></div>
+                <div class="logo">
+                    <a href="./">
+                        <img  src="../../../images/Logo_Baculo_Anagrama_Ok_BSales.png" alt="Logo Baculo" srcset="">
+                    </a>
+                </div>
+
+                <div id="toggleButton" class="toggle-button">
+                    <img src="" class=""/>
+                </div>
+            </div>
+
+            <div class="tree-holder">
+                <smart-tree id="tree" expand-mode="single" selected-indexes='["1.0"]' selection-mode="one" selection-target="leaf" toggle-element-position="far" toggle-mode="click">
+                    <smart-tree-item><span class="material-icons">layers</span> <a href="./"><span class="label-name">Dashboard</span></a></smart-tree-item>
+
+                    <smart-tree-item id="pagesLabel" label="pagesTemplate" class="group-label"></smart-tree-item>
+                    <smart-tree-items-group>
+                        <span class="material-icons">dashboard</span> <span class="label-name">Applications</span>
+
+                        <smart-tree-items-group>Dashboards
+                            <smart-tree-item><a href="./dashboard-1">Dashboard 1</a></smart-tree-item>
+                            <smart-tree-item><a href="./dashboard-2">Dashboard 2</a></smart-tree-item>
+                            <smart-tree-item><a href="./dashboard-3">Dashboard 3</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+                        </smart-tree-items-group>
+
+                        <smart-tree-items-group>E-commerce
+                            <smart-tree-item><a href="./e-commerce">Dashboard</a></smart-tree-item>
+                            <smart-tree-item><a href="./clients">Clients</a></smart-tree-item>
+                            <smart-tree-item><a href="./e-commerce-details">Details</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+                            <smart-tree-item><a href="./e-commerce-list">List</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+                            <smart-tree-item><a href="./e-commerce-checkout">Checkout</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+                        </smart-tree-items-group>
+
+                        <smart-tree-items-group>Analytics
+                            <smart-tree-item><a href="./analytics">Dashboard</a></smart-tree-item>
+                        </smart-tree-items-group>
+
+                        <smart-tree-items-group>Projects
+                            <smart-tree-item><a href="./projects-list-1">List 1</a></smart-tree-item>
+                            <smart-tree-item><a href="./projects-list-2">List 2</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+                            <smart-tree-item><a href="./detail">Detail</a></smart-tree-item>
+                        </smart-tree-items-group>
+
+                        <smart-tree-items-group>Crypto
+                            <smart-tree-item><a href="./crypto">Dashboard</a></smart-tree-item>
+                        </smart-tree-items-group>
+
+                        <smart-tree-items-group>Profile
+                            <smart-tree-item><a href="./profile-1">Overview 1</a></smart-tree-item>
+                            <smart-tree-item><a href="./profile-2">Overview 2</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+                            <smart-tree-item><a href="./users-list">Users</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+                            <smart-tree-item><a href="./social">Social Page</a></smart-tree-item>
+                            <smart-tree-item><a href="./settings">Account Settings</a></smart-tree-item>
+                        </smart-tree-items-group>
+
+                        <smart-tree-items-group>Kanban
+                            <smart-tree-item><a href="./tasks">Tasks 1</a></smart-tree-item>
+                            <smart-tree-item><a href="./tasks-2">Tasks 2</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+                        </smart-tree-items-group>
+
+                        <smart-tree-item><a href="./chat">Chat</a></smart-tree-item>
+                        <smart-tree-item><a href="./inbox">Inbox</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+                    </smart-tree-items-group>
+
+                    <smart-tree-items-group>
+                        <span class="material-icons">contact_page</span> <span class="label-name">Pages</span>
+                        <smart-tree-item><a href="./sign-in">Sign In</a></smart-tree-item>
+                        <smart-tree-item><a href="./sign-up">Sign Up</a></smart-tree-item>
+                        <smart-tree-item><a href="./reset-password">Reset Password</a></smart-tree-item>
+
+                        <smart-tree-item><a href="./invoice">Invoice</a></smart-tree-item>
+                        <smart-tree-item><a href="./pricing">Pricing</a></smart-tree-item>
+
+                        <smart-tree-item><a href="./404">404 Page</a></smart-tree-item>
+                        <smart-tree-item><a href="./500">500 Page</a></smart-tree-item>
+
+                        <smart-tree-item><a href="./knowledge-base">Knowledge Base</a> <span class="smart-badge smart-badge-danger">New</span></smart-tree-item>
+
+                        <smart-tree-item><a href="./blank">Blank Page</a></smart-tree-item>
+                    </smart-tree-items-group>
+
+                    <smart-tree-items-group>
+                        <span class="material-icons">library_books</span> <span class="label-name">Documentation</span>
+                        <smart-tree-item><a href="./introduction">Introduction</a></smart-tree-item>
+                        <smart-tree-item><a href="./getting-started">Getting Started</a></smart-tree-item>
+                        <smart-tree-item><a href="./plugins">Plugins</a></smart-tree-item>
+                        <smart-tree-item><a href="./changelog">Changelog</a></smart-tree-item>
+                    </smart-tree-items-group>
+
+                    <smart-tree-item id="toolsLabel" label="toolsTemplate" class="group-label"></smart-tree-item>
+
+                    <smart-tree-items-group>
+                        <span class="material-icons">grid_on</span> <span class="label-name">UI Elements</span>
+                        <smart-tree-item><a href="./toasts">Toasts</a></smart-tree-item>
+                        <smart-tree-item><a href="./buttons">Buttons</a></smart-tree-item>
+                        <smart-tree-item><a href="./cards">Cards</a></smart-tree-item>
+                        <smart-tree-item><a href="./carousel">Carousel</a></smart-tree-item>
+                        <smart-tree-item><a href="./embed-video">Embed Video</a></smart-tree-item>
+                        <smart-tree-item><a href="./general">General</a></smart-tree-item>
+                        <smart-tree-item><a href="./grid-layout">Grid Layout</a></smart-tree-item>
+                        <smart-tree-item><a href="./modals">Modals</a></smart-tree-item>
+                        <smart-tree-item><a href="./tabs">Tabs</a></smart-tree-item>
+                        <smart-tree-item><a href="./typography">Typography</a></smart-tree-item>
+                    </smart-tree-items-group>
+
+                    <smart-tree-items-group>
+                        <span class="material-icons">favorite</span> <span class="label-name">Icons</span>
+                        <smart-tree-item><a href="./feather">Feather</a></smart-tree-item>
+                        <smart-tree-item><a href="./font-awesome">Font Awesome</a></smart-tree-item>
+                    </smart-tree-items-group>
+
+                    <smart-tree-items-group>
+                        <span class="material-icons">fact_check</span> <span class="label-name">Forms</span>
+                        <smart-tree-item><a href="./layouts">Layouts</a></smart-tree-item>
+                        <smart-tree-item><a href="./basic-inputs">Basic Inputs</a></smart-tree-item>
+                        <smart-tree-item><a href="./input-groups">Input Groups</a></smart-tree-item>
+                    </smart-tree-items-group>
+
+                    <smart-tree-item>
+                        <span class="material-icons">table_chart</span><a href="./tables"><span class="label-name">Tables</span></a>
+                    </smart-tree-item>
+
+                    <smart-tree-item id="pluginLabel" label="pluginTemplate" class="group-label"></smart-tree-item>
+
+                    <smart-tree-items-group>
+                        <span class="material-icons">fact_check</span> <span class="label-name">Form Plugins</span>
+                        <smart-tree-item><a href="./advanced-inputs">Advanced Inputs</a></smart-tree-item>
+                        <smart-tree-item><a href="./editor">Editor</a></smart-tree-item>
+                        <smart-tree-item><a href="./validation">Validation</a></smart-tree-item>
+                        <smart-tree-item><a href="./wizard">Wizard</a></smart-tree-item>
+                    </smart-tree-items-group>
+
+                    <smart-tree-items-group>
+                        <span class="material-icons">table_chart</span> <span class="label-name">Data Tables</span>
+                        <smart-tree-item><a href="./responsive-table">Responsive Table</a></smart-tree-item>
+                        <smart-tree-item><a href="./table-with-buttons">Table with Buttons</a></smart-tree-item>
+                        <smart-tree-item><a href="./column-search">Column Search</a></smart-tree-item>
+                        <smart-tree-item><a href="./multi-selection">Multi Selection</a></smart-tree-item>
+                        <smart-tree-item><a href="./ajax-data">Ajax Sourced Data</a></smart-tree-item>
+                    </smart-tree-items-group>
+
+                    <smart-tree-item>
+                        <span class="material-icons">pie_chart</span><a href="./charts"><span class="label-name">Charts</span></a>
+                    </smart-tree-item>
+
+                    <smart-tree-item>
+                        <span class="material-icons">alarm</span><a href="./notifications"><span class="label-name">Notifications</span></a>
+                    </smart-tree-item>
+
+                    <smart-tree-items-group>
+                        <span class="material-icons">place</span> <span class="label-name">Maps</span>
+                        <smart-tree-item><a href="./google-maps">Google Maps</a></smart-tree-item>
+                        <smart-tree-item><a href="./vector-maps">Vector Maps</a></smart-tree-item>
+                    </smart-tree-items-group>
+
+                    <smart-tree-item>
+                        <span class="material-icons">calendar_today</span><a href="./scheduler"><span class="label-name">Scheduler</span></a>
+                    </smart-tree-item>
+
+                    <smart-tree-items-group>
+                        <span class="material-icons">share</span> <span class="label-name">Multi Level</span>
+                        <smart-tree-items-group>Two Levels
+                            <smart-tree-item>Item 1</smart-tree-item>
+                            <smart-tree-item>Item 2</smart-tree-item>
+                        </smart-tree-items-group>
+                        <smart-tree-items-group>Three Levels
+                            <smart-tree-items-group>Item 1
+                                <smart-tree-item>Item 1</smart-tree-item>
+                                <smart-tree-item>Item 2</smart-tree-item>
+                            </smart-tree-items-group>
+                            <smart-tree-item>Item 2</smart-tree-item>
+                        </smart-tree-items-group>
+                    </smart-tree-items-group>
+                </smart-tree>
+            </div>
+        </aside>
+        <div id="principal"><%- body %></div>
+    </body>
+    </html>

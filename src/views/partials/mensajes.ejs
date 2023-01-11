@@ -1,0 +1,28 @@
+
+<%if (mensajeOk && mensajeOk.length > 0) {%>
+  <div class="col-md-auto">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <strong>Enhorabuena! </strong><br />
+          <%=mensajeOk%>.
+    </div>
+ </div> 
+ 
+<% mensajeOk=null}%>
+
+<%if (mensajeError && mensajeError.length > 0) {%>
+   <div class="col-md-auto">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <strong>Aviso!</strong><br />
+          <%=mensajeError%>.
+    </div>
+  </div>
+<% mensajeError = null}%>
+
+<script>
+  var alertList = document.querySelectorAll('.alert');
+  alertList.forEach(function (alert) {
+    new bootstrap.Alert(alert)
+  })
+</script>

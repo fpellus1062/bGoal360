@@ -1,0 +1,22 @@
+Abrimos Listado AJAX /tableAjax undefined C:11/1/2023, 18:25:34leerempresa session:  1
+11/1/2023, 18:25:34 #Total Objetivos11/1/2023, 18:25:43 #ID Session: ZfDw8MjPStHmbx2XJeb8FUTxmsdVNWGL
+11/1/2023, 18:25:45 #ID Session: ZfDw8MjPStHmbx2XJeb8FUTxmsdVNWGL
+11/1/2023, 18:25:43 # Log: leerlayouts 2
+11/1/2023, 18:25:45 # /resumenlayouts 2 387
+11/1/2023, 18:25:45 # Estamos en leerlayoutgrafico ... 
+ /distribucion 2 387 1
+11/1/2023, 18:25:45 #Abrimos Objetivos AJAX /listalayouts 387
+Abrimos Listado AJAX /tableAjax undefined C:\Desarrollo\bSales360\data\02\L210 Importe_11/11/1/2023, 18:25:45 #Total Objetivos ...: 
+11/1/2023, 18:25:45 #Lista Total Ventas Nuevos...: 
+Log: Get Datos Total: 136.514ms
+11/1/2023, 18:25:45#leerempresa session:  2
+:25:45 #En /objetivos (leeresquema)....:  387
+11/1/2023, 18:25:45 #Log: leerempresa 2
+11/1/2023, 18:25:45 #En /objetivos (leerempresa)....: 
+11/1/2023, 18:25:45 #En /objetivos (leeresquema)....:  387
+Log: leerniveles 387
+Log: leerfilaoriginal 387 1
+Log: leerdatosoriginal: 95.355ms
+11/1/2023, 18:25:45 #Log: leerempresa 2
+11/1/2023, 18:25:45 #En /objetivos (leerempresa)....: 
+Log: leerfilaoriginal 387 1

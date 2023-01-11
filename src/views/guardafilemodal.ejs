@@ -1,0 +1,167 @@
+ <!-- Modal -->
+ <style>
+  .smart-grid {
+    width: auto;
+    height: 30%;
+    max-height: 300px;
+  }
+</style>
+          <div class="modal fade" id="guardafileModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="guardafileModalLabel">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content text-center">
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="guardafileModalLabel"> <i class="fas fa-save "></i> Guardar Nuevo Layout</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                
+                  </div>
+                  <div class="container">
+                    <div class="col-md-12">
+                      <label for="Lgrid" class="form-label"> Layouts Guardados en BBDD</label>
+                         <smart-grid  id="Lgrid"></smart-grid>
+                    </div>
+                  </div>
+                 
+                  <div class="modal-body row col-md-12">
+                    <div class="col-md-4">
+                         <label for="flayout" class="form-label">Codigo del Layout</label>
+                         <input type="text" class="form-control" id="flayout" name ="flayout" required>
+                    </div>
+                    <div class="col-md-8">
+                         <label for="namelayout" class="form-label">Nombre del Layout</label>
+                        <input type="text" class="form-control" id="namelayout" name ="namelayout" required>
+                        <label for="comentarios" class="form-label">Comentarios</label>
+                        <textarea class="form-control" id="comentarios" name="comentarios" rows="3" required></textarea>
+                     </div>
+                  <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <div class="spinner-grow text-success" role="status"  id='spinguardar' name='spinguardar'>
+                          <span class="visually-hidden"> Guardando ......</span>
+                        </div>
+                        <button id="registrar" class="btn btn-success" >   
+                            <span class="spinner-border spinner-border-sm" id='spinguardar' name='spinguardar'></span>
+                          <i class="far fa-check-circle"></i> Aceptar 
+                        </button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Fin  Modal --> 
+<script type="module" src="../../javascripts/smart/smart.grid.js"></script>
+<script>
+  
+  $(document).ready(function() {
+  $('#spinguardar').hide();
+  const Lgrid = document.querySelector("#Lgrid");
+  const toast = document.querySelectorAll('smart-toast')[0]
+  $("#registrar").on("click", function () {
+    if ($('#flayout').val() != '' && $('#namelayout').val() != '' && $('#comentarios').val() != '') {
+      const lay  = document.getElementById("flayout");
+    
+      for (var i = 0; i < Lgrid.rows.length; i++) {
+        console.log(Lgrid.rows[i].data.codigo);
+        if (lay.value == Lgrid.rows[i].data.codigo)
+        {
+          toast.open();
+          toast.type = 'error';
+          toast.value = 'Codigo de Layout ya existente!';
+          errores = true;
+          return false;
+        }
+      }
+      toast.open();
+      toast.type = 'seccess';
+      toast.value = 'Preparando Layout de Trabajo!';
+      errores = true;
+      configfile.submit();
+      $('#spinguardar').show();
+    }
+  });
+  
+  const Lfilas =  [
+  'id: number',
+  'codigo: string',
+  'descripcion: string',
+  'fecha: string',
+  'observaciones: string'
+  ];
+
+  const Lcabecera = [
+    { label:  'id',  dataField: 'id', align: 'right', dataType: 'number', visible: false, cellsFormat: 'n'},
+    {
+        label: 'Codigo', dataField: 'codigo', dataType: 'string',allowEdit: false
+    },
+    {
+      label: 'Nombre', dataField: 'descripcion', dataType: 'string',allowEdit: false
+    },
+    {
+    label: 'Fecha', dataField: 'fecha', dataType: 'string',allowEdit: false
+  },
+  { label:  'Observaciones',  dataField: 'observaciones', align: 'left', dataType: 'string', visible: false},
+  ];
+  $('a[data-toggle=modal], button[data-toggle=modal]').click(function () {
+    $.ajax({ 
+      url: '/objetivos/leerlayout',
+      type: 'GET',
+      dataType: 'json',
+      cache: false, 
+      data: { empresa_id: '2'},  
+      success: function(datos) {
+        window.Smart('#Lgrid', class {
+          get properties() {
+            return {
+              scrolling: 'deferred',
+              sorting: {
+                enabled: true
+              },
+              appearance: {
+                allowRowDetailToggleAnimation: true,
+                autoShowColumnFilterButton: false,
+            },
+              selection: {
+                enabled: true,
+                mode: 'extended',
+                allowCellSelection: false
+              },
+              behavior: { columnResizeMode: 'growAndShrink' },
+              layout: {
+               rowHeight: 'auto',
+               allowCellsWrap: true,
+                },
+              appearance: {
+                  allowRowDetailToggleAnimation: true,
+                  autoShowColumnFilterButton: false,
+              },
+              rowDetail: {
+                enabled: true,
+                visible: true,
+                height: 100,
+                template: 
+                    `<div class="container">
+                            <strong>Observaciones:</strong>
+                            </br>
+                            <p>{{observaciones}}</p>
+                    </div>`
+                    },
+                  columns: Lcabecera,
+                  dataSource: new window.Smart.DataAdapter({
+                      dataSource:  datos,
+                      dataSourceType: 'json',
+                      id: 'id',
+                      dataFields: Lfilas
+                })
+              };
+          }
+          });
+        },
+       error: function(jqXHR, textStatus, err) {
+            alert('Error '+textStatus+', err '+err)
+       },
+    });
+  });
+  console.log(Lgrid.rows);
+});
+</script>

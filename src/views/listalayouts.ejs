@@ -1,0 +1,112 @@
+<style>
+ .smart-grid {
+     width: 99%;
+     height: 48%;
+ }
+   smart-button {
+     border: none;
+   }
+.smart-table th>.wrapper {
+  justify-content: center;
+  font-weight: bold;
+}
+ #chart {
+     width: 99%;
+     height: 80%
+ }
+ #chartdist {
+   width: 99%;
+   height: 80%
+} 
+ #distable {
+  padding-top: 0px;
+  width: 99%;
+  height: 80%
+}
+  #avisoerror{
+    font-size: large;
+}
+.card {
+    background-color: white;
+    width: 130px;
+    height: 400px;
+}
+#cabecera {
+  background-color: rgb(88, 147, 187);
+  color: white;
+  height: 40px;
+}
+h4 {
+  padding-top: 10px;
+  text-align: center;
+}
+.card-title{
+   background-color: #156CAD;
+   color: white;
+   height: 50px;
+ }
+ .card-title1{
+  background-color:#FA241B;
+   color: white;
+   height: 50px;
+ }
+ .card-title2{
+   background-color: rgb(211, 192, 18);
+   color: white;
+   height: 50px;
+ }
+ .card-content{
+   font-size: large;
+   margin-left: 5px;
+   margin-right: 5px;
+   text-align: center;
+ }
+ .card-columns .card {
+  margin-bottom: 0.75rem;
+}
+
+
+ </style>
+  <div>
+      <form id="listalayouts" name ="listalayouts" action="/objetivos/listalayouts" method="post">
+        <input type="text" name = "idlayout" id = "idlayout"  class="form-control" hidden > 
+        <input type="text" name = "idversion" id = "idversion"  class="form-control" hidden > 
+      </form>
+       <smart-grid  id="Laygrid"></smart-grid>  
+       <br>
+   </div>
+       <smart-cards>
+        <div class="card-columns">
+          <smart-card id="resumen" class="card" item-template="largeTemplate"></smart-card>
+          <smart-card id="resumen1" class="card" item-template="largeTemplate1"></smart-card>
+          <smart-card id="resumen2" class="card" item-template="largeTemplate2"></smart-card>          
+        </div>
+       </smart-cards>
+      <template id="largeTemplate">
+        <div class="card-title"><h4> <i class="fa fa-list" aria-hidden="true"></i> Niveles y Registros </h4></div>
+        <div class="card-content">{{linea1}}</div>
+        <br>
+        <div class="card-content">{{linea2}}</div>
+        <br>
+      </template>
+      <template id="largeTemplate1">
+        <div class="card-title1"><h4> <i class="fas fa-chart-bar"></i>  Volúmen </h4></div>
+        <br>
+        <div class="card-content"> <smart-chart id="chart"></smart-chart></div>
+      </template>
+      <template id="largeTemplate2">
+        <div class="card-title2" ><h4>  <i class="fas fa-table"></i>  Distribución </h4></div>
+        <div class="progress" style="height: 5px;"><div class="progress-bar progress-bar-success" role="progressbar" id = "progressbar" name = "progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>
+        <div class="card-content"> <smart-table name="distable" id="distable" tooltip></smart-table></div>
+      </template>
+  </div>
+
+  <script type="module" src="../../javascripts/smart/smart.grid.js"></script>
+  <script type="module" src="../../javascripts/smart/smart.table.js"></script>
+  <script type="module" src="../../javascripts/smart/smart.card.js"></script> 
+  <script type="module" src="../../javascripts/smart/smart.chart.js"></script>
+  <script type="module" src="../../javascripts/smart/smart.button.js"></script> 
+
+  <%- include('./partials/footer.ejs') %>
+  <script type="module" src="../../javascripts/source/jutils.js"></script>
+  <script type="module" src="../../javascripts/source/listalay.js"></script>

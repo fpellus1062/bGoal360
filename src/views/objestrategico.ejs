@@ -1,0 +1,243 @@
+<style>
+  smart-tabs {
+    width: 100%;
+    height: 240px;
+  }
+
+  smart-buttom {
+    height: 24px;
+    padding: 6px;
+    border: 1px;
+    margin-top: 1px;
+  }
+
+  .smart-tabs>.smart-container {
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    position: relative;
+    min-height: inherit;
+    box-sizing: unset;
+  }
+
+  .smart-tabs .smart-tabs-header-section {
+    border: 0px solid transparent;
+    background: transparent;
+    color: rgb(46, 74, 124);
+    padding: 0px;
+
+  }
+
+  /* Barra de Seleccion Inferior  de Etiquetas */
+  .smart-tabs-selection-bar {
+    background: rgb(245, 107, 16);
+    height: 4px;
+  }
+
+  /* Control de Etiquetas */
+  .smart-tabs .smart-header .smart-tab-strip {
+    /*border-bottom: 0px solid  rgb(46, 74, 124);*/
+    margin-bottom: 0rem;
+    /*font-weight: bold;*/
+    border: none;
+    height: 42px;
+  }
+
+  .smart-tabs .smart-tabs-content-section {
+    flex: 1;
+    margin: 0;
+    color: var(--smart-tabs-color);
+    background: transparent;
+    border: none;
+    margin-top: 1px;
+  }
+
+  smart-grid-cell .wrap {
+    white-space: normal;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.5;
+  }
+
+  .smart-grid {
+    width: 100%;
+    height: 71%;
+    --smart-font-size: 14px;
+    --smart-grid-template-columns: 350px auto;
+    --smart-grid-footer-height: 25px;
+    --smart-grid-header-height: 40px;
+    --smart-grid-column-header-height: 40px;
+    --smart-grid-cell-background: rgb(124, 252, 141);
+  }
+
+  .smart-window.smart-grid-dialog.open {
+    width: 1400px;
+    height: 168px;
+    left: 189px;
+    top: 131px;
+  }
+
+  .drawContainer,
+  .smart-arrow,
+  .smart-container {
+    border: none;
+    height: fit-content;
+    width: 100%;
+  }
+</style>
+<div>
+  <input type="number" name="maxnivel" id="maxnivel" value="<%=maxnivel%>" hidden>
+  <input type="text" name="resumen" id="resumen" value="<%=resumen%>" hidden>
+  <input type="text" name="idlayout" id="idlayout" value="<%=idlayout%>" hidden>
+  <input type="text" name="version" id="version" value="<%=empresa.version%>" hidden>
+
+  <div class="options">
+    <div class="option"><span id="log"></span></div>
+  </div>
+
+  <smart-tabs id="tabs" name="tabs" selected-index="0">
+    <smart-tab-item label='General'>
+      <div class="row align-items-center">
+        <div class="col-sm-2">
+          <label for="nombre" class="form-label">Empresa</label>
+          <input type="text" class="form-control" name="nombre" id="nombre" value="<%=empresa.nombre%>" readonly>
+        </div>
+        <div class="col-sm-1">
+          <label for="ejercicio_descripcion" class="form-label">Ejercicio</label>
+          <input type="text" class="form-control" name="ejercicio_descripcion" id="ejercicio_descripcion"
+            value="<%=empresa.ejercicio_descripcion%>" readonly>
+        </div>
+        <div class="col-sm-1">
+          <label for="codigo" class="form-label">Código Layout</label>
+          <input type="text" class="form-control" name="codigo" id="codigo" value="<%=empresa.idcodigo%>" readonly>
+        </div>
+        <div class="col-sm-2">
+          <label for="descripcionlay" class="form-label">Descripcion</label>
+          <input type="text" class="form-control " name="descripcionlay" id="descripcionlay"
+            value="<%=empresa.descripcionlay%>" readonly>
+        </div>
+        <div class="col-sm-2">
+          <label for="idversion" class="form-label">Versión Original <%=empresa.version%></label>
+          <select class="form-select form-select-sl" id="idversion" name="idversion" aria-label="Version">
+            <% if (empresa.version=='VP' ) {%>
+              <option value="VP" selected> VP - Version Presupuesto</option>
+              <option value="V1"> V1 - Version Optimista</option>
+              <option value="V2"> V2 - Version Pesimista</option>
+              <option value="V3"> V3 - Version Realista </option>
+              <%}%>
+                <% if (empresa.version=='V1' ) {%>
+                  <option value="V1" selected> V1 - Version Optimista</option>
+                  <option value="V2"> V2 - Version Pesimista </option>
+                  <option value="V3"> V3 - Version Realista </option>
+                  <%}%>
+                    <% if (empresa.version=='V2' ) {%>
+                      <option value="V2" selected> V2 - Version Pesimista</option>
+                      <option value="V1"> V1 - Version Optimista </option>
+                      <option value="V3"> V3 - Version Realista </option>
+                      <%}%>
+                        <% if (empresa.version=='V3' ) {%>
+                          <option value="V3" selected> V3 - Version Realista</option>
+                          <option value="V1"> V1 - Version Optimista</option>
+                          <option value="V2"> V2 - Version Pesimista</option>
+                          <%}%>
+          </select>
+        </div>
+        <div class="col-sm-2 text-right">
+          <br>
+          <smart-button class="primary" id="updateBtn" name="updateBtn" data-dismiss="modal" type="button">
+            <span> <i class="fas fa-save" aria-hidden="true"></i> Guardar </span></smart-button>
+          <smart-button class="success" id="exportBtn" name="exportBtn" type="button">
+            <span> <i class="fas fa-file-excel"></i> Exportar </span></smart-button>
+        </div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-sm-6 text-right">
+          <label for="observaciones" class="form-label">Observaciones</label>
+          <textarea style="resize: none;" class="form-control" aria-label="With textarea" name="observaciones"
+            id="observaciones" rows="3"><%=empresa.observaciones%></textarea>
+        </div>
+      </div>
+    </smart-tab-item>
+    <smart-tab-item label='Configuración'>
+      <div class="row">
+        <div class="col-sm-4">
+          <smart-radio-button enable-container-click id="pi" name="pi" checked data-bs-toggle="tooltip"
+            data-bs-placement="top" title="El cálculo se reaalizará por el % mensual de cada fila"> Peso
+            Ind.</smart-radio-button>
+          <smart-radio-button enable-container-click id="pt" name="pt"> Peso Cía.</smart-radio-button>
+          <br /> <br />
+          <smart-slider id="slider" name="slider" coerce show-tooltip orientation="horizontal" min="0" max="100"
+            value="0" ticks-position="track" mechanical-action="switchWhileDragging">
+            <h5><span class="text-center" id="slidertxt" name="slidertxt"></span></h5>
+          </smart-slider>
+
+        </div>
+        <div class="col-sm-4 text-center">
+
+        </div>
+        <div class="col-sm-4 text-right">
+        </div>
+      </div>
+    </smart-tab-item>
+    <smart-tab-item label='Totales'>
+      <smart-grid id="Tgrid"></smart-grid>
+    </smart-tab-item>
+    <smart-tab-item label='Pesos'>
+      <smart-grid id="Ggrid"></smart-grid>
+    </smart-tab-item>
+  </smart-tabs>
+  <template id="General"><a href="#"><i class="fas fa-info-circle azulbaculo"></i></a>&nbsp Información General
+  </template>
+  <template id="Configuración"><a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+      title="Herramientas de Cálculo"> <i class="fa fa-cogs azulbaculo" aria-hidden="true"></i></a> &nbsp
+    Configuracion</template>
+  <template id="Totales"><a href="#"> <img src="../../images/Total.png" id="img2" /></a> &nbsp
+    Totales</template>
+  <template id="Pesos"><a href="#"><i class="fas fa-calculator azulbaculo"></i></a> &nbsp Trabajo</template>
+
+  <template id="footerTemplate">
+    <div class="row justify-content-center align-items-center g-2">
+      <div class="col text-start"> &nbsp &nbsp Creado por <%=empresa.usuario %> el <%=empresa.fechaalta%>
+      </div>
+      <div class="col text-center">
+
+      </div>
+      <div class="col text-end">Última Actualización el <%=empresa.fechaactualizacion %> &nbsp &nbsp
+      </div>
+    </div>
+  </template>
+  <br />
+  <div>
+    <smart-grid id="grid"></smart-grid>
+  </div>
+  <div>
+    <smart-menu id="menu" mode="dropDown">
+      <smart-menu-item data-id="Recalcular"> <span> <i class="fas fa-balance-scale fa_custom"></i> Recalcular</span>
+      </smart-menu-item>
+      <smart-menu-item data-id="Expandir"> <span> <i class="fas fa-folder-open fa_custom"></i> Expandir Nivel</span>
+      </smart-menu-item>
+      <smart-menu-item data-id="Colapsar"> <span> <i class="fas fa-folder fa_custom"></i> Colapsar Nivel</span>
+      </smart-menu-item>
+    </smart-menu>
+  </div>
+</div>
+
+<script type="module" src="../../javascripts/smart/smart.grid.js"></script>
+<script type="module" src="../../javascripts/smart/smart.checkbox.js"></script>
+
+<script type="module" src="../../javascripts/smart/smart.textbox.js"></script>
+<script type="module" src="../../javascripts/smart/smart.button.js"></script>
+
+<script type="module" src="../../javascripts/smart/smart.radiobutton.js"></script>
+<script type="module" src="../../javascripts/smart/smart.tabs.js"></script>
+<script type="module" src="../../javascripts/smart/smart.slider.js"></script>
+<script type="module" src="../../javascripts/smart/smart.toast.js"></script>
+<!-- JSZip -->
+<script type="text/javascript" src="../../javascripts/smart/jszip.min.js"></script>
+
+<script type="module" src="../../javascripts/source/jutils.js"></script>
+<script type="module" src="../../javascripts/source/griddb.js"></script>
+<script type="module" src="../../javascripts/source/ttable.js"></script>
+
+<%- include('./partials/footer.ejs') %>

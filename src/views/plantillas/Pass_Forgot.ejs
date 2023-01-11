@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>baculo360_User</title>
+</head>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap");
+</style>
+
+<body style=" margin: 10;
+    font-family: Poppins" , Helvetica Neue, Helvetica; font-size: 1rem; font-weight: 400; line-height:0; color:
+    #086aac; background-color: #fff; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent;">
+    <div style="border: none">
+
+        <div style="text-align: center; color: rgb(78, 78, 151)">
+            <h2 class="saludo">Hola <%=nombre%>. ¿Olvidaste tú contraseña?</h2>
+        </div>
+        <div style="text-align: center; color: rgb(78, 78, 151);  padding-top: 20px">
+            <h3>
+                Puedes cambiar tu contraseña haciendo "click" en el enlace siguiente
+            </h3>
+        </div>
+        <div style="text-align: center; color: rgb(78, 78, 151)">
+
+        </div>
+        <div style=" text-align: center; color: rgb(78, 78, 151)">
+            <a style="text-align: center; color: rgb(2, 148, 50);text-decoration: none;"
+                href="http://localhost:3000/usuarios/usuarioconfirm?id=<%= id%>,F" target="">
+                <img src="cid:F1" width="10%" height="10%">
+            </a>
+        </div>
+    </div>
+    <div>
+        <br><br>
+        <p style="text-align: center; color: rgb(78, 78, 151);padding-top: 20px;">
+            Copyright &copy; báculo360 S.L.
+        </p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bSales360</title>
+</head>
+ <!-- Custom styles -->
+ <link rel="stylesheet" type="text/css" href="../../javascripts/bootstrap_5/css/bootstrap.min.css" />
+ <script type="text/javascript" src="../../javascripts/bootstrap_5/js/bootstrap.bundle.js"></script>
+ <script type="text/javascript" src="../../javascripts/smart/smart.card.js"></script>
+ <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap');
+
+    *, body {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    html, body {
+        height: 100%;
+        background-color:  rgb(233, 232, 232);
+        overflow: hidden;
+    }
+    
+    
+    .form-holder {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          min-height: 100vh;
+    }
+    
+    .form-holder .form-content {
+        left: 600px;
+        top: 30px;
+        position: absolute;
+        text-align: center;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-align-items: center;
+        align-items: center;
+        padding: 60px;
+    }
+    
+    .form-content .form-items {
+        border: 3px solid #fff;
+        padding: 40px;
+        display: inline-block;
+        width: 100%;
+        min-width: 540px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        text-align: center;
+        -webkit-transition: all 0.4s ease;
+        transition: all 0.4s ease;
+    }
+    
+    .form-content h3 {
+        color: rgb(82, 82, 82);
+        text-align: center;
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    .form-content h2 {
+        color: rgb(46, 63, 110);
+        text-align: center;
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    .form-content h3.form-title {
+        margin-bottom: 30px;
+    }
+    
+    .form-content p {
+        color: #fff;
+        text-align: center;
+        font-size: 17px;
+        font-weight: 300;
+        line-height: 20px;
+        margin-bottom: 30px;
+    }
+    
+    
+    .form-content label, .was-validated .form-check-input:invalid~.form-check-label, .was-validated .form-check-input:valid~.form-check-label{
+        color: #fff;
+    }
+    
+    .form-content input[type=text], .form-content input[type=user], .form-content input[type=password], .form-content input[type=email], .form-content select {
+        width: 100%;
+        padding: 9px 20px;
+        text-align: left;
+        border: 0;
+        outline: 0;
+        border-radius: 6px;
+        background-color: #fff;
+        font-size: 15px;
+        font-weight: 300;
+        color: #8D8D8D;
+        -webkit-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+        margin-top: 16px;
+    }
+    
+    
+    .btn-primary{
+        background-color: #599ad3;
+        outline: none;
+        border: 0px;
+         box-shadow: none;
+    }
+    
+    .btn-primary:hover, .btn-primary:focus, .btn-primary:active{
+        background-color: #495056;
+        outline: none !important;
+        border: none !important;
+         box-shadow: none;
+    }
+    
+    .form-content textarea {
+        position: static !important;
+        width: 100%;
+        padding: 8px 20px;
+        border-radius: 6px;
+        text-align: left;
+        background-color: #fff;
+        border: 0;
+        font-size: 15px;
+        font-weight: 300;
+        color: #8D8D8D;
+        outline: none;
+        resize: none;
+        height: 120px;
+        -webkit-transition: none;
+        transition: none;
+        margin-bottom: 14px;
+    }
+    
+    .form-content textarea:hover, .form-content textarea:focus {
+        border: 0;
+        background-color: #ebeff8;
+        color: #8D8D8D;
+    }
+    
+    .mv-up{
+        margin-top: -9px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .invalid-feedback{
+        color: #ff606e;
+    }
+    
+    .valid-feedback{
+       color: #ffffff;
+    }
+</style>
+
+<body>
+    <div >
+        <main><%- body %></main>
+    </div>
+</body>
+</html>
+<script>
+(function () {
+    'use strict'
+    const forms = document.querySelectorAll('.requires-validation')
+    Array.from(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+</script>

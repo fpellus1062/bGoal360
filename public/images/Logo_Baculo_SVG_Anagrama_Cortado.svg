@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="297mm"
+   height="210mm"
+   viewBox="0 0 297 210"
+   version="1.1"
+   id="svg6752"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="Logo_Baculo_SVG_Anagrama_Cortado.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6754"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.55054714"
+     inkscape:cx="318.77379"
+     inkscape:cy="683.86515"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g6747" />
+  <defs
+     id="defs6749">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect9281"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g6747"
+       transform="matrix(1.674533,0,0,1.674533,-129.40663,-134.95864)">
+      <g
+         id="g10687">
+        <g
+           id="g16768-1"
+           transform="matrix(0.50351987,0,0,0.45772214,144.34543,97.934059)">
+          <rect
+             style="fill:#0088aa;stroke:#0088aa;stroke-width:3.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect97-5"
+             height="89.545456"
+             x="11.641665"
+             y="42.481617"
+             width="5.9178615" />
+          <path
+             id="path363-3"
+             style="fill:#0088aa;stroke:#0088aa;stroke-width:3.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+             d="M 36.299428,81.94183 A 24.411423,25.042615 0 0 0 11.888238,106.9842 24.411423,25.042615 0 0 0 36.299428,132.02707 24.411423,25.042615 0 0 0 60.711094,106.9842 24.411423,25.042615 0 0 0 36.299428,81.94183 Z m 0.246575,6.584689 A 18.485847,18.710872 0 0 1 55.031622,107.23715 18.485847,18.710872 0 0 1 36.546003,125.94779 18.485847,18.710872 0 0 1 18.060384,107.23715 18.485847,18.710872 0 0 1 36.546003,88.526519 Z" />
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.19904px;line-height:1.25;font-family:'Microsoft YaHei';-inkscape-font-specification:'Microsoft YaHei Bold';fill:#0088aa;fill-opacity:1;stroke-width:0.245423"
+           x="118.3422"
+           y="-140.75389"
+           id="text22370-4"
+           transform="matrix(0,0.98398351,-1.0162772,0,0,0)"><tspan
+             sodipodi:role="line"
+             id="tspan22368-9"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.19904px;font-family:'Microsoft YaHei';-inkscape-font-specification:'Microsoft YaHei Bold';fill:#0088aa;fill-opacity:1;stroke-width:0.245423"
+             x="118.3422"
+             y="-140.75389">360</tspan></text>
+        <path
+           id="path9363"
+           style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#0088aa;stroke-width:1.38343;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 141.26446,112.38044 h 28.56544 c 5.11904,0 9.24015,3.74627 9.24015,8.39971 v 35.33683 c 0,4.65344 -4.12111,8.39972 -9.24015,8.39972 h -28.52683" />
+      </g>
+    </g>
+  </g>
+</svg>

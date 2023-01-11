@@ -1,0 +1,109 @@
+<style>
+  .smart-grid {
+    width: auto;
+    height: 45%;
+  }
+
+  smart-combo-box {
+    width: 50%;
+  }
+
+  .smart-drop-down-box.auto-height {
+    height: 35;
+    min-height: var(--smart-editor-height);
+  }
+
+
+
+  .smart-date-time-picker[spin-buttons][calendar-button] {
+    height: 37;
+    FONT-VARIANT: JIS04;
+    font-variant-ligatures: normal;
+    font-variant-caps: normal;
+    font-variant-numeric: normal;
+    font-variant-east-asian: jis04;
+    min-width: calc(var(--smart-editor-addon-width) + var(--smart-editor-addon-width));
+  }
+
+  #newBtn {
+    margin-top: 12px;
+    height: 30px;
+  }
+</style>
+<div class="container-fluid">
+  <form class="needs-validation" id="listausuarios" name="listausuarios" action="/usuarios/usuariossalta" method="put">
+    <br>
+    <div class="row align-middle ">
+      <div class="col-sm-1">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" required>
+        <div class="valid-feedback">
+          Por favor, intoduce un Nombre
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <label for="apellido1" class="form-label">Primer Apellido</label>
+        <input type="text" class="form-control" id="apellido1" name="apellido1" required>
+        <div class="valid-feedback">
+          Por favor, intoduce un Apellido
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <label for="apellido2" class="form-label">Segundo Apellido</label>
+        <input type="text" class="form-control" id="apellido2" name="apellido2" required>
+        <div class="valid-feedback">
+          Por favor, intoduce un Apellido
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+          <label class="form-label" for="idemail"> Id Usuario (Correo Electrónico)</label>
+          <input type="email" id="idemail" name="idemail" class="form-control " required
+            placeholder="usuario@dominio.com" />
+        </div>
+        <div class="valid-feedback">
+          Por favor, intoduce un Correo Valido
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <label for="observaciones" class="form-label">Comentarios</label>
+        <textarea class="form-control" id="observaciones" name="observaciones" rows="2"></textarea>
+      </div>
+      <div class="col-sm-1 text-right">
+        <br>
+        <smart-button class="primary" id="newBtn" name="newBtn" type="submit">
+          <span> <i class="fas fa-plus" aria-hidden="true"></i> </span>
+        </smart-button>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-sm-12">
+        <label class="form-label" for="idempresas">Empresas</label>
+        <a href="#" id="idinfo_1" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="La primera empresa elegida, sera la empresa por defecto">
+          <i class="fa fa-info-circle tr-azulbaculo" aria-hidden="true"></i></a>
+        <smart-combo-box id="idempresas" name="idempresas" class="empresas" selection-mode="checkBox">
+        </smart-combo-box>
+      </div>
+    </div>
+
+  </form>
+</div>
+<div>
+  <br>
+</div>
+<div class="col-lg-12">
+  <smart-grid id="Usugrid"></smart-grid>
+  <br>
+</div>
+</div>
+
+<script type="module" src="../../javascripts/smart/smart.grid.js"></script>
+<script type="module" src="../../javascripts/smart/smart.button.js"></script>
+<script type="module" src="../../javascripts/smart/smart.datetimepicker.js"></script>
+<script type="module" src="../../javascripts/smart/smart.combobox.js"></script>
+<script type="module" src="../../javascripts/smart/smart.radiobutton.js"></script>
+<%- include('./partials/footer.ejs') %>
+  <script type="module" src="../../javascripts/source/jutils.js"></script>
+  <script type="module" src="../../javascripts/source/listausuarios.js"></script>

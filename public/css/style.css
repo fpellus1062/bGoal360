@@ -1,0 +1,17 @@
+body {
+  background-color: #e6f4ff;
+  color: #23506e;
+  padding: 50px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: left;
+  background-color: rgb(214, 220, 241);
+}
+
+.azulbaculo {
+  color: #23506e;
+  background-color: rgb(205, 227, 247);
+}
+.centrar{
+  margin:auto;
+  display:block;
+}

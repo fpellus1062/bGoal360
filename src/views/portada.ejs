@@ -1,0 +1,99 @@
+<style>
+  smart-combo-box {
+    height:100%;
+    width: 100%;
+  }
+  smart-combo-box 
+   .smart-content {
+      color: rgb(63, 49, 2);
+      background-color: rgb(218, 247, 56);
+      border: 0px;
+  }
+</style>
+<body>
+ 
+    <div class="container">
+      <%- include('./partials/mensajes.ejs') %>
+      <div class="row">
+        <div class="col-md-12">
+         <img src="../../images/Logo_Baculo_Grande_PNG.png" alt="Logo_Baculo_PNG" class="img-responsive center-block d-block mx-auto" width="500" height="150" >
+      </div>
+     </div>
+     <br>
+      <div class="row">
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="card-title">Espacio 1</h3>
+                     <hr>
+                  <a href="#" class="btn btn-primary btn-circle"> <strong>1</strong>
+                  </a>
+                  <a href="#" class="btn btn-disabled btn-circle"> <strong>2</strong>
+                  </a>
+                  <a href="#" class="btn btn-info btn-circle">
+                      <i class="far fa-folder-open"></i>
+                  </a>
+                  <a href="#" class="btn btn-warning btn-circle">
+                    <i class="fas fa-warehouse"></i>
+                  </a>
+                  <a href="#" class="btn btn-danger btn-circle">
+                      <i class="fas fa-trash"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="card">
+                <div class="card-body">
+                 <h3 class="card-title">Espacio 2</h3>
+                     <hr>
+                     <smart-combo-box >
+                      <smart-list-item value="1">Affogato</smart-list-item>
+                      <smart-list-item value="2">Americano</smart-list-item>
+                      <smart-list-item value="3">Bicerin</smart-list-item>
+                      <smart-list-item value="4">Breve</smart-list-item>
+                      <smart-list-item value="5" selected>Cappuccino</smart-list-item>
+                      <smart-list-item value="6">Cafe Crema</smart-list-item>
+                      <smart-list-item value="7">Cafe Corretto</smart-list-item>
+                      <smart-list-item value="8">Cafe macchiato</smart-list-item>
+                      <smart-list-item value="9">Cafe mocha</smart-list-item>
+                      <smart-list-item value="10">Cortado</smart-list-item>
+                      <smart-list-item value="11">Cuban espresso</smart-list-item>
+                      <smart-list-item value="12">Espresso</smart-list-item>
+                      <smart-list-item value="13">Eiskaffee</smart-list-item>
+                      <smart-list-item value="14">Frappuccino</smart-list-item>
+                      <smart-list-item value="15">Galao</smart-list-item>
+                      <smart-list-item value="16">Greek frappe coffee ...................................................................</smart-list-item>
+                      <smart-list-item value="17">Iced Coffee﻿</smart-list-item>
+                      <smart-list-item value="18">Instant Coffee﻿</smart-list-item>
+                      <smart-list-item value="19">Latte</smart-list-item>
+                      <smart-list-item value="20">Liqueur coffee</smart-list-item>
+                  </smart-combo-box>
+              </div>
+            </div>
+          </div>
+         </div>
+         <br>
+         <div class="row">
+            <div class="col-sm-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h3 class="card-title">Espacio 3</h3>
+                     <hr>
+                    </div>
+                  </div>
+             </div>
+           <div class="col-sm-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h3 class="card-title">Espacio 4</h3>
+                     <hr>
+                    </div>
+                  </div>
+             </div>
+          </div>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="../../javascripts/smart/smart.combobox.js"></script>
+  <%- include('./partials/footer.ejs') %>

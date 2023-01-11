@@ -1,0 +1,140 @@
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+  .reloj {
+    color: black;
+  }
+
+  .list-group {
+    --bs-list-group-color: #212529;
+    --bs-list-group-bg: #fff;
+    --bs-list-group-border-color: rgba(0, 0, 0, 0.125);
+    --bs-list-group-border-width: 1px;
+    --bs-list-group-border-radius: 0.375rem;
+    --bs-list-group-item-padding-x: 1rem;
+    --bs-list-group-item-padding-y: 0.5rem;
+    --bs-list-group-action-color: #495057;
+    --bs-list-group-action-hover-color: #495057;
+    --bs-list-group-action-hover-bg: #f8f9fa;
+    --bs-list-group-action-active-color: #212529;
+    --bs-list-group-action-active-bg: #e9ecef;
+    --bs-list-group-disabled-color: #6c757d;
+    --bs-list-group-disabled-bg: #fff;
+    --bs-list-group-active-color: #fff;
+    --bs-list-group-active-bg: #0d6efd;
+    --bs-list-group-active-border-color: #0d6efd;
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    border-radius: var(--bs-list-group-border-radius);
+  }
+</style>
+<%- include('../partials/header.ejs') %>
+
+  <body class="viewport">
+    <main>
+      <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1"
+        id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+          <h4 class="offcanvas-title" id="offcanvasExampleLabel">baculo360 s.l.</h4>
+        </div>
+        <div class="offcanvas-body">
+          <nav class="collapse d-lg-block sidebar collapse ">
+            <div class="list-group list-group-flush mx-3 mt-4">
+              <a href="/objetivos/confichero" class="list-group-item list-group-item-action py-2 ripple bg-blanco "
+                aria-current="true">
+                <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Carga Datos</span>
+              </a>
+              <a href="/objetivos/listalayouts" class="list-group-item list-group-item-action py-2 ripple bg-blanco ">
+                <i class="fas fa-chart-area fa-fw me-3"></i><span>Layouts</span>
+              </a>
+              <a href="/objetivos/analisislay" class="list-group-item list-group-item-action py-2 ripple bg-blanco"><i
+                  class="fas fa-lock fa-fw me-3"></i><span>Análisis</span></a>
+              <a href="/empresas/empresaslistado" class="list-group-item list-group-item-action py-2 ripple bg-blanco">
+                <i class="fas fa-chart-pie fa-fw me-3"></i><span>Empresas</span>
+              </a>
+              <a href="/usuarios/usuarioslistado"
+                class="list-group-item list-group-item-action py-2 ripple bg-blanco"><i
+                  class="fas fa-chart-bar fa-fw me-3"></i><span>Usuarios</span></a>
+              <a href="/objetivos/pruebas" class="list-group-item list-group-item-action py-2 ripple bg-blanco"><i
+                  class="fas fa-globe fa-fw me-3"></i><span>Pruebas</span></a>
+              <a href="#" class="list-group-item list-group-item-action py-2 ripple bg-blanco"><i
+                  class="fas fa-building fa-fw me-3"></i><span>Partners</span></a>
+              <a href="#" class="list-group-item list-group-item-action py-2 ripple bg-blanco"><i
+                  class="fas fa-calendar fa-fw me-3"></i><span>Calendar</span></a>
+              <a href="#" class="list-group-item list-group-item-action py-2 ripple bg-blanco"><i
+                  class="fas fa-users fa-fw me-3"></i><span>Users</span></a>
+              <a href="#" class="list-group-item list-group-item-action py-2 ripple bg-blanco"><i
+                  class="fas fa-money-bill fa-fw me-3"></i><span>Sales</span></a>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1"
+        id="offcanvasUser" aria-labelledby="offcanvasUserLabel">
+        <div class="offcanvas-header">
+          <h6 class="offcanvas-title" id="offcanvasUserLabel"><i class="fas fa-users fa-fw me-3"></i><span>Configuracion
+              de Usuario</span></h6>
+        </div>
+        <div class="offcanvas-body">
+          <form class="row" id="usuarioconfig" name="usuarioconfig" action="/usuarios/updateusuariosconfig"
+            method="post">
+            <div class="col-md-12">
+              <label for="usuarioemail" class="form-label">Usuario</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text" id="spanusuarioemail">@</span>
+                <input type="email" class="form-control" id="usuarioemail" name="usuarioemail"
+                  aria-describedby="usuarioemail" placeholder="usuario@dominio.es" readonly>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <label for="usuariopassword" class="form-label">Password</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text" id="spanusuariopassword"><i class='bx bxs-key'
+                    style='color:#d9230f'></i></span>
+                <input type="password" class="form-control" id="usuariopassword" name="usuariopassword"
+                  aria-describedby="usuariopassword">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <label for="usuarionombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="usuarionombre" name="usuarionombre" value="" required>
+
+            </div>
+            <div class="col-md-12">
+              <label for="usuarioapellido1" class="form-label">Apellido 1</label>
+              <input type="text" class="form-control" id="usuarioapellido1" name="usuarioapellido1" value="" required>
+
+            </div>
+            <div class="col-md-12">
+              <label for="usuarioapellido2" class="form-label">Apellido 2</label>
+              <input type="text" class="form-control" id="usuarioapellido2" name="usuarioapellido2" value="" required>
+            </div>
+            <div class="col-12">
+              <br> <br> <br>
+              <div class="form-check">
+                <div id="invalidCheckFeedback" class="invalid-feedback">
+                  <a href="#" class="list-group-item list-group-item-action py-2 ripple bg-blanco"><i
+                      class="fas fa-users fa-fw me-3"></i><span>Debe aceptar las condiciones de uso</span></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 text-center">
+              <button class="btn bg-azulbaculo" type="submit">Confirmar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <%- body %>
+    </main>
+    <div class="fixed-bottom p-3 mb-0 bg-info text-white text-center fs-6">
+
+    </div>
+  </body>
+
+</html>

@@ -1,0 +1,85 @@
+def insertadata(ruta,nivel,maxnivel):
+    cols = []
+    nivelmas = nivel + 1
+    fila = 0
+    padre = 0
+    sqlstring = "DELETE from esquemas_data_lin WHERE esquema_lin_lay_id  = ANY (%s);";
+    try:
+        cur = conn.cursor()
+        cur.execute(sqlstring,(esquemalin,))
+    except BaseException:
+        conn.rollback()
+        traceback.print_exc()
+    df_s_temp =  pd.read_csv(ruta+'Data_Agrupado_Acum_'+str(nivel)+'.csv',sep=';',index_col='Indice')
+    for idx, row in df_s_temp.iterrows():
+        #Contador de filas
+        fila += 1
+        # Recogemos filtro clave
+        clave =  idx
+        #clave = row[0:nivel].to_json()
+        #Preparamos INSERT del NIVEL (nivel)
+        jsonlist = row.to_json()
+        sqlstring = "INSERT INTO esquemas_data_lin(esquema_lin_lay_id, n_version, clave,descripcion, nivel,idx,response,datos, userid, fechaoperacion) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);";
+        try:
+            cur = conn.cursor()
+            cur.execute(sqlstring,(esquemalin[nivel-1],'V1',clave,filas[nivel-1],nivel,fila,padre,jsonlist,1,datetime.now()))
+        except BaseException:
+            conn.rollback()
+            traceback.print_exc()
+        finally:
+                if cur:
+                    conn.commit()
+                    cur.close()
+    # Fin del nivel 1    
+    # Por cada nivel superior
+    cols.append(str(nivel))
+    for c in range(nivelmas,maxnivel+1):
+        cols.append(str(c))
+        df_temp = pd.read_csv(ruta+'Data_Agrupado_Acum_'+str(c)+'.csv',sep=';',index_col=None)
+        sqlstring = "SELECT translate(clave, '''()''', '') as clave,idx FROM esquemas_data_lin WHERE esquema_lin_lay_id  = %s ORDER BY idx;";
+        try:
+            cur = conn.cursor()
+            cur.execute(sqlstring,[esquemalin[c-2]])
+            
+        except BaseException:
+            conn.rollback()
+            traceback.print_exc()
+        finally:
+                if cur:
+                    reg = cur.fetchall()
+                    cur.close()
+
+        #Preparamos INSERT del NIVEL+1 (nivelmas)
+        sqlstring = "INSERT INTO esquemas_data_lin(esquema_lin_lay_id, n_version, clave,descripcion, nivel,idx,response,datos, userid, fechaoperacion) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);";
+        for registro in reg:
+            padre = registro[1]
+             # Filtramos Array de Nuevos Valores del Nivel Correspondiente
+            unnivel = registro[0]
+            cambiar = "()' " 
+            df_sub = df_temp.copy()         
+            df_sub['MyIndice']=""
+            for ix,row in df_sub.iterrows():
+                kk = row['Indice']
+                for lc in cambiar:
+                    unnivel = unnivel.replace(lc,"")
+                    kk = kk.replace(lc,"")
+                df_sub['MyIndice'][ix] = kk
+            df_sub = df_sub.loc[df_sub['MyIndice'].str.startswith(unnivel)]
+            for idx, row in df_sub.iterrows():
+                fila += 1
+                #Tomamos la clave del valor con todos los index
+                clave = row['Indice']
+                jsonlist = row.to_json()
+                #Dejamos solo la coumna que corresponde al valor
+                
+                #jsonStr = newrow.to_json()
+                try:
+                    cur = conn.cursor()
+                    cur.execute(sqlstring,(esquemalin[c-1],'V1',clave,filas[c-1],c,fila,padre,jsonlist,1,datetime.now()))
+                except BaseException:
+                    conn.rollback()
+                    traceback.print_exc()
+                finally:
+                    if cur:
+                        conn.commit()
+                        cur.close() 

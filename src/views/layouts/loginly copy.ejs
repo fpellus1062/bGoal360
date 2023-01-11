@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- title %></title>
+</head>
+ <!-- Custom styles -->
+ <%- include('../partials/header.ejs') %>
+ <script type="text/javascript" src="../../javascripts/smart/smart.card.js"></script>
+ <style>
+    smart-card.w-50 .card-content,
+    smart-card.w-50 .card-action {
+    box-sizing: border-box;
+    padding: 50px 156px;
+    color: white;
+    background-color: #09587c;
+    border-bottom: 0px #09587c;
+    border-radius: 2px 2px 2px 2px;
+}
+
+smart-card.w-50 .card-title {
+    font-size: 36px;
+}
+
+smart-card.w-50 a {
+    color: #ffab40;
+    transition: color .3s ease;
+    text-transform: uppercase;
+    border-bottom: none;
+    text-decoration: none;
+    margin-right: 0px;
+}
+
+    smart-card.w-50 a:hover {
+        color: #ffd8a6;
+    }
+</style>
+
+<body>
+    <div >
+        <main><%- body %></main>
+    </div>
+</body>
+</html>

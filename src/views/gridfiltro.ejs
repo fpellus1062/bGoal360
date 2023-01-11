@@ -1,0 +1,307 @@
+<style>
+    .smart-grid {
+        width: auto;
+        height: 71%;
+        --smart-font-size: 14px;
+        --smart-grid-template-columns: 350px auto;
+        --smart-grid-footer-height: 25px;
+        --smart-grid-header-height: 40px;
+        --smart-grid-column-header-height: 40px;
+        --smart-grid-cell-background-update: rgb(124, 252, 141);
+    }
+</style>
+
+<body>
+    <div> Pruebas de Grid</div>
+    <smart-grid id="grid"></smart-grid>
+</body>
+
+</html>
+<!-- scripts -->
+
+<script type="module" src="../../javascripts/smart/smart.grid.js"></script>
+<script type="module">
+    var i = 0;
+    var cabecera = [
+        {
+            label: "Descripcion",
+            dataField: "Descripcion",
+            dataType: "string",
+            allowEdit: true,
+            width: 538,
+        },
+        {
+            label: "Total Pruebas",
+            dataField: "Tot",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Ene",
+            dataField: "Ene",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Feb",
+            dataField: "Feb",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Mar",
+            dataField: "Mar",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Abr",
+            dataField: "Abr",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "May",
+            dataField: "May",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Jun",
+            dataField: "Jun",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Jul",
+            dataField: "Jul",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Ago",
+            dataField: "Ago",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Sep",
+            dataField: "Sep",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Oct",
+            dataField: "Oct",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Nov",
+            dataField: "Nov",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+        {
+            label: "Dic",
+            dataField: "Dic",
+            align: "right",
+            dataType: "number",
+            cellsFormat: "n2",
+
+        },
+    ];
+    var filas = [
+        "Pk: number",
+        "1: string",
+        "2: string",
+        "3: string",
+        "4: string",
+        "Descripcion: string",
+        "Tot: number",
+        "Ene: number",
+        "Feb: number",
+        "Mar: number",
+        "Abr: number",
+        "May: number",
+        "Jun: number",
+        "Jul: number",
+        "Ago: number",
+        "Sep: number",
+        "Oct: number",
+        "Nov: number",
+        "Dic: number",
+        "Idx: number",
+        "Response: number",
+        "Nivel: number",
+        "Clave: string",
+        "Indice: string",
+    ];
+
+
+    window.Smart(
+        "#grid",
+        class {
+            get properties() {
+                return {
+                    sorting: {
+                        enabled: true,
+                    },
+                    checkBoxes: {
+                        visible: true,
+                        hasThreeStates: false,
+                    },
+                    editing: {
+                        batch: false,
+                        enabled: true,
+                        action: "click",
+                        mode: "row",
+                        commandColumn: {
+                            visible: true,
+                            dataSource: {
+                                commandColumnEdit: {
+                                    visible: false,
+                                },
+                                commandColumnDelete: {
+                                    visible: false,
+                                },
+                                commandColumnMenu: {
+                                    visible: false,
+                                },
+                                commandColumnRowMenu: {
+                                    visible: true,
+                                },
+                            },
+                        },
+                    },
+                    selection: {
+                        enabled: true,
+                        mode: "extended",
+                        allowCellSelection: false,
+                    },
+                    behavior: { columnResizeMode: "growAndShrink" },
+                    layout: {
+                        rowHeight: "auto",
+                        rowMinHeight: 40,
+                        allowCellsWrap: true,
+                    },
+                    appearance: {
+                        allowRowDetailToggleAnimation: false,
+                        autoShowColumnFilterButton: false,
+                        alternationCount: 2,
+                    },
+                    header: {
+                        visible: true,
+                        buttons: ["search"],
+                    },
+
+                    columns: cabecera,
+                    dataSource: new window.Smart.DataAdapter({
+                        dataSource:
+                            "http://localhost:3000/objetivos/leoobjetivos/?uno=388" +
+                            "&dos=VP",
+                        dataSourceType: "json",
+                        keyDataField: "Idx",
+                        parentDataField: "Response",
+                        id: "Idx",
+                        dataFields: filas,
+                    }),
+                    onInit: function () {
+
+                    },
+
+                    onCommand: function (args) {
+
+                    },
+                    // onKey: function(event){
+                    //   var rows = grid.getSelectedRows();
+                    //   var id = parseInt(rows[0][0]) + 1;
+
+                    // },
+                    onRowInit: function (index, row) {
+                        if (row.id === 1) {
+                            row.expanded = true;
+                            row.freeze = "near";
+                        }
+                    },
+                    onRowUpdate: function (index, row, oldValues, newValues, confirm) {
+                        var cambios = sameKeys(oldValues, newValues);
+                        cambios.forEach(c => {
+                            console.log(index, row.id, c, oldValues[c], newValues[c]);
+                        });
+                        confirm(true)
+                        //if (objCompare(oldValues, newValues, 'G')) {
+                        //    confirm(false)
+                        //} else {
+                        //    if (typeCheck(oldValues) == 'array') {
+                        //    }
+                        //    confirm(true);
+                        //}
+
+                    },
+                };
+            }
+        }
+    );
+    function sameKeys(a, b) {
+        return Object.keys(a).filter(function (key) {
+            return a[key] != b[key];
+        });
+    }
+
+    var objCompare = (arg1, arg2, origen) => {
+        if (origen === 'G') {
+            i++;
+        }
+
+        if (Object.prototype.toString.call(arg1) === Object.prototype.toString.call(arg2)) {
+
+            if (Object.prototype.toString.call(arg1) === '[object Object]' || Object.prototype.toString.call(arg1) === '[object Array]') {
+                if (Object.keys(arg1).length !== Object.keys(arg2).length) {
+                    return false;
+                }
+                return (Object.keys(arg1).every(function (key) {
+
+                    return objCompare(arg1[key], arg2[key], 'F');
+                }));
+            }
+            return (arg1 === arg2);
+        }
+        return false;
+    };
+
+    function typeCheck(value) {
+        const return_value = Object.prototype.toString.call(value);
+        // we can also use regex to do this...
+        const type = return_value.substring(
+            return_value.indexOf(" ") + 1,
+            return_value.indexOf("]"));
+
+        return type.toLowerCase();
+    }
+
+</script>
+<%- include('./partials/footer.ejs') %>
