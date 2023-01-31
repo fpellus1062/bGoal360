@@ -181,20 +181,20 @@ routes.post("/empresasdardealta/:id", async function (req, res) {
 routes.post("/usuariosempresas", async (req, res) => {
 	logger.log(new Date().toLocaleString(), "#ID Session: " + req.sessionID);
 
-	if (req.sessionID === null || req.sessionID === "undefined") {
-		res.render("logout");
+	if (req.sessionID === null || req.sessionID === undefined) {
+		res.redirect("/logout", { mensaje: "Tú sesión ha caducado." });
 	}
-	if (empresa_session === null || empresa_session === "undefined") {
-		res.render("logout");
-	}
+
 	var usuario_session = await utilidades.leerusuariosesion(req.sessionID);
-	let empresas_usuario = await utilidades.cargaempresasusuario(
+	var empresas_usuario = await utilidades.cargaempresasusuario(
 		req,
 		res,
 		usuario_session
 	);
 	var empresa_session = await utilidades.leerempresasession(req.sessionID);
-
+	if (!empresa_session || empresa_session === null) {
+		res.render("/logout", { mensaje: "Tú sesión ha caducado." });
+	}
 	empresas_usuario.empresa_defecto = empresa_session;
 	res.send(empresas_usuario);
 });

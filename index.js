@@ -12,9 +12,11 @@ const fs = require("fs");
 const cors = require("cors");
 
 const PORT = 3000;
+
 //middleware
 
 app.use(bodyParser.json({ limit: "500mb", parameterLimit: 50000 }));
+
 app.use(
 	express.urlencoded({
 		limit: "500mb",
@@ -25,10 +27,19 @@ app.use(
 app.use(clientErrorHandler);
 app.use(cookieParser());
 app.use(flash());
+// app.use(function (req, res, next) {
+// 	res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+// 	res.header(
+// 		"Access-Control-Allow-Headers",
+// 		"Origin, X-Requested-With, Content-Type, Accept"
+// 	);
+// 	next();
+// });
 
 app.use(
 	cors({
-		origin: "http://localhost:3001",
+		//origin: "http://localhost:3001",
+		origin: "*",
 		methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
 		credentials: true,
 	})
@@ -136,7 +147,12 @@ app.use(function (err, req, res, next) {
 		layout: "./layouts/full-width",
 	});
 });
+process.on("uncaughtException", (err) => {
+	console.error("There was an uncaught error", err);
+	// Mostramos error generico
+});
 app.listen(PORT);
 //https.createServer(httpsOptions, app).listen(4433);
 console.log(new Date().toLocaleString(), "Server baculo360 on port", PORT);
+
 module.exports = app;

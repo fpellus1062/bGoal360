@@ -33,6 +33,10 @@
     margin-bottom: 0;
     border-radius: var(--bs-list-group-border-radius);
   }
+
+  .sidebar {
+    width: 220px;
+  }
 </style>
 <%- include('../partials/header.ejs') %>
 
@@ -44,7 +48,7 @@
           <h4 class="offcanvas-title" id="offcanvasExampleLabel">baculo360 s.l.</h4>
         </div>
         <div class="offcanvas-body">
-          <nav class="collapse d-lg-block sidebar collapse ">
+          <nav class="collapse d-lg-block sidebar ">
             <div class="list-group list-group-flush mx-3 mt-4">
               <a href="/objetivos/confichero" class="list-group-item list-group-item-action py-2 ripple bg-blanco "
                 aria-current="true">
@@ -132,8 +136,7 @@
       </div>
       <%- body %>
     </main>
-    <div class="fixed-bottom p-3 mb-0 bg-info text-white text-center fs-6">
-
+    <div class="fixed-bottom p-2 mb-0 bg-info text-white text-center fs-9">
     </div>
   </body>
 

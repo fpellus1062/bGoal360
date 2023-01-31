@@ -152,7 +152,9 @@ router.post("/userchangepassword", async function (req, res, next) {
 			logger.error("Error: " + error.message);
 			next(error);
 		});
-	res.redirect("/logout");
+	res.redirect("/logout", {
+		mensaje: "COntraseña cambiada.",
+	});
 });
 // Peticion AJAX de Grid para listado de usuarios
 router.get("/listausuarios", async (req, res) => {

@@ -107,8 +107,6 @@ const logger = new Console({ stdout: output, stderr: errorOutput });
 // });
 
 routes.get("/portada", async (req, res) => {
-	sleep(3000);
-
 	var empresa_session = await await utilidades.leerempresasession(
 		req.sessionID
 	);
@@ -915,13 +913,13 @@ routes.get("/leoobjetivos", async (req, res) => {
 	logger.timeEnd("Log: Get Datos Total");
 	res.json(regs);
 });
-// Leemos un registro de totales y sus pesos por cia
+// Leemos un registro de totales y sus pesos por cia. Siempres de la version original
 routes.get("/leototalobjetivo/:idlayout", async (req, res) => {
-	var tregistros = "";
 	logger.log(new Date().toLocaleString(), "#Total Objetivos ...: ");
 	var regs = [];
-	// var regpadre = await objutilsSql.leerpadre(req.query.layout_id);
-	tregistros = await objutilsSql.leerfilaoriginal(req.params.idlayout, 1);
+	var regpadre = await objutilsSql.leerpadre(req.params.idlayout);
+	// Registros de el presupuesto Original. Para no perder referencia de valores anteriores
+	var tregistros = await objutilsSql.leerfilaoriginal(regpadre.id, 1);
 	// SI no hay registros
 	if (tregistros.rowCount) {
 		regs.push({
@@ -999,80 +997,156 @@ routes.get("/leototalobjetivo/:idlayout", async (req, res) => {
 			Response: tregistros.rows[0].response,
 			Nivel: tregistros.rows[0].nivel,
 		});
+		//Leemos los datos de la nueva versión.
+		var nregistros = await objutilsSql.leerfilaoriginal(
+			req.params.idlayout,
+			1
+		);
 		regs.push({
 			Descripcion: "Total Nuevo " + tregistros.rows[0].literal,
-			Tot: parseFloat(tregistros.rows[0].datos.Tot),
-			Ene: parseFloat(tregistros.rows[0].datos.Ene),
-			Feb: parseFloat(tregistros.rows[0].datos.Feb),
-			Mar: parseFloat(tregistros.rows[0].datos.Mar),
-			Abr: parseFloat(tregistros.rows[0].datos.Abr),
-			May: parseFloat(tregistros.rows[0].datos.May),
-			Jun: parseFloat(tregistros.rows[0].datos.Jun),
-			Jul: parseFloat(tregistros.rows[0].datos.Jul),
-			Ago: parseFloat(tregistros.rows[0].datos.Ago),
-			Sep: parseFloat(tregistros.rows[0].datos.Sep),
-			Oct: parseFloat(tregistros.rows[0].datos.Oct),
-			Nov: parseFloat(tregistros.rows[0].datos.Nov),
-			Dic: parseFloat(tregistros.rows[0].datos.Dic),
+			Tot: parseFloat(nregistros.rows[0].datos.Tot),
+			Ene: parseFloat(nregistros.rows[0].datos.Ene),
+			Feb: parseFloat(nregistros.rows[0].datos.Feb),
+			Mar: parseFloat(nregistros.rows[0].datos.Mar),
+			Abr: parseFloat(nregistros.rows[0].datos.Abr),
+			May: parseFloat(nregistros.rows[0].datos.May),
+			Jun: parseFloat(nregistros.rows[0].datos.Jun),
+			Jul: parseFloat(nregistros.rows[0].datos.Jul),
+			Ago: parseFloat(nregistros.rows[0].datos.Ago),
+			Sep: parseFloat(nregistros.rows[0].datos.Sep),
+			Oct: parseFloat(nregistros.rows[0].datos.Oct),
+			Nov: parseFloat(nregistros.rows[0].datos.Nov),
+			Dic: parseFloat(nregistros.rows[0].datos.Dic),
 			Idx: 3,
-			Response: tregistros.rows[0].response,
-			Nivel: tregistros.rows[0].nivel,
+			Response: nregistros.rows[0].response,
+			Nivel: nregistros.rows[0].nivel,
 		});
 
 		regs.push({
 			Descripcion: "Pesos Nuevo Cia % ... ",
 			Tot: parseFloat(100.0),
 			Ene:
-				(parseFloat(tregistros.rows[0].datos.Ene) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Ene) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Feb:
-				(parseFloat(tregistros.rows[0].datos.Feb) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Feb) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Mar:
-				(parseFloat(tregistros.rows[0].datos.Mar) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Mar) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Abr:
-				(parseFloat(tregistros.rows[0].datos.Abr) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Abr) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			May:
-				(parseFloat(tregistros.rows[0].datos.May) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.May) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Jun:
-				(parseFloat(tregistros.rows[0].datos.Jun) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Jun) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Jul:
-				(parseFloat(tregistros.rows[0].datos.Jul) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Jul) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Ago:
-				(parseFloat(tregistros.rows[0].datos.Ago) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Ago) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Sep:
-				(parseFloat(tregistros.rows[0].datos.Sep) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Sep) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Oct:
-				(parseFloat(tregistros.rows[0].datos.Oct) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Oct) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Nov:
-				(parseFloat(tregistros.rows[0].datos.Nov) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Nov) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Dic:
-				(parseFloat(tregistros.rows[0].datos.Dic) /
-					parseFloat(tregistros.rows[0].datos.Tot)) *
+				(parseFloat(nregistros.rows[0].datos.Dic) /
+					parseFloat(nregistros.rows[0].datos.Tot)) *
 				100,
 			Idx: 4,
-			Response: tregistros.rows[0].response,
-			Nivel: tregistros.rows[0].nivel,
+			Response: nregistros.rows[0].response,
+			Nivel: nregistros.rows[0].nivel,
+		});
+		regs.push({
+			Descripcion: "% Vs Pto Original... ",
+			Tot:
+				(parseFloat(nregistros.rows[0].datos.Tot) /
+					parseFloat(tregistros.rows[0].datos.Tot) -
+					1) *
+				100,
+			Ene:
+				(parseFloat(nregistros.rows[0].datos.Ene) /
+					parseFloat(tregistros.rows[0].datos.Ene) -
+					1) *
+				100,
+			Feb:
+				(parseFloat(nregistros.rows[0].datos.Feb) /
+					parseFloat(tregistros.rows[0].datos.Feb) -
+					1) *
+				100,
+			Mar:
+				(parseFloat(nregistros.rows[0].datos.Mar) /
+					parseFloat(tregistros.rows[0].datos.Mar) -
+					1) *
+				100,
+			Abr:
+				(parseFloat(nregistros.rows[0].datos.Abr) /
+					parseFloat(tregistros.rows[0].datos.Abr) -
+					1) *
+				100,
+			May:
+				(parseFloat(nregistros.rows[0].datos.May) /
+					parseFloat(tregistros.rows[0].datos.May) -
+					1) *
+				100,
+			Jun:
+				(parseFloat(nregistros.rows[0].datos.Jun) /
+					parseFloat(tregistros.rows[0].datos.Jun) -
+					1) *
+				100,
+			Jul:
+				(parseFloat(nregistros.rows[0].datos.Jul) /
+					parseFloat(tregistros.rows[0].datos.Jul) -
+					1) *
+				100,
+			Ago:
+				(parseFloat(nregistros.rows[0].datos.Ago) /
+					parseFloat(tregistros.rows[0].datos.Ago) -
+					1) *
+				100,
+			Sep:
+				(parseFloat(nregistros.rows[0].datos.Sep) /
+					parseFloat(tregistros.rows[0].datos.Sep) -
+					1) *
+				100,
+			Oct:
+				(parseFloat(nregistros.rows[0].datos.Oct) /
+					parseFloat(tregistros.rows[0].datos.Oct) -
+					1) *
+				100,
+			Nov:
+				(parseFloat(nregistros.rows[0].datos.Nov) /
+					parseFloat(tregistros.rows[0].datos.Nov) -
+					1) *
+				100,
+			Dic:
+				(parseFloat(nregistros.rows[0].datos.Dic) /
+					parseFloat(tregistros.rows[0].datos.Dic) -
+					1) *
+				100,
+			Idx: 5,
+			Response: nregistros.rows[0].response,
+			Nivel: nregistros.rows[0].nivel,
 		});
 	}
 	res.send(regs);
@@ -1083,9 +1157,9 @@ routes.get("/leounobjetivoinicial/:idlayout/:id", async (req, res) => {
 	logger.log(new Date().toLocaleString(), "#Lista Total Ventas Nuevos...: ");
 	var empresa_session = await utilidades.leerempresasession(req.sessionID);
 	EMPRESA = await objutilsSql.leerempresa(empresa_session);
-	//var regpadre = await objutilsSql.leerpadre(req.query.layout_id);
+	var regpadre = await objutilsSql.leerpadre(req.params.idlayout);
 	tregistros = await objutilsSql.leerfilaoriginal(
-		parseInt(req.params.idlayout),
+		regpadre.id,
 		parseInt(req.params.id)
 	);
 

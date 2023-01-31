@@ -1,7 +1,7 @@
 /****************************
            GENERAL
 *****************************/
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap");
 :root {
   /* Custom */
   --sidebar-background: #fff;
@@ -107,7 +107,7 @@
   /* Theme font-size */
   --smart-font-weight: 400;
   /* Theme font-weight */
-  --smart-font-family: Poppins, Helvetica, sans-serif;
+  --smart-font-family: Poppins, sans-serif;
   /* Theme font-family */
   --smart-border-width: 1px;
   /* Theme border-width */
@@ -1770,8 +1770,8 @@ $border-radius-sm:            .2rem !default;*/
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
   --breakpoint-xxl: 1440px;
-  --font-family-sans-serif: Poppins, Helvetica, sans-serif;
-  --font-family-monospace: Poppins, Helvetica, sans-serif; }
+  --font-family-sans-serif: Poppins, sans-serif;
+  --font-family-monospace: Poppins,  sans-serif; }
 
 *,
 *::before,
@@ -1779,7 +1779,7 @@ $border-radius-sm:            .2rem !default;*/
   box-sizing: border-box; }
 
 html {
-  font-family: sans-serif;
+  font-family: Poppins, sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(43, 43, 43, 0); }
@@ -10070,7 +10070,7 @@ button.bg-dark:focus {
   font-weight: bolder !important; }
 
 .font-italic {
-  font-style: italic !important; }
+  font-style: normal !important; }
 
 .text-white {
   color: #fff !important; }

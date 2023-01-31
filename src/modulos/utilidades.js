@@ -65,7 +65,9 @@ module.exports = {
 	async leerusuariosesion(session) {
 		//var client = await db.getClient();
 		try {
-			//var client = await db.getClient();
+			if (!session) {
+				return false;
+			}
 			var regs = await db.query(
 				"SELECT us.idusuario FROM usuarios_session us WHERE us.sid = $1;",
 				[session]
@@ -81,29 +83,38 @@ module.exports = {
 			}
 		} catch (error) {
 			logger.error(new Date().toLocaleString(), error);
+			error.message = "La session ha caducado";
 			return false;
-		} finally {
-			//await client.release();
 		}
 	},
 	async leerempresasession(session) {
 		try {
 			//var client = await db.getClient();
+			if (!session || session === null || session === undefined) {
+				return false;
+			}
 			var regs = await db.query(
 				"SELECT us.idempresa FROM usuarios_session us WHERE us.sid = $1;",
 				[session]
 			);
-			logger.log(
-				new Date().toLocaleString() + "#leerempresa session: ",
-				regs.rows[0].idempresa
-			);
+
 			if (regs.rowCount > 0) {
+				logger.log(
+					new Date().toLocaleString() + "#leerempresa session: ",
+					regs.rows[0].idempresa
+				);
 				return regs.rows[0].idempresa;
 			} else {
+				logger.error(
+					new Date().toLocaleString() +
+						"#leerempresa session: No puedo leer la empresa de session o session caducada",
+					session
+				);
 				return false;
 			}
 		} catch (error) {
 			logger.error(new Date().toLocaleString(), error);
+			error.message = "La session ha caducado";
 			return false;
 		} finally {
 			//await client.release();
@@ -127,7 +138,8 @@ module.exports = {
 				return false;
 			}
 		} catch (error) {
-			logger.log(new Date().toLocaleString() + "#", error.message);
+			logger.error(new Date().toLocaleString(), error);
+			error.message = "La session ha caducado";
 			return false;
 		} finally {
 			//await client.release();

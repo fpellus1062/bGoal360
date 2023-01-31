@@ -141,9 +141,13 @@ router.get("/logout", async (req, res) => {
 
 		req.session.destroy((err) => {
 			if (err) {
-				res.status(400).send("Imposible realizar logout");
+				res.render("logout", {
+					mensaje: "Gracias por utilizar bGoal360.",
+				});
 			} else {
-				res.render("logout");
+				res.render("logout", {
+					mensaje: "Gracias por utilizar bGoal360.",
+				});
 			}
 		});
 	} else {

@@ -1,9 +1,10 @@
 import { operar, calculapesos, changeIcono } from "./griddb.js";
 window.onload = function () {};
 
-//const Ggrid = document.querySelector("smart-grid")[1];
+const rgrid = document.querySelector("#Ggrid");
+rgrid.charting.enabled = true;
 // const Tgrid = document.querySelector("#Tgrid");
-Ggrid.addEventListener("cellDoubleClick", function (event) {
+rgrid.addEventListener("cellClick", function (event) {
 	const detail = event.detail,
 		cell = detail.cell,
 		originalEvent = detail.originalEvent,
@@ -13,11 +14,90 @@ Ggrid.addEventListener("cellDoubleClick", function (event) {
 		pageX = detail.pageX,
 		pageY = detail.pageY;
 	if (id == 1 || id == 2 || id == 5) {
-		event.preventDefault();
-		Ggrid.endEdit();
+		rgrid.editing.enabled = false;
+		rgrid.cancelEdit();
+	} else {
+		rgrid.editing.enabled = true;
 	}
 });
 
+const distable = document.getElementById("distable");
+const idlayout = $("#idlayout").val();
+const maxnivel = $("#maxnivel").val();
+const version = $("#version").val();
+const resumen = $("#resumen").val();
+const cabecera = [
+	{
+		label: resumen,
+		dataField: "Intervalo",
+		dataType: "string",
+		with: 60,
+	},
+	{
+		label: "# " + maxnivel,
+		dataField: "FreqAbs",
+		dataType: "number",
+		align: "right",
+	},
+	{
+		label: "Peso",
+		dataField: "FreqRel",
+		dataType: "number",
+		formatFunction(settings) {
+			const value = settings.value;
+			var className = "";
+			if (settings.value >= 60) {
+				className = "badge rounded-pill text-bg-success";
+			} else if (value >= 20) {
+				className = "badge rounded-pill text-bg-info";
+			} else {
+				className = "badge rounded-pill text-bg-secondary";
+			}
+			settings.template = `<span class="${className}">${value}%</span>`;
+		},
+	},
+];
+
+window.Smart(
+	"#distable",
+	class {
+		get properties() {
+			return {
+				dataSource: new window.Smart.DataAdapter({
+					dataSource: [],
+					dataFields: [
+						"Intervalo: string",
+						"FreqAbs: number",
+						"FreqRel: number",
+					],
+				}),
+				columnResize: true,
+				columnResizeFeedback: true,
+				freezeHeader: true,
+				columns: cabecera,
+			};
+		}
+	}
+);
+$.ajax({
+	url: "/objetivos/distribucion",
+	type: "GET",
+	dataType: "json",
+	cache: false,
+	data: {
+		layout_id: idlayout,
+		nivel_id: maxnivel,
+		version: version,
+	},
+	success: function (datosdist) {
+		console.log(datosdist);
+		distable.dataSource = datosdist;
+		distable.refresh();
+	},
+	error: function (jqXHR, textStatus, err) {
+		alert("Error " + textStatus + ", err " + err);
+	},
+});
 var iconoGgrid = "";
 const COLUMNAS = [
 	"Tot",
@@ -34,8 +114,7 @@ const COLUMNAS = [
 	"Nov",
 	"Dic",
 ];
-const RESUMEN = document.getElementById("resumen").value;
-const IDLAYOUT = document.getElementById("idlayout").value;
+
 var Tfilas = [
 	"Descripcion: string",
 	"Tot: number",
@@ -66,7 +145,7 @@ var Tcabecera = [
 	},
 
 	{
-		label: "Total en " + RESUMEN,
+		label: "Total en " + resumen,
 		dataField: "Tot",
 		dataType: "number",
 		cellsFormat: "n2",
@@ -267,11 +346,15 @@ window.Smart(
 					mode: "cell",
 				},
 				behavior: { columnResizeMode: "growAndShrink" },
+				header: {
+					visible: false,
+					buttons: [],
+				},
 				columns: Tcabecera,
 				dataSource: new window.Smart.DataAdapter({
 					dataSource:
 						"http://localhost:3000/objetivos/leototalobjetivo/" +
-						IDLAYOUT,
+						idlayout,
 					dataSourceType: "json",
 					id: "Idx",
 					dataFields: Tfilas,
@@ -293,7 +376,7 @@ window.Smart(
 				editing: {
 					batch: false,
 					enabled: false,
-					action: "doubleClick",
+					action: "click",
 					mode: "cell",
 					commandColumn: {
 						visible: true,
@@ -313,6 +396,11 @@ window.Smart(
 						},
 					},
 				},
+				selection: {
+					enabled: true,
+					mode: "one",
+					allowCellSelection: false,
+				},
 				behavior: { columnResizeMode: "growAndShrink" },
 				layout: {
 					rowHeight: "auto",
@@ -321,11 +409,15 @@ window.Smart(
 				appearance: {
 					allowRowDetailToggleAnimation: false,
 				},
+				header: {
+					visible: false,
+					buttons: [],
+				},
 				columns: Tcabecera,
 				dataSource: new window.Smart.DataAdapter({
 					dataSource:
 						"http://localhost:3000/objetivos/leounobjetivoinicial/" +
-						IDLAYOUT +
+						idlayout +
 						"/1",
 					dataSourceType: "json",
 					id: "Idx",
@@ -363,7 +455,7 @@ window.Smart(
 						confirm(false);
 						return;
 					}
-					console.log("Seguimos ....");
+
 					absOldValue = parseFloat(
 						grid.getCellValue(identificador, columna)
 					);
@@ -402,10 +494,10 @@ window.Smart(
 							(parseFloat(absNewValue).toFixed(2) -
 								parseFloat(absOldValue).toFixed(2)) *
 							0;
-						console.log("Resto", resto);
+
 						cvalor = 0;
 						cvalor = parseFloat(resto) + parseFloat(absNewValue);
-						console.log("CValor", resto, absNewValue, cvalor);
+
 						grid.setCellValue(
 							identificador,
 							columna,
@@ -423,7 +515,7 @@ window.Smart(
 
 					operar(absOldValue, cvalor, grow, columna);
 					confirm(true);
-					Ggrid.refreshView();
+					rgrid.refreshView();
 					calculapesos(grow);
 				},
 			};

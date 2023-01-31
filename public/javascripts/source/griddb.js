@@ -11,6 +11,15 @@ const MAXIMONIVEL = document.getElementById("maxnivel").value;
 const IDLAYOUT = document.getElementById("idlayout").value;
 const IDVERSION = document.getElementById("idversion");
 const VERSIONANTERIOR = document.getElementById("version").value;
+const slider = document.getElementById("slider");
+const texto = document.getElementById("slidertxt");
+const mensaje = document.getElementById("mensaje");
+const updateBtn = document.getElementById("updateBtn");
+//const toast = document.querySelectorAll("smart-toast")[0];
+const toast = document.getElementById("avisoerror");
+const infotoats = document.getElementById("infotoats");
+const sumapadres = document.getElementById("bp");
+
 const COLUMNAS = [
 	"Tot",
 	"Ene",
@@ -36,23 +45,65 @@ const COLORES_FONDO = [
 ];
 const COLORES_LETRA = [
 	"default",
-	"#236D9E",
+	"purple",
 	"#802A00",
 	"#B20057",
 	"#007D06",
 	"#9124F0",
 ];
-const slider = document.getElementById("slider");
-const texto = document.getElementById("slidertxt");
-const mensaje = document.getElementById("mensaje");
-const updateBtn = document.getElementById("updateBtn");
-const toast = document.querySelectorAll("smart-toast")[0];
+
 var porcentaje = 0;
 var FILA_INDEX = 0;
 var IDVERSIONANTERIOR = "";
-var mifilaanterior = [];
-var midiferencia = [];
+var mifilaanterior = [
+	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+];
+var midiferencia = [
+	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+];
+// ID Rows pendientes de Sumar a Padres
+var filaspdtes = [];
 $("#idempresa").attr("disabled", "disable");
+var log = document.querySelector("#log");
+sumapadres.checkStatus = true;
+log.textContent = "Si";
+sumapadres.addEventListener("change", function (event) {
+	const checkStatus = event.detail.value;
+	var texto = "";
+	if (checkStatus === true) {
+		log.textContent = "Si";
+		sumapadres.checkStatus = true;
+		$(log).addClass("text-bg-success");
+		$(log).removeClass("text-bg-danger");
+		texto =
+			'<a href="#"><span class="smart-badge smart-badge-success smart-badge-pill"><i class="fas fa-calculator"></i></span></a> &nbsp Trabajo';
+		changeTab(3, texto);
+		infotoats.closeLast();
+		//console.log(filaspdtes);
+	} else {
+		log.textContent = "No";
+		sumapadres.checkStatus = false;
+		$(log).removeClass("text-bg-success");
+		$(log).addClass("text-bg-danger");
+		texto =
+			'<a href="#"><span class="smart-badge smart-badge-danger smart-badge-pill"><i class="fas fa-calculator"></i></span></a> &nbsp Trabajo';
+		changeTab(3, texto);
+		infotoats.closeLast();
+		infotoats.itemTemplate = "template-toast";
+		infotoats.open();
+	}
+});
+infotoats.addEventListener("open", function () {
+	document
+		.getElementById("closeButton")
+		.addEventListener("click", function () {
+			infotoats.closeLast();
+		});
+});
+function changeTab(ntab, texto) {
+	tabs.update(ntab, texto);
+}
+
 function changeIcono(indice) {
 	return iconoGgrid;
 }
@@ -66,45 +117,43 @@ slider.addEventListener("change", function (event) {
 	} else {
 		cambiartipopeso("t");
 	}
-	calculapesos(grid.rows[FILA_INDEX], "");
+	calculapesos(grid.rows[FILA_INDEX]);
+	calculapesosall();
 });
 
 pt.addEventListener("change", function (event) {
+	var texto = "";
 	if (porcentaje > 0) {
-		tabs.update(
-			1,
+		texto =
 			'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Compañía <span class="smart-badge smart-badge-danger smart-badge-pill">' +
-				porcentaje +
-				" % Limite</span>"
-		);
+			porcentaje +
+			"</span>";
 	} else {
-		tabs.update(
-			1,
-			'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Compañía'
-		);
+		texto =
+			'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Compañía';
 	}
+
+	changeTab(1, texto);
 });
 pi.addEventListener("change", function (event) {
+	var texto = "";
 	if (porcentaje > 0) {
-		tabs.update(
-			1,
-			'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Indivdual <span class="smart-badge smart-badge-danger smart-badge-pill">' +
-				porcentaje +
-				" % Limite</span>"
-		);
+		texto =
+			'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Individual <span class="smart-badge smart-badge-danger smart-badge-pill">' +
+			porcentaje +
+			"%</span>";
 	} else {
-		tabs.update(
-			1,
-			'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Indivdual'
-		);
+		texto =
+			'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Individual';
 	}
+	changeTab(1, texto);
 });
 $("#idversion").on("change", function (event) {
 	if ($("#idversion").val() != $("#version").val()) {
-		$("#updateBtn").removeClass("primary").addClass("error");
+		$("#updateBtn").removeClass("bg-azulbaculo").addClass("btn-danger");
 	} else {
 		// updateBtn.innerHTML = '<span> <i class="fas fa-save" aria-hidden="true"></i> Guardar </span>';
-		$("#updateBtn").removeClass("error").addClass("primary");
+		$("#updateBtn").removeClass("btn-danger").addClass("bg-azulbaculo");
 	}
 });
 
@@ -124,7 +173,11 @@ updateBtn.addEventListener("click", function (event) {
 		toast.open();
 		toast.type = "error";
 		toast.value = "No puede grabar existen diferencias de reparto .....";
-		Ggrid.setRowStyle(5, { background: "red", color: "white" });
+		Ggrid.setRowStyle(5, {
+			fontFamily: "Poppins",
+			background: "red",
+			color: "white",
+		});
 
 		tabs.select(3);
 		return;
@@ -140,7 +193,7 @@ updateBtn.addEventListener("click", function (event) {
 
 	toast.closeLast();
 	toast.open();
-	toast.type = "warning";
+	toast.type = "info";
 	toast.value = "Guardando  Datos en BBDD .....";
 	fetch(
 		"http://localhost:3000/objetivos/recibeAjax/?uno=" +
@@ -209,7 +262,7 @@ var cambiartipopeso = function (tipo) {
 				1,
 				'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Compañía <span class="smart-badge smart-badge-danger smart-badge-pill">' +
 					porcentaje +
-					" % Limite</span>"
+					"%</span>"
 			);
 		} else {
 			tabs.update(
@@ -222,9 +275,9 @@ var cambiartipopeso = function (tipo) {
 		if (porcentaje > 0) {
 			tabs.update(
 				1,
-				'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Indivdual <span class="smart-badge smart-badge-danger smart-badge-pill">' +
+				'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Individual <span class="smart-badge smart-badge-danger smart-badge-pill">' +
 					porcentaje +
-					" % Limite</span>"
+					"%</span>"
 			);
 		} else {
 			tabs.update(
@@ -234,34 +287,44 @@ var cambiartipopeso = function (tipo) {
 		}
 	}
 };
-//Compara dos objetos (Claves y Valores) y devuelve si son iguales o no
-var objCompare = (a, b) => {
-	if (
-		Object.prototype.toString.call(a) === Object.prototype.toString.call(b)
-	) {
-		if (
-			Object.prototype.toString.call(a) === "[object Object]" ||
-			Object.prototype.toString.call(a) === "[object Array]"
-		) {
-			if (Object.keys(a).length !== Object.keys(b).length) {
-				return false;
-			}
-			return Object.keys(a).every(function (key) {
-				return objCompare(a[key], b[key], "F");
-			});
-		}
-		return a === b;
-	}
-	return false;
-};
+var calculapesosall = function () {
+	var ffilas = "";
+	grid.expandAllRows();
+	grid.setRowProperty(1, "freeze", false);
+	//grid.highlightCell(1, "firstName", "cssClass");
+	console.log(grid.rows[227].data);
+	grid.addFilter("Tot", ">= 0", false);
+	grid.addFilter("Tot", "<= 1245.18", true);
+	//grid.addFilter("Descripcion", 'EQUAL "RIETOS CRIANZA BOT_ 75CL"', true);
+	ffilas = grid.getVisibleRows();
 
-//Compara dos objetos y devuelve las claves con diferente valor
-var sacaKeys = function (a, b) {
-	return Object.keys(a).filter(function (key) {
-		return a[key] != b[key];
-	});
+	//ffilas = grid.findCells(1245.18);
+	//ffilas = grid.find("Tot", 1245.18, "=");
+	console.log(ffilas);
+	//grid.selectRowsByQuery(416.67, "Ene", "EQUAL");
+	// grid.selectCellsByQuery("5000.00");
+	//ffilas = grid.getSelectedRows();
+
+	if (ffilas.length === 0) {
+		infotoats.closeLast();
+		infotoats.itemTemplate = "template-toast-ffalse";
+		infotoats.type = "info";
+		infotoats.value = ffilas.length + " filas";
+		infotoats.open();
+		grid.clearFilter();
+	} else {
+		infotoats.closeLast();
+		infotoats.itemTemplate = "template-toast-ftrue";
+		infotoats.type = "info";
+		infotoats.value = ffilas.length + " filas";
+		infotoats.open();
+	}
+	// for (var i = 0; i < filas.length; i++) {
+
+	// 	console.log(filas[i].data);
+	// }
 };
-var calculapesos = function (fila, modo) {
+var calculapesos = function (fila) {
 	var peso = 0;
 	var gpeso = 0;
 	var gtpeso = 0;
@@ -274,7 +337,11 @@ var calculapesos = function (fila, modo) {
 		padre = fila.parentId;
 	}
 
-	Ggrid.setRowStyle(5, { background: "default", color: "default" });
+	Ggrid.setRowStyle(5, {
+		fontFamily: "Poppins",
+		background: "default",
+		color: "default",
+	});
 	Ggrid.beginUpdate();
 	Ggrid.setCellValue(
 		3,
@@ -350,10 +417,20 @@ var calculapesos = function (fila, modo) {
 
 		Ggrid.setCellValue(3, COLUMNAS[i], redondea(parseFloat(gpeso)));
 		Ggrid.setCellValue(4, COLUMNAS[i], redondea(parseFloat(peso)));
+		//Cargamos diferencias
+		Ggrid.setCellValue(
+			5,
+			COLUMNAS[i],
+			redondea(parseFloat(midiferencia[i]))
+		);
 		// Tabla TGrid Totales Cia
 		Tgrid.setCellValue(3, COLUMNAS[i], grid.getCellValue(1, COLUMNAS[i]));
-		Tgrid.setRowStyle(3, { background: "default", color: "#1cabe9" });
-
+		Tgrid.setRowStyle(3, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "#1cabe9",
+		});
+		//Peso Mensual
 		Tgrid.setCellValue(
 			4,
 			COLUMNAS[i],
@@ -365,55 +442,119 @@ var calculapesos = function (fila, modo) {
 				)
 			)
 		);
-		// Si la variacon viene por peso modo = '%', OJO no acumulamos al Total General. Acumulamos diferencia para ajustar al final
-		var vanterior = parseFloat(0.0);
-
-		if (modo == "%") {
-			if (mifilaanterior.length > 0) {
-				/* 				vanterior =
-					parseFloat(Ggrid.getCellValue(5, COLUMNAS[i])).toFixed(2) *
-					1; */
-
-				Ggrid.setCellValue(
-					5,
-					COLUMNAS[i],
-					redondea(parseFloat(vanterior - mifilaanterior[i]))
-				);
-				if (i > 0) {
-					totaldiferencia += redondea(
-						parseFloat(Ggrid.getCellValue(5, COLUMNAS[i]))
-					);
-				}
-				Ggrid.setCellValue(
-					5,
-					COLUMNAS[0],
-					redondea(parseFloat(totaldiferencia))
-				);
-			}
-		} else if (modo == "A") {
-			totaldiferencia = 0.0;
-			Ggrid.setCellValue(5, COLUMNAS[i], redondea(parseFloat(0.0)));
+		//% Nuevo Total Vs Presupuesto Original.
+		var diferencial = redondea(
+			(parseFloat(Tgrid.getCellValue(3, COLUMNAS[i])) /
+				parseFloat(Tgrid.getCellValue(1, COLUMNAS[i])) -
+				1) *
+				100,
+			2
+		);
+		Tgrid.setCellValue(5, COLUMNAS[i], parseFloat(diferencial));
+		if (diferencial >= 0) {
+			Tgrid.setCellStyle(5, COLUMNAS[i], {
+				background: "default",
+				color: COLORES_LETRA[4],
+			});
+			Tgrid.setCellStyle(5, "Descripcion", {
+				background: "default",
+				color: COLORES_LETRA[4],
+			});
+		} else {
+			Tgrid.setCellStyle(5, COLUMNAS[i], {
+				background: "default",
+				color: COLORES_LETRA[3],
+			});
+			Tgrid.setCellStyle(5, "Descripcion", {
+				background: "default",
+				color: COLORES_LETRA[3],
+			});
 		}
-	}
-	Tgrid.setRowStyle(4, { background: "default", color: "#1cabe9" });
 
+		// Si la variacion viene por peso modo = '%', OJO no acumulamos al Total General. Acumulamos diferencia para ajustar al final
+		// var vanterior = parseFloat(0.0);
+
+		// if (!sumapadres.checkStatus) {
+		// 	if (midiferencia.length > 0) {
+		// 		Ggrid.setCellValue(
+		// 			5,
+		// 			COLUMNAS[i],
+		// 			redondea(parseFloat(midiferencia[i]))
+		// 		);
+		// 	}
+		// }
+	}
+	Tgrid.setRowStyle(4, {
+		fontFamily: "Poppins",
+		background: "default",
+		color: "#1cabe9",
+	});
+	// if (parseFloat(Tgrid.getCellValue(5, COLUMNAS[0])) >= 0) {
+	// 	Tgrid.setRowStyle(5, {
+	// 		fontFamily: "Poppins",
+	// 		background: "default",
+	// 		color: COLORES_LETRA[4],
+	// 	});
+	// } else {
+	// 	Tgrid.setRowStyle(5, {
+	// 		fontFamily: "Poppins",
+	// 		background: "default",
+	// 		color: COLORES_LETRA[3],
+	// 	});
+	// }
 	diferencia = redondea(
 		parseFloat(grid.getCellValue(1, COLUMNAS[0])) -
 			parseFloat(Ggrid.getCellValue(1, COLUMNAS[0]))
 	);
 
 	if (diferencia < 0) {
-		Ggrid.setRowStyle(2, { background: "default", color: "red" });
-		Tgrid.setRowStyle(3, { background: "default", color: "red" });
-		Tgrid.setRowStyle(4, { background: "default", color: "red" });
+		Ggrid.setRowStyle(2, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "red",
+		});
+		Tgrid.setRowStyle(3, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "red",
+		});
+		Tgrid.setRowStyle(4, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "red",
+		});
 	} else if (diferencia > 0) {
-		Ggrid.setRowStyle(2, { background: "default", color: "#1cabe9" });
-		Tgrid.setRowStyle(3, { background: "default", color: "#1cabe9" });
-		Tgrid.setRowStyle(4, { background: "default", color: "#1cabe9" });
+		Ggrid.setRowStyle(2, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "#1cabe9",
+		});
+		Tgrid.setRowStyle(3, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "#1cabe9",
+		});
+		Tgrid.setRowStyle(4, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "#1cabe9",
+		});
 	} else {
-		Ggrid.setRowStyle(2, { background: "default", color: "black" });
-		Tgrid.setRowStyle(3, { background: "default", color: "black" });
-		Tgrid.setRowStyle(4, { background: "default", color: "black" });
+		Ggrid.setRowStyle(2, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "black",
+		});
+		Tgrid.setRowStyle(3, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "black",
+		});
+		Tgrid.setRowStyle(4, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: "black",
+		});
 	}
 
 	Ggrid.setCellValue(3, "Idx", parseFloat(fila.index));
@@ -421,7 +562,7 @@ var calculapesos = function (fila, modo) {
 
 	Ggrid.endUpdate();
 	Ggrid.refreshView();
-
+	grid.refreshView();
 	return;
 };
 //Abrimos el arbol a partir de la fila, indicada, todos sus hijos (true / false) y color
@@ -430,20 +571,26 @@ var abrirarbol = function (fila, all, color) {
 	grid.expandRow(fila.id);
 
 	grid.setRowStyle(fila.id, {
+		fontFamily: "Poppins",
+		fontWeight: 600,
 		background: COLORES_FONDO[fila.level],
 		color: COLORES_LETRA[fila.level],
 	});
-	fila.children.forEach((hijo) => {
-		if (color) {
-			grid.setRowStyle(hijo.id, {
-				background: COLORES_FONDO[hijo.level],
-				color: COLORES_LETRA[hijo.level],
-			});
-		}
-		if (hijo.children.length > 0 && all) {
-			abrirarbol(hijo, true, color);
-		}
-	});
+	//console.log("Antes", fila.id, fila.children);
+	if (fila.children != undefined) {
+		fila.children.forEach((hijo) => {
+			if (color && hijo.level < MAXIMONIVEL) {
+				grid.setRowStyle(hijo.id, {
+					fontFamily: "Poppins",
+					background: COLORES_FONDO[hijo.level],
+					color: COLORES_LETRA[hijo.level],
+				});
+			}
+			if (hijo.children.length > 0 && all) {
+				abrirarbol(hijo, true, color);
+			}
+		});
+	}
 	grid.endUpdate();
 	return;
 };
@@ -468,6 +615,9 @@ var contarniveles = function (fila) {
 		data.padre.push(1);
 	}
 	if (grid.rows.length - 1 == fila.index) {
+		return;
+	}
+	if (fila.children === undefined) {
 		return;
 	}
 	// Para sus hijos
@@ -498,8 +648,8 @@ var contarniveles = function (fila) {
 	});
 };
 
-// Operaciones con Children Columna <> Ene ..Dic
-var operarhijos = function (fila, columna, ltotalanterior, ltotalnuevo) {
+// Operaciones con Children Columna => Ene ..Dic
+var operarhijos = async function (fila, columna, ltotalanterior, ltotalnuevo) {
 	var ltotal = 0;
 	var lvalor = 0;
 	var lanterior = 0;
@@ -508,7 +658,9 @@ var operarhijos = function (fila, columna, ltotalanterior, ltotalnuevo) {
 		parseFloat(ltotalnuevo) / parseFloat(gcuentaniveles[MAXIMONIVEL])
 	);
 	grid.setCellValue(fila.id, columna, redondea(parseFloat(ltotalnuevo)));
-
+	if (fila.children === undefined) {
+		return;
+	}
 	fila.children.forEach(function (hijos) {
 		var ftotal = 0;
 		if (ltotalanterior == 0) {
@@ -532,49 +684,66 @@ var operarhijos = function (fila, columna, ltotalanterior, ltotalnuevo) {
 	});
 };
 // Operaciones con Children Columna Total
-var operarhijostotal = function (fila, ltotalanterior, ltotalnuevo) {
+var operarhijostotal = async function (fila, ltotalanterior, ltotalnuevo) {
 	var ltotal = 0;
 	var lvalor = 0;
 	var resto = 0;
 
-	// Set a Float la celda modificada
-	//grid.setCellValue(fila.id, COLUMNAS[0], redondea(parseFloat(ltotalnuevo)));
-	const unitario =
-		parseFloat(ltotalnuevo) / parseFloat(gcuentaniveles[MAXIMONIVEL]);
+	if (fila.children === undefined) {
+		return;
+	}
+	const unitario = redondea(
+		parseFloat(ltotalnuevo) / parseFloat(gcuentaniveles[MAXIMONIVEL])
+	);
 
 	fila.children.forEach(function (hijos) {
-		var ftotal = 0;
 		if (ltotalanterior == 0) {
 			ltotal =
 				parseFloat(unitario) *
 				data.maxnivel[data.ix.indexOf(hijos.index)];
 		}
+		var ftotal = 0;
 		for (var i = 1; i <= 12; i++) {
 			if (ltotalanterior == 0) {
 				if (pi.checked) {
-					lvalor = parseFloat(ltotal / 12);
+					lvalor = redondea(parseFloat(ltotal / 12));
 				} else {
-					lvalor = parseFloat(
-						(ltotal *
-							parseFloat(Tgrid.getCellValue(2, COLUMNAS[i]))) /
-							100
+					lvalor = redondea(
+						parseFloat(
+							(ltotal *
+								parseFloat(
+									Tgrid.getCellValue(2, COLUMNAS[i])
+								)) /
+								100
+						)
 					);
 				}
 			} else {
 				if (pi.checked) {
-					lvalor =
-						(parseFloat(grid.getCellValue(hijos.id, COLUMNAS[i])) /
-							parseFloat(ltotalanterior)) *
-						parseFloat(ltotalnuevo);
-				} else {
-					lvalor =
+					ltotal = redondea(
 						(parseFloat(grid.getCellValue(hijos.id, COLUMNAS[0])) /
 							parseFloat(ltotalanterior)) *
-						parseFloat(ltotalnuevo);
-					lvalor = parseFloat(
-						(lvalor *
-							parseFloat(Tgrid.getCellValue(4, COLUMNAS[i]))) /
-							100
+							parseFloat(ltotalnuevo)
+					);
+					lvalor = redondea(
+						(parseFloat(grid.getCellValue(hijos.id, COLUMNAS[i])) /
+							parseFloat(ltotalanterior)) *
+							parseFloat(ltotalnuevo)
+					);
+				} else {
+					ltotal = redondea(
+						(parseFloat(grid.getCellValue(hijos.id, COLUMNAS[0])) /
+							parseFloat(ltotalanterior)) *
+							parseFloat(ltotalnuevo)
+					);
+					lvalor = redondea(
+						parseFloat(
+							(lvalor *
+								parseFloat(
+									Tgrid.getCellValue(4, COLUMNAS[i])
+								)) /
+								100
+						)
 					);
 				}
 			}
@@ -584,36 +753,18 @@ var operarhijostotal = function (fila, ltotalanterior, ltotalnuevo) {
 				redondea(parseFloat(lvalor))
 			);
 			ftotal += parseFloat(lvalor);
-			resto += parseFloat(lvalor) - redondea(lvalor);
 		}
 
 		//resto = resto - ftotal;
-		console.log(hijos.data.Descripcion, hijos.level, ftotal, resto);
-		if (resto < 0) {
-			lvalor -= resto;
-			//ftotal -= resto;
-		} else {
-			lvalor += resto;
-			//ftotal += resto;
-		}
-
+		resto = parseFloat(ltotal) - redondea(ftotal);
+		lvalor += resto;
+		ftotal += resto;
 		grid.setCellValue(hijos.id, COLUMNAS[12], redondea(lvalor));
-		resto = 0;
-		grid.setCellValue(hijos.id, COLUMNAS[0], redondea(ftotal));
-		//} else {
-
-		// console.log("Resto a Total Mes 12", resto);
-		// grid.setCellValue(
-		// 	hijos.id,
-		// 	COLUMNAS[0],
-		// 	parseFloat(ftotal).toFixed(2)
-		// );
-		//}
-		// grid.checkRow(hijos.id);
+		grid.setCellValue(hijos.id, COLUMNAS[0], redondea(ltotal));
 	});
 };
-// Operaciones con Children Columna <> Ene ..Dic
-var operarpadres = function (fila, columna, ltotalanterior, ltotalnuevo, modo) {
+// Operaciones de reparto
+var operarpadres = async function (fila, columna, ltotalanterior, ltotalnuevo) {
 	var ltotal = 0;
 	var lvalor = 0;
 	var mivalor = 0;
@@ -622,8 +773,9 @@ var operarpadres = function (fila, columna, ltotalanterior, ltotalnuevo, modo) {
 	grid.expandRow(fila.id);
 	// grid.checkRow(fila.id);
 
-	//Si es el Total General level = 0 y el modo = '%' (Grupo)  no acumulamnos. Dejamos la diferencia a repartir
-	if (fila.level == 0 && modo == "%") {
+	//Si No suma padres y es total Gral Level = = salimos
+
+	if (!sumapadres.checkStatus && fila.level == 0) {
 		return;
 	}
 
@@ -635,43 +787,48 @@ var operarpadres = function (fila, columna, ltotalanterior, ltotalnuevo, modo) {
 			parseFloat(ltotalanterior) +
 			parseFloat(ltotalnuevo);
 
-		grid.setCellValue(fila.id, columna, redondea(parseFloat(lvalor)));
+		grid.setCellValue(fila.id, columna, redondea(lvalor));
 		ltotal =
 			parseFloat(grid.getCellValue(fila.id, COLUMNAS[0])) -
 			parseFloat(ltotalanterior) +
 			parseFloat(ltotalnuevo);
 	} else {
-		// Si es columna de total actualizamos los meses de los padres
+		// Si es columna de total actualizamos los meses
 		for (var i = 1; i <= 12; i++) {
 			lvalor =
 				parseFloat(grid.getCellValue(fila.id, COLUMNAS[i])) +
 				parseFloat(mifilaanterior[i]);
-			grid.setCellValue(
-				fila.id,
-				COLUMNAS[i],
-				redondea(parseFloat(lvalor))
-			);
+			grid.setCellValue(fila.id, COLUMNAS[i], redondea(lvalor));
 		}
 		ltotal =
 			parseFloat(grid.getCellValue(fila.id, COLUMNAS[0])) +
 			parseFloat(mifilaanterior[0]);
 	}
-	grid.setCellValue(fila.id, COLUMNAS[0], redondea(parseFloat(ltotal)));
+	grid.setCellValue(fila.id, COLUMNAS[0], redondea(ltotal));
 
 	if (fila.parent != undefined) {
 		// Si tiene más padres
-		operarpadres(fila.parent, columna, ltotalanterior, ltotalnuevo, modo);
+		await operarpadres(fila.parent, columna, ltotalanterior, ltotalnuevo);
 	}
-	console.log("Fila Anterior y Diferencia", mifilaanterior, midiferencia);
+	//console.log("Fila Anterior y Diferencia", mifilaanterior, midiferencia);
 };
-var operar = function (ltotalanterior, ltotalnuevo, fila, columna, modo) {
+
+// Funcion que realiza el calculo de hijos y padres del Grid
+// Calculattion Childrens and Parents in the Grid
+var operar = async function (ltotalanterior, ltotalnuevo, fila, columna) {
 	var ltotal = 0;
 	var lvalor = 0;
 	var resto = 0;
+	var reg = {
+		mifila: {},
+		columna: "",
+		ltotalanterior: 0.0,
+		ltotalnuevo: 0.0,
+	};
+
 	grid.beginUpdate();
 
-	// Set de la celda a ParseFloat
-	grid.setCellValue(fila.id, columna, redondea(parseFloat(ltotalnuevo)));
+	grid.setCellValue(fila.id, columna, redondea(ltotalnuevo));
 	grid.collapseAllRows();
 	// Abrimo arbol  y Contamos Niveles
 	// grid.checkRow(fila.id);
@@ -695,9 +852,10 @@ var operar = function (ltotalanterior, ltotalnuevo, fila, columna, modo) {
 		mifilaanterior[0] = redondea(
 			-parseFloat(ltotalanterior) + parseFloat(ltotalnuevo)
 		);
-		if (modo == "%") {
+		if (!sumapadres.checkStatus) {
 			midiferencia[0] += mifilaanterior[0];
 		}
+
 		for (var i = 1; i <= 12; i++) {
 			if (ltotalanterior == 0) {
 				if (pi.checked) {
@@ -736,84 +894,126 @@ var operar = function (ltotalanterior, ltotalnuevo, fila, columna, modo) {
 				parseFloat(lvalor) -
 					parseFloat(grid.getCellValue(fila.id, COLUMNAS[i]))
 			);
-			if (modo == "%") {
+			if (!sumapadres.checkStatus) {
 				midiferencia[i] += mifilaanterior[i];
 			}
-			grid.setCellValue(
-				fila.id,
-				COLUMNAS[i],
-				redondea(parseFloat(lvalor))
-			);
+			grid.setCellValue(fila.id, COLUMNAS[i], lvalor);
 			ltotal += parseFloat(lvalor);
-			resto += parseFloat(lvalor) - redondea(lvalor);
+			//resto += parseFloat(lvalor) - redondea(lvalor);
 		}
 		// Ajustamos Resto en la ultima columna
-		if (resto < 0) {
+		resto = redondea(ltotalnuevo - redondea(ltotal, 2), 2);
+		if (resto > 0) {
 			lvalor -= resto;
 			//ftotal -= resto;
 		} else {
 			lvalor += resto;
 			//ftotal += resto;
 		}
+
 		if (ltotalanterior == 0) {
-			mifilaanterior[12] = redondea(
-				parseFloat(lvalor) -
-					parseFloat(grid.getCellValue(fila.id, COLUMNAS[i]))
-			);
-			if (modo == "%") {
-				midiferencia[i] += mifilaanterior[i];
+			mifilaanterior[12] = lvalor;
+
+			if (!sumapadres.checkStatus) {
+				midiferencia[12] += lvalor;
 			}
 		}
-		grid.setCellValue(fila.id, COLUMNAS[12], redondea(parseFloat(lvalor)));
-		operarhijostotal(fila, ltotalanterior, ltotalnuevo);
+
+		grid.setCellValue(fila.id, COLUMNAS[12], redondea(lvalor));
+
+		await operarhijostotal(fila, ltotalanterior, ltotalnuevo);
 	} else {
 		// Ajustamos el total de la fila y guardamos en el elemento 'Mes' del Array Valor Anterior
 		const mes = COLUMNAS.findIndex((meses) => meses === columna);
 		mifilaanterior[mes] = parseFloat(ltotalanterior);
-		if (modo == "%") {
+		if (!sumapadres.checkStatus) {
 			midiferencia[mes] += mifilaanterior[mes];
 		}
 		lvalor = redondea(
 			parseFloat(grid.getCellValue(fila.id, COLUMNAS[0])) -
 				parseFloat(ltotalanterior) +
-				parseFloat(ltotalnuevo)
+				parseFloat(ltotalnuevo),
+			0
 		);
-		grid.setCellValue(fila.id, COLUMNAS[0], redondea(parseFloat(lvalor)));
-		operarhijos(fila, columna, ltotalanterior, ltotalnuevo);
+		grid.setCellValue(fila.id, COLUMNAS[0], redondea(lvalor));
+		await operarhijos(fila, columna, ltotalanterior, ltotalnuevo);
 	}
 
-	// Operamos padres con valor de fila (mifila) y el Array de valores anteriores (mifilaanterior) con las diferencias
 	var mifila = grid.rows[fila.index];
-
-	if (mifila.id > 1) {
-		abrirarbol(mifila, false, true);
-		if (mifila.parent != undefined) {
-			operarpadres(
-				mifila.parent,
-				columna,
-				ltotalanterior,
-				ltotalnuevo,
-				mifilaanterior,
-				modo
-			);
-		}
+	if (!sumapadres.checkStatus) {
+		reg.mifila = { ...mifila.parent };
+		reg.columna = columna;
+		reg.ltotalanterior = ltotalanterior;
+		reg.ltotalnuevo = ltotalnuevo;
+		filaspdtes.push(reg);
+		reg = {};
 	}
+	// Operamos padres con valor de fila (mifila)
+	if (mifila.id > 1 && mifila.parent != undefined) {
+		abrirarbol(mifila, false, true);
+
+		await operarpadres(mifila.parent, columna, ltotalanterior, ltotalnuevo);
+	}
+	// if (mifila.id > 1) {
+	// 	abrirarbol(mifila, false, true);
+	// 	if (mifila.parent != undefined) {
+	// 		await operarpadres(
+	// 			mifila.parent,
+	// 			columna,
+	// 			ltotalanterior,
+	// 			ltotalnuevo
+	// 		);
+	// 	}
+	// }
 
 	//Abrimos Level = 0
 	grid.endUpdate();
+	grid.clearFilter();
+	grid.refreshView();
 	grid.expandRow(1);
-
 	toast.closeLast();
 	toast.open();
 	toast.type = "success";
 	toast.value = "Calculo Finalizado.";
+
+	return filaspdtes;
 };
 
-//Redndeo a 2 decimales
-function redondea(numero) {
-	var n = Number(Math.abs(numero) * 1000).toPrecision(15);
-	return (Math.round(n) / 1000) * Math.sign(numero);
+//Redndeo a n decimales
+function redondea(numero, n = 2) {
+	var dec = (1 + "0".repeat(n)) * 1;
+
+	var n = Number(Math.abs(numero) * dec).toPrecision(15);
+
+	return (Math.round(n) / dec) * Math.sign(numero);
 }
+//Compara dos objetos y devuelve las claves con diferente valor
+var sacaKeys = function (a, b) {
+	return Object.keys(a).filter(function (key) {
+		return a[key] != b[key];
+	});
+};
+//Compara dos objetos true -> Iguales o False -> Distintos
+var objCompare = (arg1, arg2) => {
+	if (
+		Object.prototype.toString.call(arg1) ===
+		Object.prototype.toString.call(arg2)
+	) {
+		if (
+			Object.prototype.toString.call(arg1) === "[object Object]" ||
+			Object.prototype.toString.call(arg1) === "[object Array]"
+		) {
+			if (Object.keys(arg1).length !== Object.keys(arg2).length) {
+				return false;
+			}
+			return Object.keys(arg1).every(function (key) {
+				return objCompare(arg1[key], arg2[key], "F");
+			});
+		}
+		return arg1 === arg2;
+	}
+	return false;
+};
 
 var cabecera = [
 	{
@@ -1032,7 +1232,6 @@ var filas = [
 	"Indice: string",
 ];
 
-var plantilla = "<strong>Valores Originales</strong>";
 window.Smart(
 	"#grid",
 	class {
@@ -1048,8 +1247,10 @@ window.Smart(
 				editing: {
 					batch: false,
 					enabled: true,
+					//action: "doubleClick",
 					action: "click",
-					mode: "row",
+					//mode: "row",
+					mode: "cell",
 					commandColumn: {
 						visible: true,
 						dataSource: {
@@ -1070,7 +1271,7 @@ window.Smart(
 				},
 				selection: {
 					enabled: true,
-					mode: "extended",
+					mode: "one",
 					allowCellSelection: false,
 				},
 				behavior: { columnResizeMode: "growAndShrink" },
@@ -1085,9 +1286,10 @@ window.Smart(
 					alternationCount: 2,
 				},
 				header: {
-					visible: true,
-					buttons: ["search"],
+					visible: false,
+					buttons: [],
 				},
+
 				footer: {
 					visible: true,
 					template: "#footerTemplate",
@@ -1124,11 +1326,13 @@ window.Smart(
 						args.handled = true;
 					}
 				},
-				// onKey: function(event){
-				//   var rows = grid.getSelectedRows();
-				//   var id = parseInt(rows[0][0]) + 1;
-
-				// },
+				onKey: function (event) {
+					if (event.keyCode === 27) {
+						grid.cancelEdit();
+					}
+					console.log("Key", event);
+					//calculapesos(row);
+				},
 				onRowInit: function (index, row) {
 					if (row.id === 1) {
 						toast.closeLast();
@@ -1139,30 +1343,67 @@ window.Smart(
 						row.freeze = "near";
 					}
 				},
-				// onRowUpdate: function (
+				// Calculo de hijos y padres del Grid
+				// onRowUpdate: async function (
 				// 	index,
 				// 	row,
 				// 	oldValues,
 				// 	newValues,
 				// 	confirm
 				// ) {
-				// 	var cambios = sacaKeys(oldValues, newValues);
-				// 	cambios.forEach((c) => {
-				// 		if (c != "Descripcion") {
-				// 			console.log(c, oldValues[c], newValues[c]);
+				// 	var misvalores = [];
+				// 	if (objCompare(oldValues, newValues)) {
+				// 		confirm(false);
+				// 	} else {
+				// 		var cambios = sacaKeys(oldValues[0], newValues[0]);
+
+				// 		if (cambios.length > 1) {
+				// 			cambios.shift();
+				// 			var tope = cambios.length;
+
+				// 			if (cambios[1] == "Tot") {
+				// 				tope = 1;
+				// 			}
+				// 			for (var i = 0; i < tope; i++) {
+				// 				misvalores = await operar(
+				// 					oldValues[0][cambios[i]],
+				// 					newValues[0][cambios[i]],
+				// 					row[0],
+				// 					cambios[i]
+				// 				);
+				// 			}
+				// 		} else {
+				// 			confirm(false);
 				// 		}
-				// 	});
-				// 	confirm(true);
+				// 		if (cambios[0] != 0) {
+				// 			confirm(true);
+				// 			calculapesos(row[0]);
+				// 		}
+				// 	}
 				// },
-				onCellUpdate: function (cell, oldValue, newValue, confirm) {
+				//
+				// Funcion que realiza el calculo de hijos y padres del Grid
+				// Calculattion Childrens and Parents in the Grid
+				onCellUpdate: async function (
+					cell,
+					oldValue,
+					newValue,
+					confirm
+				) {
+					var misvalores = [];
 					var fila = cell[0].row;
 					var columna = cell[0].column.dataField;
 					if (oldValue == newValue) {
 						confirm(false);
 					} else if (!cell[0].row.checked) {
-						operar(oldValue, newValue, fila, columna, "A");
+						misvalores = await operar(
+							oldValue,
+							newValue,
+							fila,
+							columna
+						);
 						confirm(true);
-						calculapesos(fila, "A");
+						calculapesos(fila);
 					} else {
 						confirm(false);
 					}
@@ -1171,10 +1412,7 @@ window.Smart(
 		}
 	}
 );
-$("#probar")
-	.css("width", "0%")
-	.attr("aria-valuenow", 0)
-	.text("Datos Cargados ....");
+
 grid.addEventListener("beginEdit", function (event) {
 	const detail = event.detail,
 		row = detail.row,
@@ -1196,41 +1434,23 @@ grid.addEventListener("rowClick", function (event) {
 	toast.closeLast();
 	FILA_INDEX = row.index;
 	Ggrid.editing.enabled = true;
-	calculapesos(row, "");
-	grid.refreshView();
+	calculapesos(row);
+	//grid.refreshView();
 	iconoGgrid = "fas fa-sort-amount-down-alt";
 
 	// grid.columns[0].label = "Fernando Pellús";
 }),
-	// grid.addEventListener('change', function (event) {
-	//   const detail = event.detail,
-	//       started = detail.started,
-	//       finished = detail.finished,
-	//       originalEvent = detail.originalEvent;
-	//       event.preventDefault();
-	//       var filaid = "";
-	//       var filas = grid.getSelectedRows();
-	//       if (filas.length > 0) {
-	//            filaid = filas[0][0];
-
-	//            calculapesos(grid.rows[filaid]);
-	//       } else {
-	//            grid.selectRows([1]);
-	//            filas = grid.getSelectedRows();
-	//            calculapesos(filas[0]);
-
-	//       }
-
-	//     }),
 	grid.addEventListener("rowExpand", function (event) {
 		const detail = event.detail,
 			erow = detail.row,
 			eid = detail.id,
 			eoriginalEvent = detail.originalEvent;
-		event.preventDefault();
+		//event.preventDefault();
 		grid.setRowStyle(erow.id, {
-			background: COLORES_FONDO[erow.level],
-			color: COLORES_LETRA[erow.level],
+			fontFamily: "Poppins",
+			fontWeight: 600,
+			background: "default",
+			color: "default",
 		});
 		if (erow.id > 1) {
 			abrirarbol(erow, false, true);
@@ -1241,15 +1461,13 @@ grid.addEventListener("rowClick", function (event) {
 			erow = detail.row,
 			eid = detail.id,
 			eoriginalEvent = detail.originalEvent;
-		event.preventDefault();
-		if (erow.level == 1) {
-			grid.setRowStyle(erow.id, {
-				background: "default",
-				color: "default",
-			});
-		}
 
-		//grid.setRowStyle(erow.id,{"background":COLORES_FONDO[erow.level],"color":"default"});
+		grid.setRowStyle(erow.id, {
+			fontFamily: "Poppins",
+			fontWeight: "default",
+			background: "default",
+			color: "default",
+		});
 	}),
 	menu.addEventListener("itemClick", function (event) {
 		const rowIdx = parseInt(menu.getAttribute("data-row-idx"));
@@ -1277,37 +1495,59 @@ grid.addEventListener("rowClick", function (event) {
 				event.preventDefault();
 				var indice = parseInt(mrow.index);
 				var mifila = grid.rows[indice];
+
 				while (mifila.level > 0) {
+					grid.setRowStyle(mifila.id, {
+						fontFamily: "Poppins",
+						fontWeight: "default",
+						background: "default",
+						color: "default",
+					});
 					indice -= 1;
 					mifila = grid.rows[indice];
 				}
+
+				//grid.collapseRow(mifila.id);
 				mifila.children.forEach((hijo) => {
 					if (
 						hijo.level == mrow.level ||
 						hijo.level == mrow.level - 1
 					) {
 						grid.collapseRow(hijo.id);
-						grid.setRowStyle(hijo.id, {
-							background: COLORES_FONDO[0],
-							color: COLORES_LETRA[0],
-						});
 					}
+					grid.setRowStyle(mrow.parentId, {
+						fontFamily: "Poppins",
+						fontWeight: "default",
+						background: "default",
+						color: "default",
+					});
 				});
+
 				grid.collapseRow(mrow.id);
 				if (mrow.level == 2) {
-					grid.setRowStyle(mrow.parentId, {
-						background: COLORES_FONDO[0],
-						color: COLORES_LETRA[0],
+					grid.setRowStyle(mrow.id, {
+						fontFamily: "Poppins",
+						fontWeight: "default",
+						background: "default",
+						color: "default",
 					});
 				}
 				grid.endUpdate();
+				grid.refreshView();
 			}
 			// Expandimos todos los hijos de un nivel
 			if (event.detail.item.getAttribute("data-id") === "Expandir") {
 				grid.beginUpdate();
 				var indice = parseInt(mrow.index);
 				var mifila = grid.rows[indice];
+				var nivel = mifila.level;
 				event.preventDefault();
+				if (nivel == 0) {
+					nivel = MAXIMONIVEL;
+				} else {
+					nivel += 1;
+				}
+				//grid.expandRowsToGroupLevel(nivel);
 				abrirarbol(mifila, true, true);
 				grid.endUpdate();
 			}

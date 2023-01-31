@@ -87,8 +87,8 @@ module.exports = {
 		}
 	},
 	async leerfilaoriginal(ocodigo, id) {
+		//TODO LEER SIEMPRE LA VERSION "VP"
 		logger.log("Log: leerfilaoriginal", ocodigo, id);
-
 		registros = "";
 		try {
 			sqlstring =
@@ -209,11 +209,12 @@ module.exports = {
 				})
 				.catch((error) => {
 					logger.error("Error: " + error.message);
-					res.render("error", { merror: error.message });
+					throw Error(e.message);
 				});
 			return lays;
 		} catch (e) {
-			throw new Error(e.message);
+			logger.error("Error: " + e.message);
+			throw Error(e.message);
 		}
 	},
 	async updatelayout(layout_id, col, newvalor) {
@@ -230,12 +231,11 @@ module.exports = {
 				})
 				.catch((error) => {
 					logger.error("Error: " + error.message);
-					res.render("error", { merror: error.message });
+					throw Error(e.message);
 				});
 		} catch (e) {
-			throw new Error(e.message);
-		} finally {
-			return result;
+			logger.error("Error: " + e.message);
+			throw Error(e.message);
 		}
 	},
 
@@ -263,10 +263,11 @@ module.exports = {
 				})
 				.catch((error) => {
 					logger.error("Error: " + error.message);
-					res.render("error", { merror: error.message });
+					throw Error(error.message);
 				});
 		} catch (error) {
-			throw new Error(error.message);
+			logger.error("Error: " + error.message);
+			throw Error(error.message);
 		} finally {
 			return resumen;
 		}
@@ -322,8 +323,9 @@ module.exports = {
 						posicion: 0,
 						total: 0,
 					});
+
 					paretos.push({
-						literal: "OCHENTA %",
+						literal: "PARETO %",
 						percent: tope.toFixed(2),
 						posicion: posicion,
 						total: Intl.NumberFormat("es-512").format(
@@ -331,14 +333,17 @@ module.exports = {
 						),
 					});
 					var restoporcentaje = 100 - tope;
-					paretos.push({
-						literal: "RESTO",
-						percent: restoporcentaje.toFixed(2),
-						posicion: restoposicion,
-						total: Intl.NumberFormat("es-512").format(
-							resto.toFixed(2)
-						),
-					});
+					console.log(resto, restoposicion, restoporcentaje);
+					if (restoporcentaje > 0) {
+						paretos.push({
+							literal: "RESTO %",
+							percent: restoporcentaje.toFixed(2),
+							posicion: restoposicion,
+							total: Intl.NumberFormat("es-512").format(
+								resto.toFixed(2)
+							),
+						});
+					}
 				})
 				.catch((error) => {
 					logger.error("Error: " + error.message);
@@ -421,7 +426,7 @@ module.exports = {
 				"select COALESCE(c.response,c.id) AS id, c.version FROM esquemas_layout_cab c where c.id = $1;";
 			padre = await db.query(querystring, [layout_id]);
 			if (padre.rowCount > 0) {
-				return padre.rows[0];
+				return { id: padre.rows[0].id, version: padre.rows[0].version };
 			} else {
 				// Deberia existir siempre. Por si las moscas
 				return { id: layout_id, version: "VP" };

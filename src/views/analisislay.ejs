@@ -1,211 +1,232 @@
 <style>
-  smart-drop-down-list  {
+  smart-drop-down-list {
     width: 50%;
     min-height: 30px;
-    height: auto;	
+    height: auto;
     --smart-ui-state-color-selected: rgb(55, 55, 92);
   }
 
-  .smart-table .smart-container{
+  .smart-table .smart-container {
     border: none;
   }
 
- .element-cell {
-  border: 2px solid black;
-  width: 75px;
-  height: 85px;
-  padding: 2px;
-  margin-right: 10px;
-}
-
-  #chart, #chart1, #chart2,#chart3,#chart4  {
-      width: 100%;
-      height: 80%
+  .element-cell {
+    border: 2px solid black;
+    width: 75px;
+    height: 85px;
+    padding: 2px;
+    margin-right: 10px;
   }
+
+  #chart,
+  #chart1,
+  #chart2,
+  #chart3,
+  #chart4 {
+    width: 100%;
+    height: 80%
+  }
+
   #chartdist {
     width: 100%;
     height: 80%
- } 
-  #distable, #paretolayout, #resumenlayout{
-   padding-top: 0px;
-   width: 100%;
-   height: 80%
- }
-   #avisoerror{
-     font-size: large;
- }
+  }
 
- #cabecera {
+  #distable,
+  #paretolayout,
+  #resumenlayout {
+    padding-top: 0px;
+    width: 100%;
+    height: 80%
+  }
+
+  #avisoerror {
+    font-size: large;
+  }
+
+  #cabecera {
     background-color: rgb(88, 147, 187);
     color: white;
 
     height: 40px;
- }
- h4 {
-  padding-top: 10px;
-   text-align: center;
- }
- .red {
-  color:rgb(231, 76, 60);
-  text-align: center;
-  font-size: 32px;
-}
-.card {
-  background-color: white;
+  }
 
-  /*width: 1300px;*/
-  width: 500px;
-  /*height: 360px;*/
-  height: 370px;
-}
- .card-title {
-  color: white;
-  height: 50px;
-  background:#c87cf3;
-}
-.card-title1 {
-  color: white;
-  height: 50px;
-  background:#ee6e9f
-}
-.card-title2{
-  color: white;
-  height: 50px;
-  background: #7facad;
-}
-.card-title3 {
-  background:#608283;
-  color: white;
-  height: 50px;
-}
-.card-title4 {
-  background-color:#b77802;
-  color: white;
-  height: 50px;
-}
-.card-title5 {
-  background-color:#e00505;
-  color: white;
-  height: 50px;
-}
-.card-content {
+  h4 {
+    padding-top: 10px;
+    text-align: center;
+  }
+
+  .red {
+    color: rgb(231, 76, 60);
+    text-align: center;
+    font-size: 32px;
+  }
+
+  .card {
+    background-color: white;
+
+    /*width: 1300px;*/
+    width: 500px;
+    /*height: 360px;*/
+    height: 370px;
+  }
+
+  .card-title {
+    color: white;
+    height: 50px;
+    background: #c87cf3;
+  }
+
+  .card-title1 {
+    color: white;
+    height: 50px;
+    background: #ee6e9f
+  }
+
+  .card-title2 {
+    color: white;
+    height: 50px;
+    background: #7facad;
+  }
+
+  .card-title3 {
+    background: #608283;
+    color: white;
+    height: 50px;
+  }
+
+  .card-title4 {
+    background-color: #b77802;
+    color: white;
+    height: 50px;
+  }
+
+  .card-title5 {
+    background-color: #e00505;
+    color: white;
+    height: 50px;
+  }
+
+  .card-content {
     font-size: large;
     margin-left: 5px;
     margin-right: 5px;
     text-align: center;
   }
+</style>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10">
+      <label for="idlayout" class="control-label">
+        <h5>Presupuestos</h5>
+      </label>
+      <a href="#" id="idinfo" data-bs-toggle="tooltip" data-bs-placement="right"
+        title="Debe elegir un Presupuesto de la lista">
+        <i class="fa fa-info-circle tr-azulbaculo" aria-hidden="true"></i></a>
+      <smart-drop-down-list class="analisysdrop" name="idlayout" id="idlayout" placeholder='Elige un Presupuesto ...'
+        filter-mode='contains' filterable grouped></smart-drop-down-list>
 
-  </style>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-10">
-        <label for="idlayout" class="control-label"> <h5>Presupuestos</h5></label>
-        <a href="#" id="idinfo" data-bs-toggle="tooltip" data-bs-placement="right" title="Debe elegir un Presupuesto de la lista">
-          <i class="fa fa-info-circle tr-azulbaculo" aria-hidden="true"></i></a>
-        <smart-drop-down-list class ="analisysdrop" name="idlayout" id="idlayout" placeholder='Elige un Presupuesto ...' filter-mode='contains'
-         filterable grouped></smart-drop-down-list>
-         
-      </div>
-      </div>
     </div>
+  </div>
+</div>
 
+</div>
+<smart-cards>
+  <div class="card-columns">
+    <smart-card id="resumen" class="card" item-template="largeTemplate"></smart-card>
+    <smart-card id="resumen2" class="card" item-template="largeTemplate2"></smart-card>
+    <smart-card id="resumen5" class="card" item-template="largeTemplate5"></smart-card>
   </div>
-  <smart-cards>
-    <div class="card-columns">
-        <smart-card id="resumen" class="card" item-template="largeTemplate"></smart-card>
-        <smart-card id="resumen2" class="card" item-template="largeTemplate2"></smart-card>
-        <smart-card id="resumen5" class="card" item-template="largeTemplate5"></smart-card>
-    </div>
-    <div class="card-columns">
-      <smart-card id="resumen1" class="card" item-template="largeTemplate1"></smart-card>
-      <smart-card id="resumen3" class="card" item-template="largeTemplate3"></smart-card>
-      <smart-card id="resumen4" class="card" item-template="largeTemplate4"></smart-card>
+  <div class="card-columns">
+    <smart-card id="resumen1" class="card" item-template="largeTemplate1"></smart-card>
+    <smart-card id="resumen3" class="card" item-template="largeTemplate3"></smart-card>
+    <smart-card id="resumen4" class="card" item-template="largeTemplate4"></smart-card>
   </div>
-  </smart-cards>
-  <template id="largeTemplate">
-    <div class="card-title">
-      <h4> <i class="fa fa-list" aria-hidden="true"></i> Niveles y Registros (0)</h4>
-    </div>
-    <div class="card-content">
-      <smart-table selection-mode='one' name="resumenlayout" id="resumenlayout"></smart-table>
-    </div>
-  </template>
-  <template id="largeTemplate1">
-    <div class="card-title1">
-      <h4> <i class="fas fa-chart-pie"></i> Card (1)</h4>
-    </div>
-    <div class="row">
-      <div class="col-md-10"></div>
-      <div class="col-md-1 ">  <button class="btn" id='imp2' name='imp2'>
+</smart-cards>
+<template id="largeTemplate">
+  <div class="card-title">
+    <h4> <i class="fa fa-list" aria-hidden="true"></i> Niveles y Registros</h4>
+  </div>
+  <div class="card-content">
+    <smart-table selection-mode='one' name="resumenlayout" id="resumenlayout"></smart-table>
+  </div>
+</template>
+<template id="largeTemplate1">
+  <div class="card-title1">
+    <h4> <i class="fas fa-chart-pie"></i> Peso Periodos </h4>
+  </div>
+  <div class="row">
+    <div class="col-md-10"></div>
+    <div class="col-md-1 "> <button class="btn" id='imp2' name='imp2'>
         <span><i class="fas fa-print"></i> </span>
       </button></div>
-    
-    </div>
-    <div class="card-content">
-      <smart-chart id="chart2"></smart-chart>
-    </div>
-  </template>
-  <template id="largeTemplate2">
-    <div class="card-title2">
-      <h4> <i class="fas fa-table"></i> Distribución (2)</h4>
-    </div>
-    <div class="progress" style="height: 5px;">
-      <div class="progress-bar progress-bar-success" role="progressbar" id="progressbar" name="progressbar"
-        aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-      </div>
-    </div>
-    <div class="card-content">
-      <smart-table name="distable" id="distable" tooltip></smart-table>
-    </div>
-  </template>
-  <template id="largeTemplate3">
-    <div class="card-title3">
-      <h4><i class='bx bx-scatter-chart'></i> Dispersión (3) </h4>
-    </div>
-    <div class="row">
-      <div class="col-md-10"></div>
-      <div class="col-md-1 "> <button class="btn" id='imp' name='imp'>
-        <span><i class="fas fa-print"></i> </span>
-      </button></div>
-     
-    </div>
-    <div class="card-content">
-      <smart-chart id="chart"></smart-chart>
-    </div>
-  </template>
-  
-  <template id="largeTemplate5">
-    <div class="card-title5">
-      <h4> <i class="fas fa-percentage"></i> Pareto (5) </h4>
-    </div>
-    <div class="card-content">
-      <smart-table name="paretolayout" id="paretolayout" tooltip></smart-table>
-    </div>
-  </template>
-  <template id="largeTemplate4">
-    <div class="card-title4">
-      <h4> <i class="fas fa-chart-bar"></i> Volúmen (4)</h4>
-    </div>
-    <div class="row">
-      <div class="col-md-10"></div>
-      <div class="col-md-1 "><button class="btn" id='imp1' name='imp1'>
-        <span><i class="fas fa-print"></i> </span>
-      </button></div>
-      
-    </div>
-    <div class="card-content">
-      <smart-chart id="chart1"></smart-chart>
-    </div>
-  </template>
-  </div>
 
-  <script type="module" src="../../javascripts/smart/smart.grid.js"></script>
-  <script type="module" src="../../javascripts/smart/smart.card.js"></script>
-  <script type="module" src="../../javascripts/smart/smart.chart.js"></script>
-  <script type="module" src="../../javascripts/smart/smart.table.js"></script>
-  <script type="module" src="../../javascripts/smart/smart.dropdownlist.js"></script>
-  <script type="module" src="../../javascripts/smart/smart.radiobutton.js"></script>
-  <script type="module" src="../../javascripts/pdfmake.min.js"></script>
-  <%- include('./partials/footer.ejs') %>
+  </div>
+  <div class="card-content">
+    <smart-chart id="chart2"></smart-chart>
+  </div>
+</template>
+<template id="largeTemplate2">
+  <div class="card-title2">
+    <h4> <i class="fas fa-table"></i> Distribución</h4>
+  </div>
+  <div class="progress" style="height: 5px;">
+    <div class="progress-bar progress-bar-success" role="progressbar" id="progressbar" name="progressbar"
+      aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    </div>
+  </div>
+  <div class="card-content">
+    <smart-table name="distable" id="distable" tooltip></smart-table>
+  </div>
+</template>
+<template id="largeTemplate3">
+  <div class="card-title3">
+    <h4><i class='bx bx-scatter-chart'></i> Dispersión </h4>
+  </div>
+  <div class="row">
+    <div class="col-md-10"></div>
+    <div class="col-md-1 "> <button class="btn" id='imp' name='imp'>
+        <span><i class="fas fa-print"></i> </span>
+      </button></div>
+
+  </div>
+  <div class="card-content">
+    <smart-chart id="chart"></smart-chart>
+  </div>
+</template>
+
+<template id="largeTemplate5">
+  <div class="card-title5">
+    <h4> <i class="fas fa-percentage"></i> Pareto </h4>
+  </div>
+  <div class="card-content">
+    <smart-table name="paretolayout" id="paretolayout" tooltip></smart-table>
+  </div>
+</template>
+<template id="largeTemplate4">
+  <div class="card-title4">
+    <h4> <i class="fas fa-chart-bar"></i> Volúmen</h4>
+  </div>
+  <div class="row">
+    <div class="col-md-10"></div>
+    <div class="col-md-1 "><button class="btn" id='imp1' name='imp1'>
+        <span><i class="fas fa-print"></i> </span>
+      </button></div>
+
+  </div>
+  <div class="card-content">
+    <smart-chart id="chart1"></smart-chart>
+  </div>
+</template>
+</div>
+
+<script type="module" src="../../javascripts/smart/smart.grid.js"></script>
+<script type="module" src="../../javascripts/smart/smart.card.js"></script>
+<script type="module" src="../../javascripts/smart/smart.chart.js"></script>
+<script type="module" src="../../javascripts/smart/smart.table.js"></script>
+<script type="module" src="../../javascripts/smart/smart.dropdownlist.js"></script>
+<script type="module" src="../../javascripts/smart/smart.radiobutton.js"></script>
+<script type="module" src="../../javascripts/pdfmake.min.js"></script>
+<%- include('./partials/footer.ejs') %>
   <script type="module" src="../../javascripts/source/jutils.js"></script>
   <script type="module" src="../../javascripts/source/analisislay.js"></script>
