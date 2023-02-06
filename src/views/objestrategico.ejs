@@ -5,14 +5,10 @@
 
   }
 
-  .smart-tabs>.smart-container {
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-    position: relative;
-    min-height: inherit;
-    box-sizing: unset;
+  .spinner-border-sm {
+    padding-top: 3px;
   }
+
 
   .smart-tabs .smart-tabs-header-section {
     border: 0px solid transparent;
@@ -46,54 +42,29 @@
     margin-top: 1px;
   }
 
-  .smart-table td.smart-table-select-row>div,
-  .smart-table th.smart-table-select-all>div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: var(--smart-border-width) solid var(--smart-border);
-    width: 10px;
-    height: 10px;
-    padding: 2px;
-    color: var(--smart-primary-color);
-    font-family: var(--smart-font-family-icon);
-    cursor: pointer;
-    border-radius: var(--smart-border-radius);
+  .justify-content-center {
+    justify-content: center !important;
+    height: 210px;
   }
 
-  .smart-table .smart-container * {
-    box-sizing: unset;
-    font-size: 11px;
-    text-align: center;
-  }
-
-  .smart-table .smart-table-header {
-    height: var(--smart-table-header-footer-height);
-    display: none;
-    position: sticky;
-    left: 0;
-    top: 0;
-    padding: 6px;
-    /*background-color: var(--smart-background); */
-    background-color: var(--smart-primary-color);
-    z-index: 2;
-    text-align: center;
-    font-size: 14px;
-  }
-
-  .smart-table th>.wrapper {
-    justify-content: center;
-    font-weight: normal;
-  }
-
-  #distable {
-    padding-top: 0px;
+  .smart-grid {
     width: 100%;
-    height: 1000%
+    height: 68%;
+    font-style: normal;
+    --smart-font-size: 14px;
+    --smart-grid-template-columns: 350px auto;
+    --smart-grid-footer-height: 25px;
+    --smart-grid-header-height: 35px;
+    --smart-grid-column-header-height: 35px;
+    background-color: rgb(236, 235, 235);
   }
+
+  .smart-grid.tabular {
+    width: 85%;
+    height: 85%;
+    --smart-font-size: 12px;
+  }
+
 
   smart-grid-cell .wrap {
     white-space: normal;
@@ -103,29 +74,11 @@
     line-height: 1.5;
   }
 
-  .smart-grid {
-    width: 100%;
-    height: 68%;
-    font-style: normal;
-
-    --smart-font-size: 14px;
-    --smart-grid-template-columns: 350px auto;
-    --smart-grid-footer-height: 25px;
-    --smart-grid-header-height: 35px;
-    --smart-grid-column-header-height: 35px;
-    background-color: rgb(236, 235, 235);
-  }
-
-  .smart-grid.half {
-    width: 100%;
-    height: 68%;
-    font-style: normal;
-    --smart-font-size: 14px;
-    --smart-grid-template-columns: 350px auto;
-    --smart-grid-footer-height: 25px;
-    --smart-grid-header-height: 35px;
-    --smart-grid-column-header-height: 35px;
-    background-color: rgb(236, 235, 235);
+  smart-slider .smart-container {
+    overflow: visible;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 150px;
   }
 
   .drawContainer,
@@ -133,6 +86,14 @@
     border: none;
     height: fit-content;
     width: 100%;
+  }
+
+  smart-switch-button.smart-element {
+    display: inline-block;
+    border: none;
+    background: 0 0;
+    overflow: visible;
+    font-family: 'Poppins', serif;
   }
 
   .smart-switch-button .smart-container {
@@ -144,18 +105,21 @@
     -ms-user-select: none;
     touch-action: none;
     height: inherit;
+
   }
 
 
   .smart-switch-button .smart-thumb {
     border-color: var(--baculo-no-color);
     background-color: var(--baculo-no-color);
+
   }
 
   .smart-switch-button:focus .smart-thumb,
   .smart-switch-button[checked] .smart-thumb {
     border-color: var(--baculo-si-color);
     background-color: var(--baculo-si-color);
+    font-family: 'Poppins', serif;
   }
 
   .smart-toast-container.smart-toast-container-modal .smart-toast-item {
@@ -178,6 +142,7 @@
     margin-right: 10px;
   }
 
+
   .form-inline {
     display: flex;
     justify-content: flex-end
@@ -185,6 +150,7 @@
 </style>
 <div>
   <input type="number" name="maxnivel" id="maxnivel" value="<%=maxnivel%>" hidden>
+  <input type="text" name="niveles" id="niveles" value="<%=niveles%>" hidden>
   <input type="text" name="resumen" id="resumen" value="<%=resumen%>" hidden>
   <input type="text" name="idlayout" id="idlayout" value="<%=idlayout%>" hidden>
   <input type="text" name="version" id="version" value="<%=empresa.version%>" hidden>
@@ -255,21 +221,27 @@
         </div>
       </smart-tab-item>
       <smart-tab-item label='Configuración'>
-        <div class="row">
+        <div class="row justify-content-center  g-2">
+          <div class="col-4">
+            <label for="resumenlayout" class="form-label">Niveles</label>
 
-          <div class="col-sm-4">
-            <div>
-              <smart-table name="distable" id="distable" selection selection-mode='one'></smart-table>
+            <smart-grid class="tabular" name="resumenlayout" id="resumenlayout"></smart-grid>
+
+
+          </div>
+
+          <div class="col-4 ">
+
+
+            <label for="distable" class="form-label">Distribución</label>
+            <div id="spindist" name="spindist" class="spinner-border text-success spinner-border-sm" role="status">
+              <span class="visually-hidden">Loading...</span>
             </div>
+            <smart-grid class="tabular" name="distable" id="distable"></smart-grid>
           </div>
-          <div class="col-sm-4 text-center">
-            <smart-slider id="slider" name="slider" coerce show-tooltip orientation="horizontal" min="0" max="100"
-              value="0" ticks-position="track" mechanical-action="switchWhileDragging" checked>
-              <h6><span class="text-center" id="slidertxt" name="slidertxt"> % Mínimo de Peso</span></h6>
-            </smart-slider>
+          <div class="col-4">
 
-          </div>
-          <div class="col-sm-4 text-right">
+            <h3><label id="ceros" name="ceros">Cuenta Ceros</label></h3>
           </div>
         </div>
       </smart-tab-item>
@@ -314,7 +286,7 @@
       <div class="buttons peque"><smart-button id="closeButton">Ok</smart-button></div>
     </template>
     <template id="footerTemplate">
-      <div class="row justify-content-center align-items-center g-2">
+      <div class="row ">
         <div class="col text-start"> &nbsp &nbsp Creado por <%=empresa.usuario %> el <%=empresa.fechaalta%>
         </div>
         <div class="col text-center">

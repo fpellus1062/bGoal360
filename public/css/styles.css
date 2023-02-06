@@ -6,6 +6,7 @@
 	--baculo-action-color: rgb(92, 218, 250);
 	--baculo-no-color: #c50903;
 	--baculo-si-color: #077e1b;
+	--font-family-baculo: "Poppins";
 }
 main {
 	height: 800px !important;
@@ -126,7 +127,7 @@ smart-button {
 smart-grid {
 	width: 50%;
 	height: auto;
-	--smart-grid-cell-background-freeze: #e4e4e4;
+	--smart-grid-cell-background-freeze: #a0e5ee;
 	--smart-grid-cell-color-freeze: #0088aaff;
 	--smart-font-size: 14px;
 }
@@ -151,12 +152,18 @@ smart-splitter {
 #container {
 	padding: 0px 0px;
 }
+#checked {
+	font-family: var(--font-family-baculo);
+	font-size: 14px;
+}
 .tabla {
 	font-size: 12px !important;
 }
+.btn {
+	font-family: var(--font-family-baculo);
+}
 .azulbaculo {
 	color: #0088aaff;
-
 	background-color: rgba(255, 255, 255, 0);
 }
 .rojobaculo {

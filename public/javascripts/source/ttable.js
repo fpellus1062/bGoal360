@@ -1,9 +1,18 @@
-import { operar, calculapesos, changeIcono } from "./griddb.js";
+import {
+	operar,
+	calculapesos,
+	changeIcono,
+	objCompare,
+	sacaKeys,
+	FILA_INDEX,
+	sumapadres,
+	bloqueonivel,
+} from "./griddb.js";
 window.onload = function () {};
-
 const rgrid = document.querySelector("#Ggrid");
-rgrid.charting.enabled = true;
-// const Tgrid = document.querySelector("#Tgrid");
+const rdist = document.querySelector("#distable");
+// const tgrid = document.querySelector("#Tgrid");
+$("#spindist").hide();
 rgrid.addEventListener("cellClick", function (event) {
 	const detail = event.detail,
 		cell = detail.cell,
@@ -13,6 +22,7 @@ rgrid.addEventListener("cellClick", function (event) {
 		isRightClick = detail.isRightClick,
 		pageX = detail.pageX,
 		pageY = detail.pageY;
+
 	if (id == 1 || id == 2 || id == 5) {
 		rgrid.editing.enabled = false;
 		rgrid.cancelEdit();
@@ -22,22 +32,25 @@ rgrid.addEventListener("cellClick", function (event) {
 });
 
 const distable = document.getElementById("distable");
+const resumenlayout = document.getElementById("resumenlayout");
 const idlayout = $("#idlayout").val();
 const maxnivel = $("#maxnivel").val();
 const version = $("#version").val();
 const resumen = $("#resumen").val();
+const niveles = $("#niveles").val().split(",");
+var cnivel = 1;
 const cabecera = [
 	{
 		label: resumen,
 		dataField: "Intervalo",
 		dataType: "string",
-		with: 60,
+		width: "auto",
 	},
 	{
-		label: "# " + maxnivel,
+		label: "# " + niveles[cnivel],
 		dataField: "FreqAbs",
 		dataType: "number",
-		align: "right",
+		width: "auto",
 	},
 	{
 		label: "Peso",
@@ -55,9 +68,30 @@ const cabecera = [
 			}
 			settings.template = `<span class="${className}">${value}%</span>`;
 		},
+		width: "auto",
+	},
+	{
+		label: "# " + niveles[cnivel],
+		dataField: "LimInf",
+		dataType: "number",
+		align: "right",
+		visible: false,
+	},
+	{
+		label: "# " + niveles[cnivel],
+		dataField: "LimSup",
+		dataType: "number",
+		align: "right",
+		visible: false,
 	},
 ];
-
+var Dfilas = [
+	"Intervalo: string",
+	"FreqAbs: number",
+	"FreqRel: number",
+	"LimInf: number",
+	"LimSup: number",
+];
 window.Smart(
 	"#distable",
 	class {
@@ -65,20 +99,39 @@ window.Smart(
 			return {
 				dataSource: new window.Smart.DataAdapter({
 					dataSource: [],
-					dataFields: [
-						"Intervalo: string",
-						"FreqAbs: number",
-						"FreqRel: number",
-					],
+					dataFields: Dfilas,
 				}),
-				columnResize: true,
-				columnResizeFeedback: true,
-				freezeHeader: true,
+				selection: {
+					enabled: true,
+					mode: "one",
+					checkBoxes: {
+						enabled: true,
+						selectAllMode: "none",
+					},
+				},
+				editing: {
+					batch: false,
+					enabled: false,
+					action: "click",
+					mode: "cell",
+				},
+				behavior: { columnResizeMode: "growAndShrink" },
+				layout: {
+					rowHeight: "auto",
+					rowMinHeight: 30,
+					allowCellsWrap: true,
+				},
+
+				header: {
+					visible: false,
+					buttons: [],
+				},
 				columns: cabecera,
 			};
 		}
 	}
 );
+
 $.ajax({
 	url: "/objetivos/distribucion",
 	type: "GET",
@@ -86,11 +139,10 @@ $.ajax({
 	cache: false,
 	data: {
 		layout_id: idlayout,
-		nivel_id: maxnivel,
+		nivel_id: 1,
 		version: version,
 	},
 	success: function (datosdist) {
-		console.log(datosdist);
 		distable.dataSource = datosdist;
 		distable.refresh();
 	},
@@ -98,6 +150,119 @@ $.ajax({
 		alert("Error " + textStatus + ", err " + err);
 	},
 });
+window.Smart(
+	"#resumenlayout",
+	class {
+		get properties() {
+			return {
+				dataSource: new window.Smart.DataAdapter({
+					dataSource: [],
+					dataFields: [
+						"nivel: number",
+						"descripcion: string",
+						"count: number",
+					],
+				}),
+				selection: {
+					enabled: true,
+					mode: "one",
+					checkBoxes: {
+						enabled: true,
+						selectAllMode: "none",
+					},
+				},
+				editing: {
+					batch: false,
+					enabled: false,
+					action: "click",
+					mode: "cell",
+				},
+				behavior: { columnResizeMode: "growAndShrink" },
+				layout: {
+					rowHeight: "auto",
+					rowMinHeight: 30,
+					allowCellsWrap: true,
+				},
+
+				header: {
+					visible: false,
+					buttons: [],
+				},
+				columns: [
+					{
+						label: "Descripcion",
+						dataField: "descripcion",
+						dataType: "string",
+					},
+					{
+						label: "Nivel",
+						dataField: "nivel",
+						dataType: "number",
+					},
+
+					{
+						label: "Registros",
+						dataField: "count",
+						dataType: "number",
+						formatFunction(settings) {
+							settings.template = `<span class="badge rounded-pill text-bg-success">${settings.value}</span>`;
+						},
+					},
+				],
+			};
+		}
+	}
+);
+$.ajax({
+	url: "/objetivos/resumenlayout",
+	type: "GET",
+	dataType: "json",
+	cache: false,
+	data: { layout_id: idlayout },
+	success: function (datoslayout) {
+		resumenlayout.dataSource = datoslayout;
+		resumenlayout.refresh();
+	},
+	error: function (jqXHR, textStatus, err) {
+		alert("Error " + textStatus + ", err " + err);
+	},
+});
+resumenlayout.addEventListener("rowClick", function (event) {
+	const detail = event.detail,
+		row = detail.row,
+		originalEvent = detail.originalEvent,
+		id = detail.id,
+		isRightClick = detail.isRightClick,
+		pageX = detail.pageX,
+		pageY = detail.pageY;
+
+	cargadist(row.data.nivel);
+});
+var cargadist = function (lnivel) {
+	$("#spindist").show();
+	$.ajax({
+		url: "/objetivos/distribucion",
+		type: "GET",
+		dataType: "json",
+		cache: false,
+		data: {
+			layout_id: idlayout,
+			nivel_id: lnivel,
+			version: version,
+		},
+		success: function (datosdist) {
+			console.log(datosdist);
+			cnivel = lnivel;
+			distable.columns[1].label = "# " + niveles[cnivel];
+			distable.dataSource = datosdist;
+			distable.refresh();
+			$("#spindist").hide();
+		},
+		error: function (jqXHR, textStatus, err) {
+			alert("Error " + textStatus + ", err " + err);
+		},
+	});
+};
 var iconoGgrid = "";
 const COLUMNAS = [
 	"Tot",
@@ -359,6 +524,7 @@ window.Smart(
 					id: "Idx",
 					dataFields: Tfilas,
 				}),
+
 				onRowInit(index, row) {
 					if (index < 2) {
 						row.freeze = "near";
@@ -375,9 +541,9 @@ window.Smart(
 			return {
 				editing: {
 					batch: false,
-					enabled: false,
+					enabled: true,
 					action: "click",
-					mode: "cell",
+					mode: "row",
 					commandColumn: {
 						visible: true,
 						dataSource: {
@@ -428,97 +594,243 @@ window.Smart(
 						row.freeze = "near";
 					}
 				},
-				onCellUpdate: function (cell, oldValue, newValue, confirm) {
-					const row = cell[0].row;
-					var grow = grid.rows[row.data.Idx];
-					const result = grid.getSelectedRows();
-					var filagrupo = false;
-
-					if (result.length == 0) {
-						confirm(false);
+				onKey: function (event) {
+					if (event.ctrlKey && event.key === "z") {
+						event.stopImmediatePropagation();
+						event.preventDefault();
+						rgrid.cancelEdit();
 					}
-
-					var absOldValue = parseFloat(oldValue).toFixed(2);
-					var absNewValue = parseFloat(newValue).toFixed(2);
-					var resto = 0.0;
-					var cvalor = 0.0;
-					var columna = cell[0].column.dataField;
-					var identificador = grow.id;
-					var pidentificador = 0;
-
-					if (absOldValue === absNewValue) {
-						console.log(
-							"Valor Anterior",
-							absOldValue,
-							result.length
-						);
-						confirm(false);
-						return;
-					}
-
-					absOldValue = parseFloat(
-						grid.getCellValue(identificador, columna)
-					);
-					if (row.index == 2) {
-						pidentificador = grow.parentId;
-						filagrupo = true;
-					}
-
-					if (filagrupo) {
-						absNewValue = parseFloat(
-							(grid.getCellValue(pidentificador, columna) *
-								parseFloat(newValue)) /
-								100
-						).toFixed(2);
-						resto = parseFloat(
-							((absNewValue - absOldValue) / 100) *
-								parseFloat(newValue)
-						).toFixed(2);
-						cvalor = parseFloat(absNewValue) + parseFloat(resto);
-						cvalor = absNewValue;
-						//resto = 0;
-						grid.setCellValue(
-							identificador,
-							columna,
-							parseFloat(cvalor).toFixed(2)
-						);
-					} else {
-						//absNewValue =  parseFloat(grid.getCellValue(identificador,columna) * parseFloat(newValue) / 100).toFixed(2);
-						absNewValue =
-							(parseFloat(
-								grid.getCellValue(identificador, COLUMNAS[0])
-							).toFixed(2) *
-								parseFloat(newValue).toFixed(2)) /
-							100;
-						resto =
-							(parseFloat(absNewValue).toFixed(2) -
-								parseFloat(absOldValue).toFixed(2)) *
-							0;
-
-						cvalor = 0;
-						cvalor = parseFloat(resto) + parseFloat(absNewValue);
-
-						grid.setCellValue(
-							identificador,
-							columna,
-							parseFloat(cvalor).toFixed(2)
-						);
-					}
-
-					// console.log(
-					// 	"Viejo / Nuevo / Cvalor / Resto",
-					// 	absOldValue,
-					// 	absNewValue,
-					// 	cvalor,
-					// 	resto
-					// );
-
-					operar(absOldValue, cvalor, grow, columna);
-					confirm(true);
-					rgrid.refreshView();
-					calculapesos(grow);
 				},
+				onRowUpdate: async function (
+					index,
+					row,
+					oldValues,
+					newValues,
+					confirm
+				) {
+					const result = grid.rows[FILA_INDEX];
+					var filagrupo = false;
+					// Si no hemos seleccionado ninguna fila en el grid ppal
+					if (
+						result == "undefined" ||
+						(!sumapadres.checkStatus &&
+							result.level <= bloqueonivel)
+					) {
+						confirm(false);
+					} else {
+						//Comprabamos sy hay cambios en el array
+						var misvalores = [];
+						if (objCompare(oldValues, newValues)) {
+							confirm(false);
+						} else {
+							var cambios = sacaKeys(oldValues[0], newValues[0]);
+							if (cambios.length >= 1) {
+								var elimino = cambios.indexOf("Descripcion");
+								if (elimino >= 0) {
+									cambios.splice(elimino, 1);
+								}
+								elimino = cambios.indexOf("Idx");
+								if (elimino >= 0) {
+									cambios.splice(elimino, 1);
+								}
+								var tope = cambios.length;
+								if (cambios.indexOf("Tot") > 0) {
+									tope = 1;
+								}
+
+								for (var i = 0; i < tope; i++) {
+									//El valor en % no es necesario tomaremos el valor abs del Grid principal para el calculo
+									if (i == 0) {
+										var grow = grid.rows[FILA_INDEX];
+										var identificador = grow.id;
+									}
+									var absOldValue = 0;
+									var absNewValue = newValues[0][cambios[i]];
+									var newValue = newValues[0][cambios[i]];
+									var resto = 0.0;
+									var cvalor = 0.0;
+									var columna = cambios[i];
+
+									var pidentificador = 0;
+									// Una vez comparados
+									absOldValue = parseFloat(
+										grid.getCellValue(
+											identificador,
+											columna
+										)
+									);
+									if (index == 2) {
+										pidentificador = grow.parentId;
+										filagrupo = true;
+									}
+									if (filagrupo) {
+										absNewValue = parseFloat(
+											(grid.getCellValue(
+												pidentificador,
+												columna
+											) *
+												parseFloat(newValue)) /
+												100
+										).toFixed(2);
+										resto = parseFloat(
+											((absNewValue - absOldValue) /
+												100) *
+												parseFloat(newValue)
+										).toFixed(2);
+										cvalor =
+											parseFloat(absNewValue) +
+											parseFloat(resto);
+										cvalor = absNewValue;
+
+										grid.setCellValue(
+											identificador,
+											columna,
+											parseFloat(cvalor).toFixed(2)
+										);
+									} else {
+										absNewValue =
+											(parseFloat(
+												grid.getCellValue(
+													identificador,
+													COLUMNAS[0]
+												)
+											).toFixed(2) *
+												parseFloat(newValue).toFixed(
+													2
+												)) /
+											100;
+										resto =
+											(parseFloat(absNewValue).toFixed(
+												2
+											) -
+												parseFloat(absOldValue).toFixed(
+													2
+												)) *
+											0;
+
+										cvalor = 0;
+										cvalor =
+											parseFloat(resto) +
+											parseFloat(absNewValue);
+
+										grid.setCellValue(
+											identificador,
+											columna,
+											parseFloat(cvalor).toFixed(2)
+										);
+									}
+									misvalores = await operar(
+										absOldValue,
+										cvalor,
+										grow,
+										cambios[i]
+									);
+								}
+							} else {
+								confirm(false);
+							}
+							if (cambios[0] != 0 && tope > 0) {
+								confirm(true);
+								rgrid.refreshView();
+								calculapesos(grow);
+							} else {
+								confirm(false);
+							}
+						}
+					}
+				},
+				// onCellUpdate: function (cell, oldValue, newValue, confirm) {
+				// 	const row = cell[0].row;
+				// 	var grow = grid.rows[row.data.Idx];
+				// 	const result = grid.getSelectedRows();
+				// 	var filagrupo = false;
+
+				// 	if (result.length == 0) {
+				// 		confirm(false);
+				// 	}
+
+				// 	var absOldValue = parseFloat(oldValue).toFixed(2);
+				// 	var absNewValue = parseFloat(newValue).toFixed(2);
+				// 	var resto = 0.0;
+				// 	var cvalor = 0.0;
+				// 	var columna = cell[0].column.dataField;
+				// 	var identificador = grow.id;
+				// 	var pidentificador = 0;
+
+				// 	if (absOldValue === absNewValue) {
+				// 		console.log(
+				// 			"Valor Anterior",
+				// 			absOldValue,
+				// 			result.length
+				// 		);
+				// 		confirm(false);
+				// 		return;
+				// 	}
+
+				// 	absOldValue = parseFloat(
+				// 		grid.getCellValue(identificador, columna)
+				// 	);
+				// 	if (row.index == 2) {
+				// 		pidentificador = grow.parentId;
+				// 		filagrupo = true;
+				// 	}
+
+				// 	if (filagrupo) {
+				// 		absNewValue = parseFloat(
+				// 			(grid.getCellValue(pidentificador, columna) *
+				// 				parseFloat(newValue)) /
+				// 				100
+				// 		).toFixed(2);
+				// 		resto = parseFloat(
+				// 			((absNewValue - absOldValue) / 100) *
+				// 				parseFloat(newValue)
+				// 		).toFixed(2);
+				// 		cvalor = parseFloat(absNewValue) + parseFloat(resto);
+				// 		cvalor = absNewValue;
+				// 		//resto = 0;
+				// 		grid.setCellValue(
+				// 			identificador,
+				// 			columna,
+				// 			parseFloat(cvalor).toFixed(2)
+				// 		);
+				// 	} else {
+				// 		//absNewValue =  parseFloat(grid.getCellValue(identificador,columna) * parseFloat(newValue) / 100).toFixed(2);
+				// 		absNewValue =
+				// 			(parseFloat(
+				// 				grid.getCellValue(identificador, COLUMNAS[0])
+				// 			).toFixed(2) *
+				// 				parseFloat(newValue).toFixed(2)) /
+				// 			100;
+				// 		resto =
+				// 			(parseFloat(absNewValue).toFixed(2) -
+				// 				parseFloat(absOldValue).toFixed(2)) *
+				// 			0;
+
+				// 		cvalor = 0;
+				// 		cvalor = parseFloat(resto) + parseFloat(absNewValue);
+
+				// 		grid.setCellValue(
+				// 			identificador,
+				// 			columna,
+				// 			parseFloat(cvalor).toFixed(2)
+				// 		);
+				// 	}
+
+				// 	// console.log(
+				// 	// 	"Viejo / Nuevo / Cvalor / Resto",
+				// 	// 	absOldValue,
+				// 	// 	absNewValue,
+				// 	// 	cvalor,
+				// 	// 	resto
+				// 	// );
+
+				// 	operar(absOldValue, cvalor, grow, columna);
+				// 	confirm(true);
+				// 	rgrid.refreshView();
+				// 	calculapesos(grow);
+				// },
 			};
 		}
 	}
 );
+export { cargadist };

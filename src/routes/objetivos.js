@@ -866,6 +866,7 @@ routes.get("/tableAjax", async (req, res, next) => {
 			codigo: EMPRESA.idcodigo,
 			resumen: linlay.descripcion,
 			maxnivel: niveles.nivel.length,
+			niveles: niveles.esquema,
 			layout: "./layouts/sidebar",
 		});
 	} catch (error) {
@@ -1225,54 +1226,78 @@ routes.get("/leounobjetivoinicial/:idlayout/:id", async (req, res) => {
 		regs.push({
 			Descripcion: "Pesos % ...",
 			Tot: parseFloat(100.0),
-			Ene:
+			Ene: redondea(
 				(parseFloat(tregistros.rows[0].datos.Ene) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Feb:
+					100,
+				2
+			),
+			Feb: redondea(
 				(parseFloat(tregistros.rows[0].datos.Feb) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Mar:
+					100,
+				2
+			),
+			Mar: redondea(
 				(parseFloat(tregistros.rows[0].datos.Mar) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Abr:
+					100,
+				2
+			),
+			Abr: redondea(
 				(parseFloat(tregistros.rows[0].datos.Abr) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			May:
+					100,
+				2
+			),
+			May: redondea(
 				(parseFloat(tregistros.rows[0].datos.May) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Jun:
+					100,
+				2
+			),
+			Jun: redondea(
 				(parseFloat(tregistros.rows[0].datos.Jun) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Jul:
+					100,
+				2
+			),
+			Jul: redondea(
 				(parseFloat(tregistros.rows[0].datos.Jul) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Ago:
+					100,
+				2
+			),
+			Ago: redondea(
 				(parseFloat(tregistros.rows[0].datos.Ago) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Sep:
+					100,
+				2
+			),
+			Sep: redondea(
 				(parseFloat(tregistros.rows[0].datos.Sep) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Oct:
+					100,
+				2
+			),
+			Oct: redondea(
 				(parseFloat(tregistros.rows[0].datos.Oct) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Nov:
+					100,
+				2
+			),
+			Nov: redondea(
 				(parseFloat(tregistros.rows[0].datos.Nov) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
-			Dic:
+					100,
+				2
+			),
+			Dic: redondea(
 				(parseFloat(tregistros.rows[0].datos.Dic) /
 					parseFloat(tregistros.rows[0].datos.Tot)) *
-				100,
+					100,
+				2
+			),
 			Idx: 4,
 			Response: tregistros.rows[0].response,
 			Nivel: tregistros.rows[0].nivel,
@@ -1550,9 +1575,14 @@ routes.get("/distribucion", async (req, res, next) => {
 					var datos = JSON.parse(data);
 					for (var i = 0; i < datos.length; i++) {
 						if (datos[i].FreqRel != 0) {
-							var limiteInf = Intl.NumberFormat("es-512").format(
-								datos[i].LimInf.toFixed(2)
-							);
+							if (i == 0) {
+								var limiteInf = 0.0;
+								datos[i].LimInf = 0.0;
+							} else {
+								var limiteInf = Intl.NumberFormat(
+									"es-512"
+								).format(datos[i].LimInf.toFixed(2));
+							}
 							var limiteSup = Intl.NumberFormat("es-512").format(
 								datos[i].LimSup.toFixed(2)
 							);
@@ -1835,6 +1865,14 @@ function queTipo(mitipo) {
 		case "Fecha":
 			return 2;
 	}
+}
+//Redndeo a n decimales
+function redondea(numero, n = 2) {
+	var dec = (1 + "0".repeat(n)) * 1;
+
+	var n = Number(Math.abs(numero) * dec).toPrecision(15);
+
+	return (Math.round(n) / dec) * Math.sign(numero);
 }
 function es_numero(mivalor) {
 	// Si es un mumero JS Válido

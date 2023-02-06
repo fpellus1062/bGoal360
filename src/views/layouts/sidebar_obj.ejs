@@ -1,6 +1,7 @@
 <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasObj"
     aria-labelledby="offcanvasObjLabel">
     <div class="offcanvas-header">
+
         <p class="offcanvas-title" id="offcanvasObjLabel"><i class="fa fa-cogs fa-fw me-3"
                 aria-hidden="true"></i><span>Configuracion</span></p>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -20,30 +21,38 @@
             </div>
         </div>
         <hr>
-        <div class="col-md-12">
-            <smart-radio-button enable-container-click id="pi" name="pip" checked data-bs-toggle="tooltip"
-                data-bs-placement="top" title="El cálculo se realizará por el % mensual de su propia fila"> Peso
-                Ind.</smart-radio-button>
-            <smart-radio-button enable-container-click id="pt" name="ptp" data-bs-toggle="tooltip"
-                data-bs-placement="top" title="El cálculo se realizará por el % mensual de toda la Cía"> Peso
-                Cía.</smart-radio-button>
+        <div class="row">
+            <div class="col-md-12">
+                <smart-radio-button enable-container-click id="pi" name="pip" checked data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="El cálculo se realizará por el % mensual de su propia fila"> Peso
+                    Ind.</smart-radio-button>
+                <smart-radio-button enable-container-click id="pt" name="ptp" data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="El cálculo se realizará por el % mensual de toda la Cía"> Peso
+                    Cía.</smart-radio-button>
+            </div>
         </div>
         <hr>
-        <div class="col-md-12 text-center">
-            <div class="options">
-                <div class="captions" id="checked">Suma Padres:&nbsp<span id="log"
-                        class="badge rounded-pill text-bg-success"></span>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div id="checked">Suma Padres:&nbsp<span id="log" class="badge rounded-pill text-bg-success"></span>
                 </div>
+
                 <smart-switch-button switch-mode="click" checked id="bp" name="bp" data-bs-toggle="tooltip"
                     data-bs-placement="top" title="Sumar a los  Padres">
                 </smart-switch-button>
+                <smart-slider id="slider" name="slider" coerce orientation="horizontal" min="0" max="<%=maxnivel - 1%>"
+                    value="0" scale-type="integer" ticks-position="track" mechanical-action="switchWhileDragging"
+                    checked disabled="true">
+                    <span class="text-center" id="slidertxt" name="slidertxt"> Nivel de Bloqueo</span>
+                </smart-slider>
             </div>
         </div>
         <div>
-
+            <br>
         </div>
-        <hr>
+
         <div class="col-md-12">
+            <hr>
             <label for="usuarioapellido1" class="form-label">Apellido 1</label>
             <input type="text" class="form-control" id="usuarioapellido1" name="usuarioapellido1" value="" required>
 
@@ -53,7 +62,6 @@
             <input type="text" class="form-control" id="usuarioapellido2" name="usuarioapellido2" value="" required>
         </div>
         <div class="col-12">
-            <br> <br> <br>
             <div class="form-check">
                 <div id="invalidCheckFeedback" class="invalid-feedback">
                     <a href="#" class="list-group-item list-group-item-action py-2 ripple bg-blanco"><i

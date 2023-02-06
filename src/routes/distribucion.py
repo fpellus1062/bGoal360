@@ -87,7 +87,7 @@ def main():
         inf = datos.min()        # Limite inferior del primer intervalo
         dif = datos.max()
         sup = datos.max() + 1    # Limite superior del último intervalo
-        #periodos = 12
+        periodos = 12
         intervals = pd.interval_range(
             start=round(inf-100,0),
             end=round(sup+100,0),

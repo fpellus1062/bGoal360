@@ -6,8 +6,8 @@
 	"scripts": {
 		"start": "node src/index.js",
 		"test": "nodemon src/index.js",
-		"python": "c:/Desarrollo/python/env/Scripts/python.exe ./src/routes/objetivos_first.py 2 L21",
-		"python_utils": "c:/Desarrollo/python/env/Scripts/python.exe ./src/routes/nuevos_objetivos_next.py 2 L15"
+		"python": " C:/Users/fpell/AppData/Local/Programs/Python/Python310/python.exe src/routes/prueba.py",
+		"python_utils": " C:/Users/fpell/AppData/Local/Programs/Python/Python310/python.exe C:/Desarrollo/bGoal360/src/routes/pruebas.py"
 	},
 	"keywords": [],
 	"author": "",

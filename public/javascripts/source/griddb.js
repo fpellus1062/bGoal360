@@ -1,3 +1,11 @@
+import { cargadist } from "./ttable.js";
+window.addEventListener("keydown", function (event) {
+	if (event.ctrlKey && event.key === "z") {
+		alert("Control Z");
+		event.stopImmediatePropagation();
+		event.preventDefault();
+	}
+});
 var gcuentaniveles = [];
 var data = {
 	ix: [],
@@ -13,6 +21,7 @@ const IDVERSION = document.getElementById("idversion");
 const VERSIONANTERIOR = document.getElementById("version").value;
 const slider = document.getElementById("slider");
 const texto = document.getElementById("slidertxt");
+
 const mensaje = document.getElementById("mensaje");
 const updateBtn = document.getElementById("updateBtn");
 //const toast = document.querySelectorAll("smart-toast")[0];
@@ -52,7 +61,7 @@ const COLORES_LETRA = [
 	"#9124F0",
 ];
 
-var porcentaje = 0;
+var bloqueonivel = 0;
 var FILA_INDEX = 0;
 var IDVERSIONANTERIOR = "";
 var mifilaanterior = [
@@ -67,28 +76,35 @@ $("#idempresa").attr("disabled", "disable");
 var log = document.querySelector("#log");
 sumapadres.checkStatus = true;
 log.textContent = "Si";
-sumapadres.addEventListener("change", function (event) {
+slider.value = 0;
+
+sumapadres.addEventListener("change", async function (event) {
 	const checkStatus = event.detail.value;
 	var texto = "";
+	//calculapesos(grid.rows[FILA_INDEX]);
+	//await calculapesosall();
 	if (checkStatus === true) {
 		log.textContent = "Si";
 		sumapadres.checkStatus = true;
+		slider.disabled = true;
+		slider.value = 0;
 		$(log).addClass("text-bg-success");
 		$(log).removeClass("text-bg-danger");
 		texto =
 			'<a href="#"><span class="smart-badge smart-badge-success smart-badge-pill"><i class="fas fa-calculator"></i></span></a> &nbsp Trabajo';
 		changeTab(3, texto);
-		infotoats.closeLast();
-		//console.log(filaspdtes);
+		//infotoats.closeLast();
 	} else {
 		log.textContent = "No";
 		sumapadres.checkStatus = false;
+		slider.disabled = false;
+		slider.value = 0;
 		$(log).removeClass("text-bg-success");
 		$(log).addClass("text-bg-danger");
 		texto =
 			'<a href="#"><span class="smart-badge smart-badge-danger smart-badge-pill"><i class="fas fa-calculator"></i></span></a> &nbsp Trabajo';
 		changeTab(3, texto);
-		infotoats.closeLast();
+		//infotoats.closeLast();
 		infotoats.itemTemplate = "template-toast";
 		infotoats.open();
 	}
@@ -108,25 +124,23 @@ function changeIcono(indice) {
 	return iconoGgrid;
 }
 
-slider.addEventListener("change", function (event) {
+slider.addEventListener("change", async function (event) {
 	const value = event.detail.value;
-	texto.innerText = "Limite: " + parseInt(value) + " %";
-	porcentaje = parseInt(value);
+	texto.innerText = "Bloqueo Nivel: " + parseInt(value);
+	bloqueonivel = parseInt(value);
 	if (pi.checked) {
 		cambiartipopeso("i");
 	} else {
 		cambiartipopeso("t");
 	}
-	calculapesos(grid.rows[FILA_INDEX]);
-	calculapesosall();
 });
 
 pt.addEventListener("change", function (event) {
 	var texto = "";
-	if (porcentaje > 0) {
+	if (bloqueonivel > 0) {
 		texto =
 			'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Compañía <span class="smart-badge smart-badge-danger smart-badge-pill">' +
-			porcentaje +
+			bloqueonivel +
 			"</span>";
 	} else {
 		texto =
@@ -137,10 +151,10 @@ pt.addEventListener("change", function (event) {
 });
 pi.addEventListener("change", function (event) {
 	var texto = "";
-	if (porcentaje > 0) {
+	if (bloqueonivel > 0) {
 		texto =
 			'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Individual <span class="smart-badge smart-badge-danger smart-badge-pill">' +
-			porcentaje +
+			bloqueonivel +
 			"%</span>";
 	} else {
 		texto =
@@ -169,7 +183,7 @@ updateBtn.addEventListener("click", function (event) {
 	if (DIFGENERAL != parseFloat(0.0)) {
 		grid.clearSelection();
 		grid.refreshView();
-		toast.closeLast();
+		//toast.closeLast();
 		toast.open();
 		toast.type = "error";
 		toast.value = "No puede grabar existen diferencias de reparto .....";
@@ -191,7 +205,7 @@ updateBtn.addEventListener("click", function (event) {
 		},
 	]);
 
-	toast.closeLast();
+	//toast.closeLast();
 	toast.open();
 	toast.type = "info";
 	toast.value = "Guardando  Datos en BBDD .....";
@@ -221,7 +235,7 @@ updateBtn.addEventListener("click", function (event) {
 			grid.refreshView();
 			toast.closeLast();
 			toast.open();
-
+			cargadist(1);
 			//$(location).attr('href','/objetivos/descargafile');
 			//$(location).attr('href','/objetivos/descargaexcel');
 		})
@@ -257,11 +271,11 @@ exportBtn.addEventListener("click", function (event) {
 
 var cambiartipopeso = function (tipo) {
 	if (tipo == "t") {
-		if (porcentaje > 0) {
+		if (bloqueonivel > 0) {
 			tabs.update(
 				1,
 				'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Compañía <span class="smart-badge smart-badge-danger smart-badge-pill">' +
-					porcentaje +
+					bloqueonivel +
 					"%</span>"
 			);
 		} else {
@@ -272,11 +286,11 @@ var cambiartipopeso = function (tipo) {
 		}
 	}
 	if (tipo == "i") {
-		if (porcentaje > 0) {
+		if (bloqueonivel > 0) {
 			tabs.update(
 				1,
 				'<a href="#" ><i class="fa fa-cogs azulbaculo" aria-hidden="true" ></i></a> &nbsp Peso Individual <span class="smart-badge smart-badge-danger smart-badge-pill">' +
-					porcentaje +
+					bloqueonivel +
 					"%</span>"
 			);
 		} else {
@@ -287,51 +301,57 @@ var cambiartipopeso = function (tipo) {
 		}
 	}
 };
-var calculapesosall = function () {
-	var ffilas = "";
+var calculapesosall = async function () {
+	var ffilas = [];
+	var limites = distable.getSelectedRows();
+	if (limites.length > 0) {
+		console.log("Limites: ", limites[0][1]);
+		grid.expandAllRows();
+		var minino = ">= " + limites[0][1].LimInf;
+		var maximo = "<= " + limites[0][1].LimSup;
+		grid.addFilter("Tot", minino, false);
+		grid.addFilter("Tot", maximo, true);
+	}
 	grid.expandAllRows();
-	grid.setRowProperty(1, "freeze", false);
+
+	//grid.setRowProperty(1, "freeze", false);
 	//grid.highlightCell(1, "firstName", "cssClass");
-	console.log(grid.rows[227].data);
-	grid.addFilter("Tot", ">= 0", false);
-	grid.addFilter("Tot", "<= 1245.18", true);
-	//grid.addFilter("Descripcion", 'EQUAL "RIETOS CRIANZA BOT_ 75CL"', true);
-	ffilas = grid.getVisibleRows();
+	var filtro = "73 - BODEGAS DE LOS RIOS PRIETO S_L_";
+	grid.addFilter("Descripcion", "CONTAINS" + filtro, true);
+	document.getElementById("ceros").innerHTML =
+		"Ceros -> " + "AZUCAR CAJA 1000 UDS_";
+	//ffilas = grid.getVisibleRows();
 
 	//ffilas = grid.findCells(1245.18);
 	//ffilas = grid.find("Tot", 1245.18, "=");
-	console.log(ffilas);
+
 	//grid.selectRowsByQuery(416.67, "Ene", "EQUAL");
 	// grid.selectCellsByQuery("5000.00");
 	//ffilas = grid.getSelectedRows();
 
-	if (ffilas.length === 0) {
-		infotoats.closeLast();
-		infotoats.itemTemplate = "template-toast-ffalse";
-		infotoats.type = "info";
-		infotoats.value = ffilas.length + " filas";
-		infotoats.open();
-		grid.clearFilter();
-	} else {
-		infotoats.closeLast();
-		infotoats.itemTemplate = "template-toast-ftrue";
-		infotoats.type = "info";
-		infotoats.value = ffilas.length + " filas";
-		infotoats.open();
-	}
-	// for (var i = 0; i < filas.length; i++) {
-
-	// 	console.log(filas[i].data);
+	// var cuentaceros = 0;
+	// for (var i = 0; i <= grid.rows.length; i++) {
+	// 	var celda = grid.rows[i].cells[1];
+	// 	if (celda.value === 0 && celda.row.level == MAXIMONIVEL) {
+	// 		celda.background = "cyan";
+	// 		//await operar(0, celda.value, celda.row, "Tot");
+	// 		cuentaceros += 1;
+	// 		ffilas.push(celda.row);
+	// 	}
 	// }
+	document.getElementById("ceros").innerHTML =
+		"Ceros -> " + cuentaceros.toString();
 };
+
 var calculapesos = function (fila) {
 	var peso = 0;
 	var gpeso = 0;
+	var tnosuma = 0;
 	var gtpeso = 0;
 	var diferencia = 0;
 	var padre = 0;
 
-	if (!fila.parentId) {
+	if (fila.level == 0) {
 		padre = 1;
 	} else {
 		padre = fila.parentId;
@@ -370,8 +390,8 @@ var calculapesos = function (fila) {
 					100
 			);
 			if (
-				parseFloat(gpeso) > parseFloat(porcentaje) &&
-				parseFloat(porcentaje) != 0
+				parseFloat(gpeso) > parseFloat(bloqueonivel) &&
+				parseFloat(bloqueonivel) != 0
 			) {
 				Ggrid.rows[2].cells[i + 1].background = "red";
 				Ggrid.rows[2].cells[i + 1].color = "white";
@@ -392,9 +412,9 @@ var calculapesos = function (fila) {
 					100
 			);
 			if (
-				parseFloat(peso) > parseFloat(porcentaje) &&
+				parseFloat(peso) > parseFloat(bloqueonivel) &&
 				i > 0 &&
-				parseFloat(porcentaje) != 0
+				parseFloat(bloqueonivel) != 0
 			) {
 				Ggrid.rows[3].cells[i + 1].background = "red";
 				Ggrid.rows[3].cells[i + 1].color = "white";
@@ -404,24 +424,25 @@ var calculapesos = function (fila) {
 				Ggrid.rows[3].cells[i + 1].color = "default";
 			}
 		}
-		gtpeso = redondea((gtpeso += parseFloat(gpeso)));
+		gtpeso = redondea((gtpeso += parseFloat(gpeso)), 2);
 		// diferencia = parseFloat(grid.getCellValue(1,COLUMNAS[i]))-parseFloat(Ggrid.getCellValue(1,COLUMNAS[i]));
 		Ggrid.setCellValue(
 			2,
 			COLUMNAS[i],
 			redondea(
 				grid.getCellValue(1, COLUMNAS[i]) -
-					Ggrid.getCellValue(1, COLUMNAS[i])
+					Ggrid.getCellValue(1, COLUMNAS[i]),
+				2
 			)
 		);
 
-		Ggrid.setCellValue(3, COLUMNAS[i], redondea(parseFloat(gpeso)));
-		Ggrid.setCellValue(4, COLUMNAS[i], redondea(parseFloat(peso)));
+		Ggrid.setCellValue(3, COLUMNAS[i], redondea(parseFloat(gpeso), 2));
+		Ggrid.setCellValue(4, COLUMNAS[i], redondea(parseFloat(peso), 2));
 		//Cargamos diferencias
 		Ggrid.setCellValue(
 			5,
 			COLUMNAS[i],
-			redondea(parseFloat(midiferencia[i]))
+			redondea(parseFloat(midiferencia[i]), 2)
 		);
 		// Tabla TGrid Totales Cia
 		Tgrid.setCellValue(3, COLUMNAS[i], grid.getCellValue(1, COLUMNAS[i]));
@@ -439,7 +460,8 @@ var calculapesos = function (fila) {
 					(grid.getCellValue(1, COLUMNAS[i]) /
 						grid.getCellValue(1, COLUMNAS[0])) *
 						100
-				)
+				),
+				2
 			)
 		);
 		//% Nuevo Total Vs Presupuesto Original.
@@ -471,37 +493,36 @@ var calculapesos = function (fila) {
 			});
 		}
 
-		// Si la variacion viene por peso modo = '%', OJO no acumulamos al Total General. Acumulamos diferencia para ajustar al final
-		// var vanterior = parseFloat(0.0);
+		// Si no acumulamos totales. Mostramos diferencias
 
-		// if (!sumapadres.checkStatus) {
-		// 	if (midiferencia.length > 0) {
-		// 		Ggrid.setCellValue(
-		// 			5,
-		// 			COLUMNAS[i],
-		// 			redondea(parseFloat(midiferencia[i]))
-		// 		);
-		// 	}
-		// }
+		if (!sumapadres.checkStatus) {
+			if (midiferencia.length != 0) {
+				Ggrid.setCellValue(
+					5,
+					COLUMNAS[i],
+					redondea(parseFloat(midiferencia[i]))
+				);
+			}
+		}
 	}
 	Tgrid.setRowStyle(4, {
 		fontFamily: "Poppins",
 		background: "default",
 		color: "#1cabe9",
 	});
-	// if (parseFloat(Tgrid.getCellValue(5, COLUMNAS[0])) >= 0) {
-	// 	Tgrid.setRowStyle(5, {
-	// 		fontFamily: "Poppins",
-	// 		background: "default",
-	// 		color: COLORES_LETRA[4],
-	// 	});
-	// } else {
-	// 	Tgrid.setRowStyle(5, {
-	// 		fontFamily: "Poppins",
-	// 		background: "default",
-	// 		color: COLORES_LETRA[3],
-	// 	});
-	// }
+	if (parseFloat(Tgrid.getCellValue(5, COLUMNAS[0])) >= 0) {
+		Tgrid.setRowStyle(5, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: COLORES_LETRA[4],
+		});
+	} else {
+		Tgrid.setRowStyle(5, {
+			fontFamily: "Poppins",
+			background: "default",
+			color: COLORES_LETRA[3],
+		});
+	}
 	diferencia = redondea(
 		parseFloat(grid.getCellValue(1, COLUMNAS[0])) -
 			parseFloat(Ggrid.getCellValue(1, COLUMNAS[0]))
@@ -559,7 +580,7 @@ var calculapesos = function (fila) {
 
 	Ggrid.setCellValue(3, "Idx", parseFloat(fila.index));
 	Ggrid.setCellValue(4, "Idx", parseFloat(fila.index));
-
+	Ggrid.setCellValue(5, "Idx", parseFloat(fila.index));
 	Ggrid.endUpdate();
 	Ggrid.refreshView();
 	grid.refreshView();
@@ -576,7 +597,7 @@ var abrirarbol = function (fila, all, color) {
 		background: COLORES_FONDO[fila.level],
 		color: COLORES_LETRA[fila.level],
 	});
-	//console.log("Antes", fila.id, fila.children);
+
 	if (fila.children != undefined) {
 		fila.children.forEach((hijo) => {
 			if (color && hijo.level < MAXIMONIVEL) {
@@ -775,7 +796,7 @@ var operarpadres = async function (fila, columna, ltotalanterior, ltotalnuevo) {
 
 	//Si No suma padres y es total Gral Level = = salimos
 
-	if (!sumapadres.checkStatus && fila.level == 0) {
+	if (!sumapadres.checkStatus && fila.level <= bloqueonivel) {
 		return;
 	}
 
@@ -810,7 +831,6 @@ var operarpadres = async function (fila, columna, ltotalanterior, ltotalnuevo) {
 		// Si tiene más padres
 		await operarpadres(fila.parent, columna, ltotalanterior, ltotalnuevo);
 	}
-	//console.log("Fila Anterior y Diferencia", mifilaanterior, midiferencia);
 };
 
 // Funcion que realiza el calculo de hijos y padres del Grid
@@ -838,7 +858,7 @@ var operar = async function (ltotalanterior, ltotalnuevo, fila, columna) {
 	data.padre = [];
 	data.hijos = [];
 	data.maxnivel = [];
-
+	console.log("Operar", fila.id, columna);
 	if (mifilaanterior.length == 0) {
 		for (var f = 0; f <= 12; f++) {
 			mifilaanterior.push(parseFloat(0.0));
@@ -852,7 +872,7 @@ var operar = async function (ltotalanterior, ltotalnuevo, fila, columna) {
 		mifilaanterior[0] = redondea(
 			-parseFloat(ltotalanterior) + parseFloat(ltotalnuevo)
 		);
-		if (!sumapadres.checkStatus) {
+		if (!sumapadres.checkStatus && fila.level > bloqueonivel) {
 			midiferencia[0] += mifilaanterior[0];
 		}
 
@@ -894,7 +914,7 @@ var operar = async function (ltotalanterior, ltotalnuevo, fila, columna) {
 				parseFloat(lvalor) -
 					parseFloat(grid.getCellValue(fila.id, COLUMNAS[i]))
 			);
-			if (!sumapadres.checkStatus) {
+			if (!sumapadres.checkStatus && fila.level > bloqueonivel) {
 				midiferencia[i] += mifilaanterior[i];
 			}
 			grid.setCellValue(fila.id, COLUMNAS[i], lvalor);
@@ -914,7 +934,7 @@ var operar = async function (ltotalanterior, ltotalnuevo, fila, columna) {
 		if (ltotalanterior == 0) {
 			mifilaanterior[12] = lvalor;
 
-			if (!sumapadres.checkStatus) {
+			if (!sumapadres.checkStatus && fila.level > bloqueonivel) {
 				midiferencia[12] += lvalor;
 			}
 		}
@@ -925,9 +945,11 @@ var operar = async function (ltotalanterior, ltotalnuevo, fila, columna) {
 	} else {
 		// Ajustamos el total de la fila y guardamos en el elemento 'Mes' del Array Valor Anterior
 		const mes = COLUMNAS.findIndex((meses) => meses === columna);
-		mifilaanterior[mes] = parseFloat(ltotalanterior);
-		if (!sumapadres.checkStatus) {
+		mifilaanterior[mes] =
+			-parseFloat(ltotalanterior) + parseFloat(ltotalnuevo);
+		if (!sumapadres.checkStatus && fila.level > bloqueonivel) {
 			midiferencia[mes] += mifilaanterior[mes];
+			midiferencia[0] += midiferencia[mes];
 		}
 		lvalor = redondea(
 			parseFloat(grid.getCellValue(fila.id, COLUMNAS[0])) -
@@ -940,7 +962,7 @@ var operar = async function (ltotalanterior, ltotalnuevo, fila, columna) {
 	}
 
 	var mifila = grid.rows[fila.index];
-	if (!sumapadres.checkStatus) {
+	if (!sumapadres.checkStatus && fila.level > bloqueonivel) {
 		reg.mifila = { ...mifila.parent };
 		reg.columna = columna;
 		reg.ltotalanterior = ltotalanterior;
@@ -951,7 +973,6 @@ var operar = async function (ltotalanterior, ltotalnuevo, fila, columna) {
 	// Operamos padres con valor de fila (mifila)
 	if (mifila.id > 1 && mifila.parent != undefined) {
 		abrirarbol(mifila, false, true);
-
 		await operarpadres(mifila.parent, columna, ltotalanterior, ltotalnuevo);
 	}
 	// if (mifila.id > 1) {
@@ -971,7 +992,7 @@ var operar = async function (ltotalanterior, ltotalnuevo, fila, columna) {
 	grid.clearFilter();
 	grid.refreshView();
 	grid.expandRow(1);
-	toast.closeLast();
+	//toast.closeLast();
 	toast.open();
 	toast.type = "success";
 	toast.value = "Calculo Finalizado.";
@@ -1277,7 +1298,7 @@ window.Smart(
 				behavior: { columnResizeMode: "growAndShrink" },
 				layout: {
 					rowHeight: "auto",
-					rowMinHeight: 40,
+					rowMinHeight: 35,
 					allowCellsWrap: true,
 				},
 				appearance: {
@@ -1327,11 +1348,11 @@ window.Smart(
 					}
 				},
 				onKey: function (event) {
-					if (event.keyCode === 27) {
+					if (event.ctrlKey && event.key === "z") {
+						event.stopImmediatePropagation();
+						event.preventDefault();
 						grid.cancelEdit();
 					}
-					console.log("Key", event);
-					//calculapesos(row);
 				},
 				onRowInit: function (index, row) {
 					if (row.id === 1) {
@@ -1393,7 +1414,10 @@ window.Smart(
 					var misvalores = [];
 					var fila = cell[0].row;
 					var columna = cell[0].column.dataField;
-					if (oldValue == newValue) {
+					//Si tenemos bloque de padres los niveles superiores no se pueden tocar
+					if (!sumapadres.checkStatus && fila.level <= bloqueonivel) {
+						confirm(false);
+					} else if (oldValue == newValue) {
 						confirm(false);
 					} else if (!cell[0].row.checked) {
 						misvalores = await operar(
@@ -1430,10 +1454,10 @@ grid.addEventListener("rowClick", function (event) {
 		isRightClick = detail.isRightClick,
 		pageX = detail.pageX,
 		pageY = detail.pageY;
-	//event.preventDefault();
-	toast.closeLast();
+	event.preventDefault();
+
 	FILA_INDEX = row.index;
-	Ggrid.editing.enabled = true;
+
 	calculapesos(row);
 	//grid.refreshView();
 	iconoGgrid = "fas fa-sort-amount-down-alt";
@@ -1492,39 +1516,39 @@ grid.addEventListener("rowClick", function (event) {
 			// Colapsamos todos los elementos del mismo nivel a su padre
 			if (event.detail.item.getAttribute("data-id") === "Colapsar") {
 				grid.beginUpdate();
-				event.preventDefault();
+				//event.preventDefault();
 				var indice = parseInt(mrow.index);
-				var mifila = grid.rows[indice];
-
+				var mifila = { ...grid.rows[indice] };
+				//grid.collapseRow(mifila.id);
 				while (mifila.level > 0) {
-					grid.setRowStyle(mifila.id, {
-						fontFamily: "Poppins",
-						fontWeight: "default",
-						background: "default",
-						color: "default",
-					});
+					if (mifila.level > mrow.level) {
+						grid.setRowStyle(mifila.id, {
+							fontFamily: "Poppins",
+							fontWeight: "default",
+							background: "default",
+							color: "default",
+						});
+					}
+
 					indice -= 1;
-					mifila = grid.rows[indice];
+					mifila = { ...grid.rows[indice] };
 				}
 
 				//grid.collapseRow(mifila.id);
 				mifila.children.forEach((hijo) => {
-					if (
-						hijo.level == mrow.level ||
-						hijo.level == mrow.level - 1
-					) {
+					if (hijo.level >= mrow.level) {
 						grid.collapseRow(hijo.id);
+						grid.setRowStyle(hijo.id, {
+							fontFamily: "Poppins",
+							fontWeight: "default",
+							background: "default",
+							color: "default",
+						});
 					}
-					grid.setRowStyle(mrow.parentId, {
-						fontFamily: "Poppins",
-						fontWeight: "default",
-						background: "default",
-						color: "default",
-					});
 				});
 
 				grid.collapseRow(mrow.id);
-				if (mrow.level == 2) {
+				if (mrow.level > 0) {
 					grid.setRowStyle(mrow.id, {
 						fontFamily: "Poppins",
 						fontWeight: "default",
@@ -1554,4 +1578,14 @@ grid.addEventListener("rowClick", function (event) {
 		}
 	});
 
-export { operar, calculapesos, abrirarbol, changeIcono };
+export {
+	operar,
+	calculapesos,
+	abrirarbol,
+	changeIcono,
+	objCompare,
+	sacaKeys,
+	FILA_INDEX,
+	sumapadres,
+	bloqueonivel,
+};
