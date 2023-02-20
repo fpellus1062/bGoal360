@@ -4,31 +4,8 @@
         width: 100%;
         height: 100%;
         margin: 0 auto;
-        --smart-scheduler-timeline-cell-min-width: 40px;
-        --smart-scheduler-event-border-radius: 4px;
-        --smart-scheduler-timeline-nonworking-color: var(--smart-background);
     }
 
-    .smart-scheduler {
-        width: 100%;
-        height: 100%;
-        border-radius: initial;
-        font-family: 'Poppins', sans-serif;
-        font-size: 12px;
-    }
-
-    .smart-scheduler-window.smart-window .smart-content-container>.smart-content {
-        padding: initial;
-        align-items: stretch;
-        width: 99%;
-        height: 100%;
-        font-size: 12px;
-    }
-
-    .smart-scheduler-window.smart-window .smart-content-container>.smart-content {
-        padding: initial;
-        align-items: flex-start;
-    }
 
     .smart-window[footer-template] .smart-content-container>.smart-content {
         height: calc(100% - var(--smart-window-header-height) - var(--smart-window-footer-height));
@@ -48,16 +25,6 @@
         justify-content: space-evenly;
     }
 
-    .smart-container * {
-        box-sizing: border-box;
-    }
-
-    *,
-    ::after,
-    ::before {
-        box-sizing: border-box;
-    }
-
     hoja de estilo del agente de usuario div {
         display: block;
     }
@@ -74,7 +41,7 @@
     }
 
     .smart-container {
-        box-sizing: border-box;
+        box-sizing: none;
         font-family: inherit;
         font-size: inherit;
         display: block;
@@ -95,7 +62,7 @@
         z-index: calc(var(--smart-editor-drop-down-z-index) - 1);
         display: block;
         overflow: hidden;
-        font-size: 14px;
+        font-size: 12px;
         text-align: center;
     }
 
@@ -104,19 +71,19 @@
         width: 100%;
         height: 100%;
         display: flex;
-        box-sizing: border-box;
+
     }
 
     #primaryContainer {
         width: 100%;
         height: 100%;
         display: flex;
-        box-sizing: border-box;
+
         flex-direction: column;
     }
 
     #primaryContainer .content {
-        height: calc(100% - 50px);
+        height: calc(100% - 0px);
     }
 
     #primaryContainer.collapse #sideA {
@@ -124,57 +91,52 @@
     }
 
     #primaryContainer #sideA {
-        width: 280px;
-        transition: width 0.2s ease-in-out;
+        width: 157px;
+        background-color: #f5f5f5;
     }
 
     #primaryContainer.collapse #sideB {
         width: 100%;
-        transition: width 0.2s ease-in-out;
+
     }
 
     #primaryContainer #sideB {
-        width: calc(100% - 280px);
-        transition: width 0.2s ease-in-out;
+        width: calc(100% - 200px);
+
     }
 
     #sideA,
     #sideB {
+        padding-top: 30px;
         height: 100%;
-        box-sizing: border-box;
+
     }
 
     #header {
         position: relative;
         width: 100%;
-        height: 50px;
-        background-color: var(--smart-background);
-        color: var(--smart-background-color);
+        height: 20px;
         display: flex;
         align-items: center;
-        box-sizing: border-box;
-    }
-
-    #sideA {
-        border-top: var(--smart-border-width) solid var(--smart-border);
 
     }
 
     #sideA .controls-container {
-        box-sizing: border-box;
+        box-sizing: initial;
         width: 100%;
-        padding: 20px;
-        max-height: calc(100% - 150px);
+        padding: 0px;
+        max-height: calc(100% - 100px);
         display: grid;
         grid-template-rows: repeat(3, auto);
-        grid-template-columns: 100%;
-        grid-row-gap: 20px;
+        grid-template-columns: 90%;
+        grid-row-gap: 10px;
         overflow: auto;
+        align-content: center;
+        justify-content: space-around;
+        align-items: center;
+        justify-items: center;
     }
 
-    .button-container {
-        height: 150px;
-    }
 
     #sideA .smart-calendar {
         min-width: initial;
@@ -188,6 +150,28 @@
         --smart-surface: transparent;
     }
 
+    #updateBtn,
+    #exportBtn {
+        width: 100%;
+        height: 30%;
+        font-size: 12px;
+        margin-bottom: 3px;
+        padding: 3px
+    }
+
+
+    .card {
+        width: 100%;
+    }
+
+    .card-body {
+        width: 100%;
+        flex: 1 1 auto;
+        padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+        color: var(--bs-card-color);
+        text-align: center;
+    }
+
     .smart-input,
     .smart-tree {
         width: 100%;
@@ -198,85 +182,7 @@
         border: initial;
     }
 
-    #primaryContainer.collapse #addNew {
-        width: 45px;
-        border-radius: 50%;
-    }
 
-    #primaryContainer.collapse #addNew::after {
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-
-    #primaryContainer.collapse #addNew span {
-        display: none;
-    }
-
-    #addNew {
-        top: 100%;
-        left: 20px;
-        margin-top: 100px;
-        position: absolute;
-        cursor: pointer;
-        width: 120px;
-        height: 45px;
-        border-radius: 25px;
-        box-shadow: var(--smart-elevation-2);
-        z-index: 1;
-    }
-
-    #addNew button {
-        padding-left: 45px;
-    }
-
-    #addNew::after {
-        content: '+';
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-        position: absolute;
-        top: 0;
-        left: 10px;
-        width: 30px;
-        height: 100%;
-        font-family: var(--smart-font-family-icon);
-        font-size: 40px;
-        color: inherit;
-        background: linear-gradient(217deg, rgba(255, 0, 0, .8), rgba(255, 0, 0, 0) 70.71%), linear-gradient(127deg, rgba(0,
-                    255, 0, .8), rgba(0, 255, 0, 0) 70.71%), linear-gradient(336deg, rgba(0, 0, 255, .8), rgba(0, 0, 255, 0) 70.71%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    #toggleButton {
-        position: relative;
-        cursor: pointer;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: initial;
-        background: transparent;
-        margin-right: 10px;
-    }
-
-    #toggleButton::after {
-        content: var(--smart-icon-align-left);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        font-family: var(--smart-font-family-icon);
-        font-size: 25px;
-        box-sizing: border-box;
-        pointer-events: none;
-    }
 
     #title {
         -moz-user-select: none;
@@ -286,15 +192,7 @@
         position: relative;
     }
 
-    #logo {
-        content: '';
-        position: relative;
-        width: 100%;
-        height: 90px;
-        background: url(https://www.htmlelements.com/wp-content/design/assets/images/csssprites.png) -465px -400px;
-        filter: invert(0.8);
-        box-sizing: border-box;
-    }
+
 
     .smart-tree[selection-mode="checkBox"] smart-tree-items-group>.smart-tree-item-label-container::before,
     .smart-tree[selection-mode="checkBox"] smart-tree-items-group>.smart-tree-item-label-container::after {
@@ -313,370 +211,457 @@
         --smart-primary: purple;
     }
 
-    .birthday {
-        --smart-scheduler-event-background-rgb: 0, 129, 0;
-        --smart-scheduler-event-background: rgba(var(--smart-scheduler-event-background-rgb), 1);
-        --smart-scheduler-event-focus: rgba(var(--smart-scheduler-event-background-rgb), .9);
-        --smart-scheduler-event-hover: rgba(var(--smart-scheduler-event-background-rgb), .8);
+    #btn-conf {
+        margin-left: 10px;
     }
 
-    .holiday {
-        --smart-scheduler-event-background-rgb: 100, 149, 237;
-        --smart-scheduler-event-background: rgba(var(--smart-scheduler-event-background-rgb), 1);
-        --smart-scheduler-event-focus: rgba(var(--smart-scheduler-event-background-rgb), .9);
-        --smart-scheduler-event-hover: rgba(var(--smart-scheduler-event-background-rgb), .8);
+    .badge {
+        font-size: 10px;
+        font-weight: 400;
     }
 
-    .event {
-        --smart-scheduler-event-background-rgb: 128, 0, 128;
-        --smart-scheduler-event-background: rgba(var(--smart-scheduler-event-background-rgb), 1);
-        --smart-scheduler-event-focus: rgba(var(--smart-scheduler-event-background-rgb), .9);
-        --smart-scheduler-event-hover: rgba(var(--smart-scheduler-event-background-rgb), .8);
+    /* CSS Section B Tabs y Grids */
+    smart-tabs {
+        width: 100%;
+        height: 240px;
+
+    }
+
+    .spinner-border-sm {
+        padding-top: 3px;
+    }
+
+
+    .smart-tabs .smart-tabs-header-section {
+        border: 0px solid transparent;
+        background: transparent;
+        color: rgb(46, 74, 124);
+        padding: 0px;
+
+    }
+
+    /* Barra de Seleccion Inferior  de Etiquetas */
+    .smart-tabs-selection-bar {
+        background: rgb(245, 107, 16);
+        height: 4px;
+    }
+
+    /* Control de Etiquetas */
+    .smart-tabs .smart-header .smart-tab-strip {
+        /*border-bottom: 0px solid  rgb(46, 74, 124);*/
+        margin-bottom: 0rem;
+        /*font-weight: bold;*/
+        border: none;
+        height: 42px;
+    }
+
+    .smart-tabs .smart-tabs-content-section {
+        flex: 1;
+        margin: 0;
+        color: var(--smart-tabs-color);
+        background: transparent;
+        border: none;
+        margin-top: 1px;
+    }
+
+    .justify-content-center {
+        justify-content: center !important;
+        height: 210px;
+    }
+
+    .smart-grid {
+        width: 100%;
+        height: 68%;
+        font-style: normal;
+        --smart-font-size: 12px;
+        --smart-grid-template-columns: 350px auto;
+        --smart-grid-footer-height: 25px;
+        --smart-grid-header-height: 35px;
+        --smart-grid-column-header-height: 35px;
+        background-color: rgb(236, 235, 235);
+    }
+
+    smart-grid:not([selection_allow-cell-selection]) smart-grid-row[focus] smart-grid-cell:not([editor]):not([header]) .smart-label {
+        background: rgb(189, 188, 185) !important;
+        color: var(--smart-primary-color) !important;
+        border-color: rgb(189, 188, 185) !important;
+    }
+
+    smart-grid-row[selected] smart-grid-cell[selected]:not([selected="indeterminate"]):not([header]):not(.smart-grid-column-border):not(.smart-grid-column-border-collapse):before {
+        background: #999;
+        opacity: var(--smart-grid-cell-vertical-border-opacity-selected, 0.3);
+
+    }
+
+    smart-grid-row[selected] smart-grid-cell[selected]:not([selected="indeterminate"]):not([header]):not(.smart-grid-column-border):after {
+        background: #999;
+        opacity: var(--smart-grid-cell-horizontal-border-opacity-selected, 0.3);
+    }
+
+    .tabular {
+        width: 100%;
+        height: 85%;
+        --smart-font-size: 12px;
+    }
+
+
+    smart-grid-cell .wrap {
+        white-space: normal;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        line-height: 1.5;
+    }
+
+    smart-slider .smart-container {
+        overflow: visible;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        width: 150px;
+    }
+
+    .drawContainer,
+    .smart-container {
+        border: none;
+        height: fit-content;
+        width: 100%;
+    }
+
+
+    .smart-scroll-viewer .smart-scroll-viewer-container {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        background-color: transparent;
+        border-radius: 20%;
+    }
+
+    smart-switch-button.smart-element {
+        display: inline-block;
+        border: none;
+        background: 0 0;
+        overflow: visible;
+        font-family: 'Poppins', serif;
+    }
+
+    .smart-switch-button .smart-container {
+        font-size: inherit;
+        position: relative;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        touch-action: none;
+        height: inherit;
+        border-radius: 10px;
+    }
+
+
+    .smart-switch-button .smart-thumb {
+        border-color: var(--baculo-no-color);
+        background-color: var(--baculo-no-color);
+
+    }
+
+    .smart-switch-button:focus .smart-thumb,
+    .smart-switch-button[checked] .smart-thumb {
+        border-color: var(--baculo-si-color);
+        background-color: var(--baculo-si-color);
+        font-family: 'Poppins', serif;
+    }
+
+    .smart-switch-button .smart-container:before {
+        background-color: var(--smart-primary);
+        opacity: 0.4;
+    }
+
+    .smart-toast-container.smart-toast-container-modal .smart-toast-item {
+        width: 600px;
+        font-size: small;
+    }
+
+    .update .peque {
+        padding: 10px;
+        height: 50px;
+        font-size: small;
+    }
+
+    .bxs-cog,
+    .azulbaculo {
+        text-align: right;
+    }
+
+    .conf {
+        margin-right: 10px;
+    }
+
+
+    .form-inline {
+        display: flex;
+        justify-content: flex-end
     }
 </style>
 
+
 <body class="viewport">
+    <input type="number" name="maxnivel" id="maxnivel" value="<%=maxnivel%>" hidden>
+    <input type="text" name="niveles" id="niveles" value="<%=niveles%>" hidden>
+    <input type="text" name="resumen" id="resumen" value="<%=resumen%>" hidden>
+    <input type="text" name="idlayout" id="idlayout" value="<%=idlayout%>" hidden>
+    <input type="text" name="version" id="version" value="<%=empresa.version%>" hidden>
     <div id="primaryContainer">
         <div id="header">
-            <smart-button id="toggleButton"></smart-button>
-            <div id="title">Scheduler</div>
-            <smart-button id="addNew" class="floating"><span>Create</span></smart-button>
+            <button id="btn-conf" type="button" class="btn btn-secondary btn-sm"><i id="toggleButton"
+                    class="fa fa-cogs fa-fw" aria-hidden="true"></i></button>
         </div>
         <div class="content">
             <section id="sideA">
-                <div class="button-container">
-                    <div id="logo"></div>
-                </div>
                 <div class="controls-container">
-                    <smart-calendar id="calendar"></smart-calendar>
-                    <smart-input id="searchBar" class="underlined" placeholder="Search for people"></smart-input>
-                    <smart-tree id="tree" selection-mode="checkBox" toggle-element-position="far">
-                        <smart-tree-items-group expanded>
-                            My calendars
-                            <smart-tree-item value="birthday" selected>Birthdays</smart-tree-item>
-                            <smart-tree-item value="holiday" selected>Holidays</smart-tree-item>
-                            <smart-tree-item value="event" selected>Events</smart-tree-item>
-                        </smart-tree-items-group>
-                    </smart-tree>
+                    <div class="card text-start">
+                        <div class="card-body">
+                            <h6 class="card-title">Versión</h6>
+                            <button class="btn bg-azulbaculo" id="updateBtn" name="updateBtn" type="button"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Guardar Objetivos">
+                                <span> <i class="fas fa-save" aria-hidden="true"></i> </span> Presupuesto
+                            </button>
+
+                            <hr>
+
+                            <button class="btn btn-success" id="exportBtn" name="exportBtn" type="button"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Exportar de Excel">
+                                <span> <i class="fas fa-file-excel"></i> Excel </span>
+                            </button>
+
+                        </div>
+                    </div>
+                    <div class="card text-start">
+                        <div class="card-body">
+                            <h6 class="card-title">Cálculos</h6>
+                            <smart-radio-button enable-container-click id="pi" name="pip" checked
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="El cálculo se realizará por el % mensual de su propia fila">
+                                Peso
+                                Ind.</smart-radio-button>
+
+                            <smart-radio-button enable-container-click id="pt" name="ptp" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="El cálculo se realizará por el % mensual de toda la Cía">
+                                Peso
+                                Cía.</smart-radio-button>
+                            <hr>
+                            <div id="checked"><span id="log"
+                                    class="badge rounded-pill text-bg-success text-center"></span>
+                            </div>
+                            <smart-switch-button switch-mode="click" checked id="bp" name="bp" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Sumar a los  Padres">
+                            </smart-switch-button>
+                        </div>
+                    </div>
+
+
+
+                    <div>
+                        <br>
+                    </div>
                 </div>
             </section>
             <section id="sideB">
-                <smart-scheduler id="scheduler"></smart-scheduler>
+                <smart-tabs id="tabs" name="tabs" selected-index="0">
+                    <smart-tab-item label='General'>
+                        <div class="row align-items-center">
+                            <div class="col-sm-2">
+                                <label for="nombre" class="form-label">Empresa</label>
+                                <input type="text" class="form-control" name="nombre" id="nombre"
+                                    value="<%=empresa.nombre%>" readonly>
+                            </div>
+                            <div class="col-sm-1">
+                                <label for="ejercicio_descripcion" class="form-label">Ejercicio</label>
+                                <input type="text" class="form-control" name="ejercicio_descripcion"
+                                    id="ejercicio_descripcion" value="<%=empresa.ejercicio_descripcion%>" readonly>
+                            </div>
+                            <div class="col-sm-1">
+                                <label for="codigo" class="form-label">Código Layout</label>
+                                <input type="text" class="form-control" name="codigo" id="codigo"
+                                    value="<%=empresa.idcodigo%>" readonly>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="descripcionlay" class="form-label">Descripcion</label>
+                                <input type="text" class="form-control " name="descripcionlay" id="descripcionlay"
+                                    value="<%=empresa.descripcionlay%>" readonly>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="idversion" class="form-label">Versión Original <%=empresa.version%></label>
+                                <select class="form-select form-select-sl" id="idversion" name="idversion"
+                                    aria-label="Version">
+                                    <% if (empresa.version=='VP' ) {%>
+                                        <option value="VP" selected> VP - Version Presupuesto</option>
+                                        <option value="V1"> V1 - Version Optimista</option>
+                                        <option value="V2"> V2 - Version Pesimista</option>
+                                        <option value="V3"> V3 - Version Realista </option>
+                                        <%}%>
+                                            <% if (empresa.version=='V1' ) {%>
+                                                <option value="V1" selected> V1 - Version Optimista</option>
+                                                <option value="V2"> V2 - Version Pesimista </option>
+                                                <option value="V3"> V3 - Version Realista </option>
+                                                <%}%>
+                                                    <% if (empresa.version=='V2' ) {%>
+                                                        <option value="V2" selected> V2 - Version Pesimista</option>
+                                                        <option value="V1"> V1 - Version Optimista </option>
+                                                        <option value="V3"> V3 - Version Realista </option>
+                                                        <%}%>
+                                                            <% if (empresa.version=='V3' ) {%>
+                                                                <option value="V3" selected> V3 - Version Realista
+                                                                </option>
+                                                                <option value="V1"> V1 - Version Optimista</option>
+                                                                <option value="V2"> V2 - Version Pesimista</option>
+                                                                <%}%>
+                                </select>
+                            </div>
+                            <div class="col-sm-2 text-right">
+
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 text-right">
+                                <label for="observaciones" class="form-label">Observaciones</label>
+                                <textarea style="resize: none;" class="form-control" aria-label="With textarea"
+                                    name="observaciones" id="observaciones"
+                                    rows="3"><%=empresa.observaciones%></textarea>
+                            </div>
+                        </div>
+                    </smart-tab-item>
+                    <smart-tab-item label='Configuración'>
+                        <div class="row justify-content-center  g-2">
+                            <div class="col-4">
+                                <label for="resumenlayout" class="form-label">Niveles</label>
+
+                                <smart-grid class="tabular" name="resumenlayout" id="resumenlayout"></smart-grid>
+
+
+                            </div>
+
+                            <div class="col-4 ">
+
+
+                                <label for="distable" class="form-label">Distribución</label>
+                                <div id="spindist" name="spindist" class="spinner-border text-success spinner-border-sm"
+                                    role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <smart-grid class="tabular" name="distable" id="distable"></smart-grid>
+                            </div>
+                            <div class="col-4">
+
+                                <h3><label id="ceros" name="ceros">Cuenta Ceros</label></h3>
+                            </div>
+                        </div>
+                    </smart-tab-item>
+                    <smart-tab-item label='Totales'>
+                        <smart-grid id="Tgrid"></smart-grid>
+                    </smart-tab-item>
+                    <smart-tab-item label='Pesos'>
+                        <smart-grid id="Ggrid" name="Ggrid"></smart-grid>
+                    </smart-tab-item>
+                </smart-tabs>
+                <template id="General"><a href="#"><i class="fas fa-info-circle azulbaculo"></i></a>&nbsp Información
+                </template>
+                <template id="Configuración"><a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Herramientas de Cálculo"> <i class="fa fa-cogs azulbaculo" aria-hidden="true"></i></a>
+                    &nbsp
+                    Peso Individual</template>
+                <template id="Totales"><a href="#"> <img src="../../images/Total.png" id="img2" /></a> &nbsp
+                    Totales</template>
+                <template id="Pesos"><a href="#"><span class="smart-badge smart-badge-success smart-badge-pill"><i
+                                class="fas fa-calculator "></i></span></a> &nbsp Trabajo &nbsp
+
+                </template>
+                <smart-toast id="infotoats" show-close-button modal item-template="">
+                </smart-toast>
+                <template id="template-toast">Has
+                    bloquedado la suma de Padres! Un icono de calculadora rojo
+                    <span class="content smart-badge smart-badge-danger smart-badge-pill"><i
+                            class="fas fa-calculator"></i>
+                    </span> marcara la pestaña de "TRABAJO"
+                    <div class="buttons peque"><smart-button id="closeButton">Ok</smart-button></div>
+                </template>
+                <template id="template-toast-ffalse"> <span class="content smart-badge  smart-badge-pill"><i
+                            class="fas fa-filter"></i>
+                    </span>Ningun valor cumple las condiciones del filtro
+
+                    <div class="buttons peque"><smart-button id="closeButton">Ok</smart-button></div>
+                </template>
+                <template id="template-toast-ftrue"> <span class="content smart-badge  smart-badge-pill"><i
+                            class="fas fa-filter"></i>
+                    </span>Se han encontrado {{nfilas}}
+                    <br>
+                    <div>
+                        <span class="content smart-badge  smart-badge-pill">Las filas encontradas, cuentan los padres de
+                            los hijos,
+                            que coinciden con la selección. Los valores sólo sumaran de hijos a Padres</span>
+                    </div>
+                    <div class="buttons peque"><smart-button id="closeButton">Ok</smart-button></div>
+                </template>
+                <template id="footerTemplate">
+                    <div class="row ">
+                        <div class="col text-start"> &nbsp &nbsp Creado por <%=empresa.usuario %> el
+                                <%=empresa.fechaalta%>
+                        </div>
+                        <div class="col text-center">
+                            <div id="spincalc" name="spincalc" class="spinner-border text-primary spinner-border-sm"
+                                role="status" hide>
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="col text-end">Última Actualización el <%=empresa.fechaactualizacion %> &nbsp &nbsp
+                        </div>
+                    </div>
+                </template>
+                <br />
+                <div>
+                    <smart-grid id="grid"></smart-grid>
+                </div>
+                <div>
+                    <smart-menu id="menu" mode="dropDown">
+                        <smart-menu-item data-id="Recalcular"> <span> <i class="fas fa-balance-scale fa_custom"></i>
+                                Recalcular</span>
+                        </smart-menu-item>
+                        <smart-menu-item data-id="Expandir"> <span> <i class="fas fa-folder-open fa_custom"></i>
+                                Expandir Nivel</span>
+                        </smart-menu-item>
+                        <smart-menu-item data-id="Colapsar"> <span> <i class="fas fa-folder fa_custom"></i> Colapsar
+                                Nivel</span>
+                        </smart-menu-item>
+                    </smart-menu>
+                </div>
             </section>
         </div>
     </div>
 
     <!-- scripts -->
-    <script src="../../javascripts/smart/smart.scheduler.js"></script>
-    <script src="../../javascripts/smart/smart.accordion.js"></script>
-    <script src="../../javascripts/smart/smart.tree.js"></script>
 
-    <!-- scripts -->
+</body>
 
-    <script type="module">
-        const today = new Date(), currentDate = today.getDate(), currentYear = today.getFullYear(), currentMonth = today.getMonth(), thanksgiving = (() => {
-            const tempDate = new Date(currentYear, 10, 1);
-            //4th Thursday of November
-            tempDate.setDate(tempDate.getDate() - tempDate.getDay() + 25);
-            return tempDate;
-        })(), data = [
-            {
-                label: 'Brochure Design Review',
-                dateStart: new Date(currentYear, currentMonth, 10, 13, 15),
-                dateEnd: new Date(currentYear, currentMonth, 12, 16, 15),
-                status: 'tentative',
-                class: 'event'
-            }, {
-                label: 'Website Re-Design Plan',
-                dateStart: new Date(currentYear, currentMonth, 16, 16, 45),
-                dateEnd: new Date(currentYear, currentMonth, 18, 11, 15),
-                class: 'event'
-            }, {
-                label: 'Update Sales Strategy Documents',
-                dateStart: new Date(currentYear, currentMonth, 2, 12, 0),
-                dateEnd: new Date(currentYear, currentMonth, 2, 13, 45),
-                class: 'event',
-                repeat: {
-                    repeatFreq: 'daily',
-                    repeatInterval: 2,
-                    repeatEnd: 5,
-                    exceptions: [
-                        {
-                            date: new Date(currentYear, currentMonth, 4, 12, 0),
-                            label: 'Employee on sick leave. Reschedule for next day',
-                            dateStart: new Date(currentYear, currentMonth, 5),
-                            dateEnd: new Date(currentYear, currentMonth, 6),
-                            status: 'outOfOffice',
-                            backgroundColor: '#F06292'
-                        },
-                        {
-                            date: new Date(currentYear, currentMonth, 8, 12, 0),
-                            label: 'Employee on sick leave. Reschedule for next day',
-                            dateStart: new Date(currentYear, currentMonth, 9),
-                            dateEnd: new Date(currentYear, currentMonth, 10),
-                            status: 'outOfOffice',
-                            backgroundColor: '#FFA000'
-                        }
-                    ]
-                }
-            }, {
-                label: 'Non-Compete Agreements',
-                dateStart: new Date(currentYear, currentMonth, currentDate - 1, 8, 15),
-                dateEnd: new Date(currentYear, currentMonth, currentDate - 1, 9, 0),
-                status: 'outOfOffice',
-                class: 'event'
-            }, {
-                label: 'Approve Hiring of John Jeffers',
-                dateStart: new Date(currentYear, currentMonth, currentDate + 1, 10, 0),
-                dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 11, 15),
-                notifications: [
-                    {
-                        interval: 1,
-                        type: 'days',
-                        time: [today.getHours(), today.getMinutes()],
-                        message: 'Approve Hiring of John Jeffers tomorrow',
-                        iconType: 'success'
-                    }
-                ],
-                status: 'busy',
-                class: 'event'
-            }, {
-                label: 'Update NDA Agreement',
-                dateStart: new Date(currentYear, currentMonth, currentDate - 2, 11, 45),
-                dateEnd: new Date(currentYear, currentMonth, currentDate - 2, 13, 45),
-                class: 'event'
-            }, {
-                label: 'Update Employee Files with New NDA',
-                dateStart: new Date(currentYear, currentMonth, currentDate + 2, 14, 0),
-                dateEnd: new Date(currentYear, currentMonth, currentDate + 2, 16, 45),
-                class: 'event'
-            }, {
-                label: 'Compete Agreements',
-                dateStart: new Date(currentYear, currentMonth, currentDate, today.getHours(), today.getMinutes() + 15),
-                dateEnd: new Date(currentYear, currentMonth, currentDate, today.getHours() + 1, 45),
-                notifications: [
-                    {
-                        interval: 0,
-                        type: 'days',
-                        time: [today.getHours(), today.getMinutes() + 1],
-                        message: 'Compete Agreements in 15 minutes',
-                        iconType: 'time'
-                    },
-                    {
-                        interval: 0,
-                        type: 'days',
-                        time: [today.getHours(), today.getMinutes() + 2],
-                        message: 'Compete Agreements in 14 minutes',
-                        iconType: 'warning'
-                    }
-                ],
-                status: 'outOfOffice',
-                class: 'event'
-            }, {
-                label: 'Approve Hiring of Mark Waterberg',
-                dateStart: new Date(currentYear, currentMonth, currentDate + 3, 10, 0),
-                dateEnd: new Date(currentYear, currentMonth, currentDate + 3, 11, 15),
-                status: 'busy',
-                class: 'event'
-            }, {
-                label: 'Update Employees Information',
-                dateStart: new Date(currentYear, currentMonth, currentDate, 14, 0),
-                dateEnd: new Date(currentYear, currentMonth, currentDate, 16, 45),
-                class: 'event',
-                repeat: {
-                    repeatFreq: 'weekly',
-                    repeatInterval: 2,
-                    repeatOn: [2, 4],
-                    repeatEnd: new Date(2021, 5, 24)
-                }
-            },
-            {
-                label: 'Prepare Shipping Cost Analysis Report',
-                dateStart: new Date(currentYear, currentMonth, currentDate + 1, 12, 30),
-                dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 13, 30),
-                class: 'event',
-                repeat: {
-                    repeatFreq: 'monthly',
-                    repeatInterval: 1,
-                    repeatOn: [new Date(currentYear, currentMonth, currentDate + 1)]
-                }
-            }, {
-                label: 'Provide Feedback on Shippers',
-                dateStart: new Date(currentYear, currentMonth, currentDate + 1, 14, 15),
-                dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 16, 0),
-                status: 'tentative',
-                class: 'event'
-            }, {
-                label: 'Complete Shipper Selection Form',
-                dateStart: new Date(currentYear, currentMonth, currentDate + 1, 8, 30),
-                dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 10, 0),
-                class: 'event'
-            }, {
-                label: 'Upgrade Server Hardware',
-                dateStart: new Date(currentYear, currentMonth, currentDate + 1, 12, 0),
-                dateEnd: new Date(currentYear, currentMonth, currentDate + 1, 14, 15),
-                class: 'event'
-            }, {
-                label: 'Upgrade Apps to Windows RT or stay with WinForms',
-                dateStart: new Date(currentYear, currentMonth, currentDate + 2, today.getHours(), today.getMinutes() + 5),
-                dateEnd: new Date(currentYear, currentMonth, currentDate + 2, today.getHours() + 2),
-                status: 'tentative',
-                class: 'event',
-                repeat: {
-                    repeatFreq: 'daily',
-                    repeatInterval: 1,
-                    repeatOn: currentDate + 1,
-                    repeatEnd: new Date(currentYear, currentMonth, currentDate + 7),
-                    exceptions: [{
-                        date: new Date(currentYear, currentMonth, currentDate + 4, 10, 30),
-                        label: 'A day off work',
-                        status: 'busy',
-                        backgroundColor: '#64DD17'
-                    }]
-                },
-                notifications: [
-                    {
-                        interval: 2,
-                        type: 'days',
-                        time: [today.getHours(), today.getMinutes()],
-                        message: 'Upgrade Apps to Windows RT in 5 minutes',
-                        iconType: 'time'
-                    }
-                ],
-            },
-            {
-                label: 'Peter\'s Birthday',
-                dateStart: new Date(currentYear, currentMonth, 5),
-                dateEnd: new Date(currentYear, currentMonth, 6),
-                class: 'birthday'
-            },
-            {
-                label: 'Michael\'s Brithday',
-                dateStart: new Date(currentYear, currentMonth, 10),
-                dateEnd: new Date(currentYear, currentMonth, 11),
-                class: 'birthday'
-            },
-            {
-                label: 'Christina\'s Birthday',
-                dateStart: new Date(currentYear, currentMonth, 20),
-                dateEnd: new Date(currentYear, currentMonth, 21),
-                class: 'birthday'
-            }, {
-                label: 'Halloween',
-                dateStart: new Date(currentYear, 9, 31),
-                dateEnd: new Date(currentYear, 9, 32),
-                class: 'holiday'
-            }, {
-                label: 'Marry Christmas',
-                dateStart: new Date(currentYear, 11, 24),
-                dateEnd: new Date(currentYear, 11, 26, 23, 59, 59),
-                class: 'holiday'
-            },
-            {
-                label: 'Thanksgiving',
-                dateStart: thanksgiving,
-                dateEnd: new Date(currentYear, 10, thanksgiving.getDate() + 1),
-                class: 'holiday'
-            },
-            {
-                label: 'Day after Thanksgiving',
-                dateStart: new Date(currentYear, 10, thanksgiving.getDate() + 1),
-                dateEnd: new Date(currentYear, 10, thanksgiving.getDate() + 2),
-                class: 'holiday'
-            },
-            {
-                label: 'Indipendence Day',
-                dateStart: new Date(currentYear, 6, 4),
-                dateEnd: new Date(currentYear, 6, 5),
-                class: 'holiday'
-            },
-            {
-                label: 'New Year\'s Eve',
-                dateStart: new Date(currentYear, 11, 31),
-                dateEnd: new Date(currentYear + 1, 0, 1),
-                class: 'holiday'
-            }
-        ];
-        window.Smart('#scheduler', class {
-            get properties() {
-                return {
-                    //Properties
-                    view: 'month',
-                    views: ['day',
-                        {
-                            type: 'week',
-                            hideWeekend: true,
-                        },
-                        {
-                            type: 'month',
-                            hideWeekend: true,
-                        }, 'agenda',
-                        {
-                            label: '4 days',
-                            value: 'workWeek',
-                            type: 'week',
-                            shortcutKey: 'X',
-                            hideWeekend: false,
-                            hideNonworkingWeekdays: true,
-                        }],
-                    nonworkingDays: getPastThreeWeekdays(today.getDay()),
-                    dateCurrent: new Date(),
-                    dataSource: data,
-                    firstDayOfWeek: 1,
-                    disableDateMenu: true,
-                    currentTimeIndicator: true
-                };
-            }
-        });
-        window.Smart('#calendar', class {
-            get properties() {
-                return {
-                    //Properties
-                    scrollButtonsPosition: 'far'
-                };
-            }
-        });
-        window.onload = function () {
-            const primaryContainer = document.getElementById('primaryContainer'), calendar = document.getElementById('calendar'), scheduler = document.querySelector('smart-scheduler');
-            document.getElementById('toggleButton').addEventListener('click', function () {
-                primaryContainer.classList.toggle('collapse');
-                scheduler.disableDateMenu = !primaryContainer.classList.contains('collapse');
-            });
-            document.getElementById('addNew').addEventListener('click', function () {
-                scheduler.openWindow({ class: 'event' });
-            });
-            document.getElementById('calendar').addEventListener('change', function (event) {
-                scheduler.dateCurrent = event.detail.value;
-            });
-            document.getElementById('tree').addEventListener('change', function (event) {
-                const tree = event.target, types = tree.selectedIndexes.map((i) => tree.getItem(i).value);
-                scheduler.dataSource = data.filter(d => types.indexOf(d.class) > -1);
-            });
-            scheduler.addEventListener('dragEnd', updateData);
-            scheduler.addEventListener('resizeEnd', updateData);
-            scheduler.addEventListener('itemUpdate', updateData);
-            scheduler.addEventListener('itemRemove', updateData);
-            //Update the Calendar date
-            scheduler.addEventListener('dateChange', function (event) {
-                calendar.selectedDates = [event.detail.value];
-            });
-        };
-        function updateData(event) {
-            const item = event.detail.item;
-            for (let i = 0; i < data.length; i++) {
-                const dataItem = data[i];
-                if (dataItem.label === item.label && dataItem.class === item.class) {
-                    event.type === 'itemRemove' ? data.splice(i, 1) : data.splice(i, 1, item);
-                    return;
-                }
-            }
-        }
-        function getPastThreeWeekdays(weekday) {
-            let weekdays = [];
-            for (let i = 0; i < 3; i++) {
-                weekdays.push((weekday - i + 7) % 7);
-            }
-            return weekdays;
-        }
+<!-- scripts -->
 
-    </script>
+<script type="module" src="../../javascripts/smart/smart.grid.js"></script>
+<script type="module" src="../../javascripts/smart/smart.switchbutton.js"></script>
+<script type="module" src="../../javascripts/smart/smart.dropdownbutton.js"></script>
+<script type="module" src="../../javascripts/smart/smart.textbox.js"></script>
+<script type="module" src="../../javascripts/smart/smart.button.js"></script>
+
+<script type="module" src="../../javascripts/smart/smart.radiobutton.js"></script>
+<script type="module" src="../../javascripts/smart/smart.tabs.js"></script>
+
+<!-- JSZip -->
+<script type="text/javascript" src="../../javascripts/smart/jszip.min.js"></script>
+<script type="module" src="../../javascripts/source/jutils.js"></script>
+<script type="module" src="../../javascripts/source/griddb.js"></script>
+<!-- <script type="module" src="../../javascripts/source/ttable.js"></script>-->
+
+<script type="module">
+    const primaryContainer = document.getElementById('primaryContainer')
+    document.getElementById('toggleButton').addEventListener('click', function () {
+        primaryContainer.classList.toggle('collapse');
+
+    });
+</script>
